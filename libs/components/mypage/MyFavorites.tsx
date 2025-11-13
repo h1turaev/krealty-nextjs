@@ -34,7 +34,7 @@ const MyFavorites: NextPage = () => {
       setTotal(data?.getFavorites?.metaCounter?.[0]?.total || 0);
     },
   });
-  
+
   /** HANDLERS **/
   const paginationHandler = (e: T, value: number) => {
     setSearchFavorites({ ...searchFavorites, page: value });
@@ -57,7 +57,7 @@ const MyFavorites: NextPage = () => {
   };
 
   if (device === 'mobile') {
-    return <div>NESTAR MY FAVORITES MOBILE</div>;
+    return <div>HIGHLAND MY FAVORITES MOBILE</div>;
   } else {
     return (
       <div id="my-favorites-page">

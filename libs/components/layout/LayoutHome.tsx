@@ -46,8 +46,9 @@ const withLayoutMain = (Component: any) => {
       return (
         <>
           <Head>
-            <title>Nestar</title>
-            <meta name={'title'} content={`Nestar`} />
+            <title>HIGHLAND</title>
+            <meta name={'title'} content={`HIGHLAND`} />
+            <link rel="icon" type="image/svg+xml" href="/img/logo/favicon.svg" />
           </Head>
           <Stack id="mobile-wrap">
             <Stack id={'top'}>
@@ -68,8 +69,9 @@ const withLayoutMain = (Component: any) => {
       return (
         <>
           <Head>
-            <title>Nestar</title>
-            <meta name={'title'} content={`Nestar`} />
+            <title>HIGHLAND</title>
+            <meta name={'title'} content={`HIGHLAND`} />
+            <link rel="icon" type="image/svg+xml" href="/img/logo/favicon.svg" />
           </Head>
           <Stack id="pc-wrap">
             <Stack id={'top'}>
