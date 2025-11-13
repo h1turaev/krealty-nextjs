@@ -86,7 +86,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
       formData.append(
         'operations',
         JSON.stringify({
-          query: `mutation ImagesUploader($files: [Upload!]!, $target: String!) { 
+          query: `mutation ImagesUploader($files: [Upload!]!, $target: String!) {
 						imagesUploader(files: $files, target: $target)
 				  }`,
           variables: {
@@ -489,7 +489,7 @@ const updatePropertyHandler = useCallback(async () => {
                 <Stack className="text-box">
                   <Typography className="drag-title">Drag and drop images here</Typography>
                   <Typography className="format-title">
-                    Photos must be JPEG or PNG format and least 2048x768
+                    Photos must be JPEG, PNG, WebP or AVIF format and least 2048x768
                   </Typography>
                 </Stack>
                 <Button
@@ -505,7 +505,7 @@ const updatePropertyHandler = useCallback(async () => {
                     hidden={true}
                     onChange={uploadImages}
                     multiple={true}
-                    accept="image/jpg, image/jpeg, image/png"
+                    accept="image/jpg, image/jpeg, image/png, image/webp, image/avif"
                   />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

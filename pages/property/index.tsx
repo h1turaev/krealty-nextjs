@@ -226,7 +226,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 PropertyList.defaultProps = {
   initialInput: {
     page: 1,
-    limit: 4,
+    limit: 12,
     sort: 'createdAt',
     direction: 'DESC',
     search: {

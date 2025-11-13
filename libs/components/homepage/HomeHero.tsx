@@ -1,8 +1,8 @@
 import { Box, Button, Stack, TextField } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { PropertyLocation } from '../../enums/property.enum';
 
 const HomeHero = () => {
@@ -18,7 +18,7 @@ const HomeHero = () => {
 
     // Check if search matches any PropertyLocation (case-insensitive)
     const locationMatch = Object.values(PropertyLocation).find(
-      (location) => location.toLowerCase() === normalizedSearch.toLowerCase()
+      (location) => location.toLowerCase() === normalizedSearch.toLowerCase(),
     );
 
     if (locationMatch) {
@@ -33,13 +33,14 @@ const HomeHero = () => {
 
       await router.push(
         `/property?input=${JSON.stringify(searchFilter)}`,
-        `/property?input=${JSON.stringify(searchFilter)}`
+        `/property?input=${JSON.stringify(searchFilter)}`,
       );
     } else {
       // If no exact match, try partial match or use text search
       const partialMatch = Object.values(PropertyLocation).find(
-        (location) => location.toLowerCase().includes(normalizedSearch.toLowerCase()) ||
-                      normalizedSearch.toLowerCase().includes(location.toLowerCase())
+        (location) =>
+          location.toLowerCase().includes(normalizedSearch.toLowerCase()) ||
+          normalizedSearch.toLowerCase().includes(location.toLowerCase()),
       );
 
       if (partialMatch) {
@@ -53,7 +54,7 @@ const HomeHero = () => {
 
         await router.push(
           `/property?input=${JSON.stringify(searchFilter)}`,
-          `/property?input=${JSON.stringify(searchFilter)}`
+          `/property?input=${JSON.stringify(searchFilter)}`,
         );
       } else {
         // Use text search as fallback
@@ -67,7 +68,7 @@ const HomeHero = () => {
 
         await router.push(
           `/property?input=${JSON.stringify(searchFilter)}`,
-          `/property?input=${JSON.stringify(searchFilter)}`
+          `/property?input=${JSON.stringify(searchFilter)}`,
         );
       }
     }

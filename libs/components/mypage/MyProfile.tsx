@@ -42,7 +42,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
         'operations',
         JSON.stringify({
           query: `mutation ImageUploader($file: Upload!, $target: String!) {
-						imageUploader(file: $file, target: $target) 
+						imageUploader(file: $file, target: $target)
 				  }`,
           variables: {
             file: null,
@@ -144,13 +144,13 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
                   hidden
                   id="hidden-input"
                   onChange={uploadImage}
-                  accept="image/jpg, image/jpeg, image/png"
+                  accept="image/jpg, image/jpeg, image/png, image/webp, image/avif"
                 />
                 <label htmlFor="hidden-input" className="labeler">
                   <Typography>Upload Profile Image</Typography>
                 </label>
                 <Typography className="upload-text">
-                  A photo must be in JPG, JPEG or PNG format!
+                  A photo must be in JPG, JPEG, PNG, WebP or AVIF format!
                 </Typography>
               </Stack>
             </Stack>

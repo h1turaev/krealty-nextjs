@@ -14,6 +14,7 @@ import withLayoutMain from '../libs/components/layout/LayoutHome';
 import { Direction } from '../libs/enums/common.enum';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 import { PropertiesInquiry } from '../libs/types/property/property.input';
+import ScrollAnimation from '../libs/components/common/ScrollAnimation';
 
 export const getServerSideProps = async ({ locale }: any) => {
   const apolloClient = initializeApollo();
@@ -61,23 +62,47 @@ const Home: NextPage = ({ initialInput }: any) => {
   if (device === 'mobile') {
     return (
       <Stack className={'home-page'}>
-        <TrendProperties initialInput={initialInput} />
-        <PopularProperties />
-        <Advertisement />
-        <TopProperties initialInput={initialInput} />
-        <TopAgents />
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <TrendProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="slideUp" delay={0.2}>
+          <PopularProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="scale" delay={0.1}>
+          <Advertisement />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="slideUp" delay={0.2}>
+          <TopProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <TopAgents />
+        </ScrollAnimation>
       </Stack>
     );
   } else {
     return (
       <Stack className={'home-page'}>
-        <TrendProperties initialInput={initialInput} />
-        <Advertisement />
-        <PopularProperties />
-        <TopProperties initialInput={initialInput} />
-        <TopAgents />
-        <Events />
-        <CommunityBoards />
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <TrendProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="scale" delay={0.1}>
+          <Advertisement />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="slideUp" delay={0.2}>
+          <PopularProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="slideUp" delay={0.2}>
+          <TopProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <TopAgents />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="slideLeft" delay={0.2}>
+          <Events />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="slideRight" delay={0.2}>
+          <CommunityBoards />
+        </ScrollAnimation>
       </Stack>
     );
   }
