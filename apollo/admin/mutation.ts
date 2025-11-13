@@ -18,17 +18,30 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
       memberAddress
       memberDesc
       memberProperties
-      memberRank
       memberArticles
+      memberFollowers
+      memberFollowings
       memberPoints
       memberLikes
       memberViews
+      memberComments
+      memberRank
       memberWarnings
       memberBlocks
       deletedAt
       createdAt
       updatedAt
       accessToken
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
+      meFollowed {
+        followingId
+        followerId
+        myFollowing
+      }
     }
   }
 `;
@@ -52,6 +65,8 @@ export const UPDATE_PROPERTY_BY_ADMIN = gql`
       propertyRooms
       propertyViews
       propertyLikes
+      propertyComments
+      propertyRank
       propertyImages
       propertyDesc
       propertyBarter
@@ -62,12 +77,39 @@ export const UPDATE_PROPERTY_BY_ADMIN = gql`
       constructedAt
       createdAt
       updatedAt
+      memberData {
+        _id
+        memberType
+        memberStatus
+        memberAuthType
+        memberPhone
+        memberNick
+        memberFullName
+        memberImage
+        memberAddress
+        memberDesc
+        memberProperties
+        memberArticles
+        memberFollowers
+        memberFollowings
+        memberPoints
+        memberLikes
+        memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
+        deletedAt
+        createdAt
+        updatedAt
+        accessToken
+      }
     }
   }
 `;
 
 export const REMOVE_PROPERTY_BY_ADMIN = gql`
-  mutation RemovePropertyByAdmin($input: String!) {
+  mutation ($input: String!) {
     removePropertyByAdmin(propertyId: $input) {
       _id
       propertyType
@@ -81,6 +123,8 @@ export const REMOVE_PROPERTY_BY_ADMIN = gql`
       propertyRooms
       propertyViews
       propertyLikes
+      propertyComments
+      propertyRank
       propertyImages
       propertyDesc
       propertyBarter
@@ -91,6 +135,43 @@ export const REMOVE_PROPERTY_BY_ADMIN = gql`
       constructedAt
       createdAt
       updatedAt
+      memberData {
+        _id
+        memberType
+        memberStatus
+        memberAuthType
+        memberPhone
+        memberNick
+        memberFullName
+        memberImage
+        memberAddress
+        memberDesc
+        memberProperties
+        memberArticles
+        memberFollowers
+        memberFollowings
+        memberPoints
+        memberLikes
+        memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
+        deletedAt
+        createdAt
+        updatedAt
+        accessToken
+      }
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
+      meFollowed {
+        followingId
+        followerId
+        myFollowing
+      }
     }
   }
 `;
@@ -110,6 +191,7 @@ export const UPDATE_BOARD_ARTICLE_BY_ADMIN = gql`
       articleImage
       articleViews
       articleLikes
+      articleComments
       memberId
       createdAt
       updatedAt
@@ -128,6 +210,7 @@ export const REMOVE_BOARD_ARTICLE_BY_ADMIN = gql`
       articleImage
       articleViews
       articleLikes
+      articleComments
       memberId
       createdAt
       updatedAt

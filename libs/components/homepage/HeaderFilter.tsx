@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Stack, Box, Modal, Divider, Button } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, Button, Divider, Modal, Stack } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { propertySquare, propertyYears } from '../../config';
 import { PropertyLocation, PropertyType } from '../../enums/property.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { PropertiesInquiry } from '../../types/property/property.input';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
 
 const style = {
   position: 'absolute' as 'absolute',

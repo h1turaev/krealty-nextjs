@@ -1,22 +1,23 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { useState } from 'react';
-import { useRouter, withRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { getJwtToken, logOut, updateUserInfo } from '../auth';
-import { Stack, Box } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
-import { alpha, styled } from '@mui/material/styles';
-import Menu, { MenuProps } from '@mui/material/Menu';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import { CaretDown } from 'phosphor-react';
-import useDeviceDetect from '../hooks/useDeviceDetect';
-import Link from 'next/link';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import { Box, Stack } from '@mui/material';
+import Button from '@mui/material/Button';
+import Menu, { MenuProps } from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { alpha, styled } from '@mui/material/styles';
+import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
+import { useRouter, withRouter } from 'next/router';
+import { CaretDown } from 'phosphor-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { userVar } from '../../apollo/store';
+import { getJwtToken, logOut, updateUserInfo } from '../auth';
+
 import { REACT_APP_API_URL } from '../config';
+import useDeviceDetect from '../hooks/useDeviceDetect';
+import HighlandLogo from './common/HighlandLogo';
 
 const Top = () => {
   const device = useDeviceDetect();
@@ -167,10 +168,13 @@ const Top = () => {
             bgColor ? 'transparent' : ''
           }`}
         >
+          <video className={'navbar-video'} autoPlay loop muted playsInline>
+            <source src="/video/top2.mp4" type="video/mp4" />
+          </video>
           <Stack className={'container'}>
             <Box component={'div'} className={'logo-box'}>
               <Link href={'/'}>
-                <img src="/img/logo/logoWhite.svg" alt="" />
+                <HighlandLogo />
               </Link>
             </Box>
             <Box component={'div'} className={'router-box'}>
@@ -246,12 +250,8 @@ const Top = () => {
                   onClick={langClick}
                   endIcon={<CaretDown size={14} color="#616161" weight="fill" />}
                 >
-                  <Box component={'div'} className={'flag'}>
-                    {lang !== null ? (
-                      <img src={`/img/flag/lang${lang}.png`} alt={'usaFlag'} />
-                    ) : (
-                      <img src={`/img/flag/langen.png`} alt={'usaFlag'} />
-                    )}
+                  <Box component={'div'} className={'lang-text'}>
+                    {lang !== null ? lang.toUpperCase() : 'EN'}
                   </Box>
                 </Button>
 
@@ -262,34 +262,13 @@ const Top = () => {
                   sx={{ position: 'absolute' }}
                 >
                   <MenuItem disableRipple onClick={langChoice} id="en">
-                    <img
-                      className="img-flag"
-                      src={'/img/flag/langen.png'}
-                      onClick={langChoice}
-                      id="en"
-                      alt={'usaFlag'}
-                    />
-                    {t('English')}
+                    EN
                   </MenuItem>
                   <MenuItem disableRipple onClick={langChoice} id="kr">
-                    <img
-                      className="img-flag"
-                      src={'/img/flag/langkr.png'}
-                      onClick={langChoice}
-                      id="uz"
-                      alt={'koreanFlag'}
-                    />
-                    {t('Korean')}
+                    KR
                   </MenuItem>
                   <MenuItem disableRipple onClick={langChoice} id="ru">
-                    <img
-                      className="img-flag"
-                      src={'/img/flag/langru.png'}
-                      onClick={langChoice}
-                      id="ru"
-                      alt={'russiaFlag'}
-                    />
-                    {t('Russian')}
+                    RU
                   </MenuItem>
                 </StyledMenu>
               </div>

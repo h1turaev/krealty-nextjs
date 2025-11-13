@@ -18,14 +18,17 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
         memberImage
         memberAddress
         memberDesc
-        memberWarnings
-        memberBlocks
         memberProperties
-        memberRank
         memberArticles
+        memberFollowers
+        memberFollowings
         memberPoints
         memberLikes
         memberViews
+        memberComments
+        memberRank
+        memberWarnings
+        memberBlocks
         deletedAt
         createdAt
         updatedAt
@@ -58,6 +61,8 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
         propertyRooms
         propertyViews
         propertyLikes
+        propertyComments
+        propertyRank
         propertyImages
         propertyDesc
         propertyBarter
@@ -68,29 +73,6 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
         constructedAt
         createdAt
         updatedAt
-        memberData {
-          _id
-          memberType
-          memberStatus
-          memberAuthType
-          memberPhone
-          memberNick
-          memberFullName
-          memberImage
-          memberAddress
-          memberDesc
-          memberWarnings
-          memberBlocks
-          memberProperties
-          memberRank
-          memberPoints
-          memberLikes
-          memberViews
-          deletedAt
-          createdAt
-          updatedAt
-          accessToken
-        }
       }
       metaCounter {
         total
@@ -115,6 +97,7 @@ export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
         articleImage
         articleViews
         articleLikes
+        articleComments
         memberId
         createdAt
         updatedAt
@@ -129,13 +112,17 @@ export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
           memberImage
           memberAddress
           memberDesc
-          memberWarnings
-          memberBlocks
           memberProperties
-          memberRank
+          memberArticles
+          memberFollowers
+          memberFollowings
           memberPoints
           memberLikes
           memberViews
+          memberComments
+          memberRank
+          memberWarnings
+          memberBlocks
           deletedAt
           createdAt
           updatedAt
@@ -176,13 +163,17 @@ export const GET_COMMENTS = gql`
           memberImage
           memberAddress
           memberDesc
-          memberWarnings
-          memberBlocks
           memberProperties
-          memberRank
+          memberArticles
+          memberFollowers
+          memberFollowings
           memberPoints
           memberLikes
           memberViews
+          memberComments
+          memberRank
+          memberWarnings
+          memberBlocks
           deletedAt
           createdAt
           updatedAt

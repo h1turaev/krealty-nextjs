@@ -4,7 +4,8 @@
 	"private": true,
 	"license": "ITC",
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev -p 3001",
+		"dev:3000": "next dev -p 3000",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",

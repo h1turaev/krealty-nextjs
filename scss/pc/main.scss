@@ -48,43 +48,113 @@ body::-webkit-scrollbar {
     .navbar {
       .navbar-main {
         position: fixed;
-        padding: 22px 0px;
-        width: 100%;
-        height: 87px;
+        top: 20px;
+        padding: 10px 18px;
+        width: calc(100% - 80px);
+        left: 50%;
+        transform: translateX(-50%);
+        height: auto;
+        min-height: 56px;
         display: flex;
         flex-direction: row;
         box-sizing: border-box;
-        z-index: 99;
+        z-index: 40;
         align-items: center;
-        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        justify-content: center;
+        border-top: none;
+        pointer-events: none;
+        overflow: hidden;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+        .navbar-video {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 120%;
+          height: 120%;
+          object-fit: cover;
+          object-position: center center;
+          z-index: -1;
+          opacity: 0.5;
+        }
         &.transparent {
-          background-color: #181a209e;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
         }
         .container {
+          pointer-events: auto;
+          max-width: 1440px;
+          width: 100%;
+          height: 40px;
+          padding: 0 40px;
+          margin: 0 auto;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
           .logo-box {
-            img {
-              width: 150px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            a {
+              text-decoration: none;
+              display: flex;
+              align-items: center;
+            }
+            svg {
               cursor: pointer;
+              height: 40px;
+              width: auto;
             }
           }
           .router-box {
             position: relative;
-            width: 617px;
+            width: auto;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            gap: 26px;
+            padding: 0 24px;
+            flex: 1;
             div {
               position: relative;
-              color: #eeeeeeed;
-              font-family: $font;
-              font-size: 15px;
+              color: #504f4c;
+              font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+              font-size: 11px;
               font-style: normal;
-              font-weight: 600;
+              font-weight: 500;
+              letter-spacing: 0.12em;
+              text-transform: capitalize;
               line-height: normal;
               cursor: pointer;
+              white-space: nowrap;
+              transition: color 0.2s ease-out;
+              &::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                bottom: -4px;
+                width: 0;
+                height: 2px;
+                border-radius: 999px;
+                background: #22211f;
+                transform: translateX(-50%);
+                transition: width 0.2s ease-out;
+              }
+              &:hover {
+                color: #22211f;
+                &::after {
+                  width: 18px;
+                }
+              }
               .community_menu {
                 position: absolute;
                 left: -177%;
@@ -109,62 +179,112 @@ body::-webkit-scrollbar {
             }
           }
           .user-box {
-            width: 270px;
+            width: auto;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
             .join-box {
-              width: 184px;
-              height: 47px;
+              width: auto;
+              min-width: 140px;
+              height: 36px;
               display: flex;
               align-items: center;
               justify-content: center;
-              border-radius: 60px;
-              border: 1px solid #ffffff;
+              border-radius: 999px;
+              border: none;
+              background: transparent;
+              color: #504f4c;
               cursor: pointer;
+              padding: 0 20px;
+              transition: color 0.2s ease-out;
+              &:hover {
+                color: #22211f;
+              }
               svg {
-                color: #ffffff;
+                color: #504f4c;
                 margin-right: 10px;
+                transition: color 0.2s ease-out;
+              }
+              &:hover svg {
+                color: #22211f;
               }
               span {
-                font-family: $font;
-                font-size: 14px;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+                font-size: 11px;
                 font-style: normal;
-                font-weight: 600;
+                font-weight: 500;
+                letter-spacing: 0.12em;
+                text-transform: capitalize;
                 line-height: normal;
-                color: #ffffff;
+                color: inherit;
               }
             }
             .login-user {
+              cursor: pointer;
               img {
-                width: 42px;
-                height: 42px;
+                width: 36px;
+                height: 36px;
                 border-radius: 50%;
                 object-fit: cover;
+                border: none;
+                box-shadow: none;
               }
             }
           }
           .lan-box {
-            margin-left: 28px;
+            margin-left: 12px;
             display: flex;
             align-items: center;
+            gap: 8px;
             .notification-icon {
-              color: white;
+              color: #504f4c;
+              cursor: pointer;
             }
             .btn-lang {
-              border-radius: 4px;
-              img {
-                width: 24px;
-                height: 17px;
-                border-radius: 2px;
+              border-radius: 6px;
+              background: transparent;
+              padding: 6px 12px;
+              transition: all 0.2s ease;
+              &:hover {
+                background: rgba(0, 0, 0, 0.05);
+              }
+              .lang-text {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                color: #504f4c;
+                text-transform: uppercase;
               }
             }
-            .img-flag {
-              width: 24px;
-              height: 17px;
-              border-radius: 2px;
-              margin-right: 8px;
+          }
+        }
+      }
+    }
+    @media (max-width: 900px) {
+      .navbar {
+        .navbar-main {
+          padding: 10px 12px;
+          .container {
+            padding-inline: 16px;
+            .router-box {
+              gap: 18px;
+              padding-inline: 12px;
             }
+          }
+        }
+      }
+    }
+    @media (max-width: 720px) {
+      .navbar {
+        .navbar-main {
+          .container {
+            .router-box {
+              display: none;
+            }
+            justify-content: space-between;
           }
         }
       }
@@ -173,15 +293,170 @@ body::-webkit-scrollbar {
 
   .header-main {
     position: relative;
-    width: 100%;
-    height: 860px;
-    background-image: url('/img/banner/header1.svg');
-    background-size: cover;
+    width: calc(100% - 80px);
+    height: 500px;
+    padding-top: 0;
+    overflow: hidden;
+    margin: 100px auto 0;
+    border-radius: 16px;
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .header-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 1.5s ease-in-out;
+
+      &.active {
+        opacity: 1;
+        z-index: 2;
+      }
+    }
+    .home-hero {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 60px 80px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        transparent 100%
+      );
+      border-radius: 0 0 16px 16px;
+      .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 650px;
+        .welcome-text {
+          color: rgba(255, 255, 255, 0.9);
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          margin-bottom: 4px;
+        }
+        .hero-title {
+          color: #ffffff;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+          font-size: 64px;
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          margin-bottom: 8px;
+        }
+        .hero-subtitle {
+          color: rgba(255, 255, 255, 0.9);
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+          font-size: 17px;
+          font-weight: 400;
+          line-height: 1.6;
+          max-width: 550px;
+          margin-bottom: 8px;
+        }
+        .browse-button {
+          align-self: flex-start;
+          margin-top: 12px;
+          padding: 14px 36px;
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          border-radius: 8px;
+          background: transparent;
+          color: #ffffff;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          text-transform: none;
+          transition: all 0.2s ease;
+          cursor: pointer;
+          &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.6);
+          }
+        }
+      }
+      .hero-search {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 900px;
+        margin-top: 8px;
+        align-items: stretch;
+        .search-input {
+          flex: 1;
+          .MuiOutlinedInput-root {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: 48px;
+            fieldset {
+              border: none;
+            }
+            input {
+              padding: 0 20px;
+              height: 100%;
+              font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+              font-size: 14px;
+              color: #181a20;
+              &::placeholder {
+                color: #9ca3af;
+              }
+            }
+            &:hover {
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+          }
+        }
+        .search-button {
+          height: 48px;
+          padding: 0 36px;
+          background: #8b4513;
+          color: #ffffff;
+          border-radius: 8px;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          text-transform: none;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:hover {
+            background: #6b3410;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+          }
+        }
+      }
+    }
     .container {
       position: relative;
-      margin-top: 20px;
+      margin-top: 300px;
       flex-direction: column;
       align-items: center;
+      z-index: 1;
       .search-box {
         position: relative;
         margin-top: 56px;
