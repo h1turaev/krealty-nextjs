@@ -1,19 +1,18 @@
-import React, { use, useState } from 'react';
-import { Stack, Box } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import WestIcon from '@mui/icons-material/West';
-import EastIcon from '@mui/icons-material/East';
+import { useMutation, useQuery } from '@apollo/client';
+import { Box, Button, Stack } from '@mui/material';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper';
+import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
+import { GET_PROPERTIES } from '../../../apollo/user/query';
+import { Message } from '../../enums/common.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { T } from '../../types/common';
 import { Property } from '../../types/property/property';
 import { PropertiesInquiry } from '../../types/property/property.input';
 import TrendPropertyCard from './TrendPropertyCard';
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_PROPERTIES } from '../../../apollo/user/query';
-import { T } from '../../types/common';
-import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
-import { Message } from '../../enums/common.enum';
 
 interface TrendPropertiesProps {
   initialInput: PropertiesInquiry;
@@ -115,20 +114,21 @@ const TrendProperties = (props: TrendPropertiesProps) => {
       </Stack>
     );
   } else {
+    const heroProperty = trendProperties[0];
+    const smallProperties = trendProperties.slice(1, 4);
+
     return (
       <Stack className={'trend-properties'}>
         <Stack className={'container'}>
           <Stack className={'info-box'}>
             <Box component={'div'} className={'left'}>
-              <span>Trend Properties</span>
-              <p>Trend is based on likes</p>
+              <span className={'label'}>[FEATURED PROPERTIES]</span>
+              <span className={'title'}>Discover Our Featured Properties</span>
             </Box>
             <Box component={'div'} className={'right'}>
-              <div className={'pagination-box'}>
-                <WestIcon className={'swiper-trend-prev'} />
-                <div className={'swiper-trend-pagination'}></div>
-                <EastIcon className={'swiper-trend-next'} />
-              </div>
+              <Link href={'/property'} passHref>
+                <Button className={'all-properties-btn'}>All Properties</Button>
+              </Link>
             </Box>
           </Stack>
           <Stack className={'card-box'}>
@@ -137,30 +137,31 @@ const TrendProperties = (props: TrendPropertiesProps) => {
                 Trends Empty
               </Box>
             ) : (
-              <Swiper
-                className={'trend-property-swiper'}
-                slidesPerView={'auto'}
-                spaceBetween={15}
-                modules={[Autoplay, Navigation, Pagination]}
-                navigation={{
-                  nextEl: '.swiper-trend-next',
-                  prevEl: '.swiper-trend-prev',
-                }}
-                pagination={{
-                  el: '.swiper-trend-pagination',
-                }}
-              >
-                {trendProperties.map((property: Property) => {
-                  return (
-                    <SwiperSlide key={property._id} className={'trend-property-slide'}>
-                      <TrendPropertyCard
-                        property={property}
-                        likePropertyHandler={likePropertyHandler}
-                      />
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
+              <>
+                {heroProperty && (
+                  <Box className={'hero-card-wrapper'}>
+                    <TrendPropertyCard
+                      property={heroProperty}
+                      likePropertyHandler={likePropertyHandler}
+                      isHero={true}
+                    />
+                  </Box>
+                )}
+                {smallProperties.length > 0 && (
+                  <Stack className={'small-cards-wrapper'}>
+                    {smallProperties.map((property: Property) => {
+                      return (
+                        <TrendPropertyCard
+                          key={property._id}
+                          property={property}
+                          likePropertyHandler={likePropertyHandler}
+                          isHero={false}
+                        />
+                      );
+                    })}
+                  </Stack>
+                )}
+              </>
             )}
           </Stack>
         </Stack>

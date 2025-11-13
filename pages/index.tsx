@@ -72,8 +72,8 @@ const Home: NextPage = ({ initialInput }: any) => {
     return (
       <Stack className={'home-page'}>
         <TrendProperties initialInput={initialInput} />
-        <PopularProperties />
         <Advertisement />
+        <PopularProperties />
         <TopProperties initialInput={initialInput} />
         <TopAgents />
         <Events />

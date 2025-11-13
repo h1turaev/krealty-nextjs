@@ -117,16 +117,64 @@
     .trend-properties {
       padding: 108px 0px 76px;
       width: 100%;
-      height: 697px;
+      min-height: 697px;
+      background: #fdf6ee;
       display: flex;
       flex-direction: row;
       .container {
         flex-direction: column;
+        .info-box {
+          .left {
+            .label {
+              color: #181a20;
+              font-family: $font;
+              font-size: 12px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: normal;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              margin-bottom: 8px;
+              display: block;
+            }
+            .title {
+              color: #181a20;
+              font-family: $font;
+              font-size: 34px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 150%;
+              letter-spacing: -0.646px;
+              text-transform: capitalize;
+            }
+          }
+          .right {
+            .all-properties-btn {
+              background: rgba(255, 255, 255, 0.9);
+              color: #181a20;
+              font-family: $font;
+              font-size: 14px;
+              font-weight: 500;
+              text-transform: none;
+              padding: 10px 24px;
+              border-radius: 8px;
+              border: 1px solid rgba(24, 26, 32, 0.1);
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+              transition: all 0.2s ease;
+              &:hover {
+                background: #ffffff;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                transform: translateY(-1px);
+              }
+            }
+          }
+        }
         .card-box {
           position: relative;
           margin-top: 64px;
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
+          gap: 24px;
           .empty-list {
             width: 100%;
             height: 280px;
@@ -134,142 +182,169 @@
             justify-content: center;
             align-items: center;
           }
-          .trend-property-swiper {
+          .hero-card-wrapper {
             width: 100%;
-            height: 400px;
-            display: flex;
-            flex-direction: row;
-            .trend-property-slide {
-              width: auto;
-              height: auto;
-              display: flex;
-              margin: 10px 0 0 10px;
+            .trend-card-box.hero-card {
+              width: 100%;
+              height: 500px;
+              cursor: pointer;
+              transition: transform 0.3s ease;
+              &:hover {
+                transform: translateY(-4px);
+              }
+              .card-img {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-position: center;
+                border-radius: 16px;
+                overflow: hidden;
+                .glass-overlay {
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  height: 140px;
+                  background: linear-gradient(to top, rgba(24, 26, 32, 0.85) 0%, rgba(24, 26, 32, 0.6) 50%, transparent 100%);
+                  backdrop-filter: blur(10px);
+                  display: flex;
+                  align-items: flex-end;
+                  padding: 24px 32px;
+                  .overlay-content {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    .property-info {
+                      display: flex;
+                      flex-direction: column;
+                      gap: 4px;
+                      .property-name {
+                        color: #ffffff;
+                        font-family: $font;
+                        font-size: 28px;
+                        font-weight: 600;
+                        line-height: 1.2;
+                        text-transform: capitalize;
+                      }
+                      .property-location {
+                        color: rgba(255, 255, 255, 0.9);
+                        font-family: $font;
+                        font-size: 14px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                      }
+                    }
+                    .price-info {
+                      display: flex;
+                      flex-direction: column;
+                      align-items: flex-end;
+                      gap: 4px;
+                      .price-label {
+                        color: rgba(255, 255, 255, 0.8);
+                        font-family: $font;
+                        font-size: 12px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                      }
+                      .price-value {
+                        color: #ffffff;
+                        font-family: $font;
+                        font-size: 24px;
+                        font-weight: 700;
+                        line-height: 1.2;
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
-          .trend-card-box {
-            position: relative;
-            width: 300px;
-            height: 375px;
+          .small-cards-wrapper {
             display: flex;
-            flex-direction: column;
-            transition: transform 0.3s;
-            &:hover {
-              opacity: 1;
-              transform: scale(1.05);
-            }
-            .card-img {
-              position: relative;
-              width: 100%;
-              height: 203px;
-              background-size: cover;
-              border-radius: 12px 12px 0px 0px;
+            flex-direction: row;
+            gap: 20px;
+            width: 100%;
+            .trend-card-box.small-card {
+              flex: 1;
+              height: 400px;
               cursor: pointer;
-              div {
-                position: absolute;
-                padding: 8px 12px;
-                left: 12px;
-                bottom: 12px;
-                border-radius: 6px;
-                background: #fff;
-                color: #181a20;
-                font-family: $font;
-                font-size: 15px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
+              transition: transform 0.3s ease;
+              &:hover {
+                transform: translateY(-4px);
               }
-            }
-            .info {
-              padding: 20px 22px 17px;
-              display: flex;
-              flex-direction: column;
-              box-sizing: border-box;
-              border-radius: 0px 0px 12px 12px;
-              border: 1px solid rgba(196, 196, 196, 0.71);
-              border-top: none;
-              background: #fff;
-              box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-              .title {
+              .card-img {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-position: center;
+                border-radius: 16px;
                 overflow: hidden;
-                color: #181a20;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                font-family: $font;
-                font-size: 15px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-                text-transform: capitalize;
-                cursor: pointer;
-              }
-              .desc {
-                margin-top: 5px;
-                overflow: hidden;
-                color: #717171;
-                font-family: $font;
-                font-size: 13px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-              .options {
-                margin-top: 15px;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                div {
+                .glass-overlay {
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  height: 120px;
+                  background: linear-gradient(to top, rgba(24, 26, 32, 0.85) 0%, rgba(24, 26, 32, 0.6) 50%, transparent 100%);
+                  backdrop-filter: blur(10px);
                   display: flex;
-                  flex-direction: row;
-                  img {
-                    margin-right: 5px;
-                    width: 17px;
-                    height: 17px;
-                  }
-                  span {
-                    color: #181a20;
-                    font-family: $font;
-                    font-size: 13px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                  }
-                }
-              }
-              .bott {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                p {
-                  color: #181a20;
-                  font-family: $font;
-                  font-size: 13px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
-                  text-transform: capitalize;
-                }
-                button {
-                  margin-left: 7px;
-                  width: 16px;
-                  height: 16px;
-                  box-sizing: border-box;
-                }
-                .view-like-box {
-                  display: flex;
-                  flex-direction: row;
-                  gap: 7px;
-                  align-items: center;
-                  .view-cnt {
-                    color: #717171;
-                    font-family: $font;
-                    font-size: 13px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                    text-overflow: ellipsis;
+                  align-items: flex-end;
+                  padding: 20px 24px;
+                  .overlay-content {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    .property-info {
+                      display: flex;
+                      flex-direction: column;
+                      gap: 4px;
+                      flex: 1;
+                      .property-name {
+                        color: #ffffff;
+                        font-family: $font;
+                        font-size: 20px;
+                        font-weight: 600;
+                        line-height: 1.2;
+                        text-transform: capitalize;
+                      }
+                      .property-location {
+                        color: rgba(255, 255, 255, 0.9);
+                        font-family: $font;
+                        font-size: 12px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                      }
+                    }
+                    .price-info {
+                      display: flex;
+                      flex-direction: column;
+                      align-items: flex-end;
+                      gap: 4px;
+                      .price-label {
+                        color: rgba(255, 255, 255, 0.8);
+                        font-family: $font;
+                        font-size: 11px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                      }
+                      .price-value {
+                        color: #ffffff;
+                        font-family: $font;
+                        font-size: 18px;
+                        font-weight: 700;
+                        line-height: 1.2;
+                      }
+                    }
                   }
                 }
               }
@@ -284,7 +359,7 @@
       height: 816px;
       display: flex;
       flex-direction: row;
-      background: #f6f6f6;
+      background: #fdf6ee;
       .container {
         flex-direction: column;
         align-items: center;
@@ -480,17 +555,136 @@
         }
       }
     }
-    .video-frame {
+    .property-types-section {
+      padding: 108px 0px 76px;
       width: 100%;
-      height: 678px;
-      background: black;
-      transform: perspective(0px);
-      box-shadow: -3px 0px 20px 14px #34343480;
+      background: #fdf6ee;
+      display: flex;
+      flex-direction: row;
+      .container {
+        flex-direction: column;
+        .header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 64px;
+          .label {
+            color: #9ca3af;
+            font-family: $font;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+          }
+          .title {
+            color: #181a20;
+            font-family: $font;
+            font-size: 34px;
+            font-weight: 500;
+            line-height: 150%;
+            letter-spacing: -0.646px;
+            text-align: center;
+          }
+        }
+        .cards-grid {
+          display: flex;
+          flex-direction: row;
+          gap: 24px;
+          margin-bottom: 24px;
+          &.second-row {
+            margin-bottom: 0;
+          }
+          .property-type-card {
+            flex: 1;
+            background: #fdf6ee;
+            border-radius: 16px;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(24, 26, 32, 0.05);
+            &:hover {
+              transform: translateY(-4px);
+              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            }
+            .icon {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              margin-bottom: 20px;
+              svg {
+                width: 48px;
+                height: 48px;
+              }
+            }
+            .card-title {
+              color: #181a20;
+              font-family: $font;
+              font-size: 22px;
+              font-weight: 700;
+              line-height: 1.3;
+              margin-bottom: 12px;
+            }
+            .card-description {
+              color: #717171;
+              font-family: $font;
+              font-size: 15px;
+              font-weight: 400;
+              line-height: 1.6;
+            }
+            &.dark-card {
+              flex: 2;
+              background: #fdf6ee;
+              border: 1px solid rgba(24, 26, 32, 0.05);
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              text-align: center;
+              padding: 48px 32px;
+              position: relative;
+              overflow: hidden;
+              .dark-text-top {
+                color: #181a20;
+                font-family: $font;
+                font-size: 14px;
+                font-weight: 400;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 16px;
+                position: relative;
+                z-index: 1;
+              }
+              .dark-number {
+                color: #181a20;
+                font-family: $font;
+                font-size: 72px;
+                font-weight: 700;
+                line-height: 1;
+                margin-bottom: 12px;
+                position: relative;
+                z-index: 1;
+              }
+              .dark-text-bottom {
+                color: #181a20;
+                font-family: $font;
+                font-size: 18px;
+                font-weight: 500;
+                text-transform: lowercase;
+                position: relative;
+                z-index: 1;
+              }
+            }
+          }
+        }
+      }
     }
     .top-properties {
       padding: 108px 0px 76px;
       width: 100%;
       height: 697px;
+      background: #fdf6ee;
       display: flex;
       flex-direction: row;
       .container {
@@ -651,7 +845,7 @@
       height: 722px;
       display: flex;
       flex-direction: row;
-      background: #f6f6f6;
+      background: #fdf6ee;
       .container {
         position: relative;
         flex-direction: column;
@@ -742,7 +936,7 @@
       height: 810px;
       display: flex;
       flex-direction: row;
-      background: #181a20;
+      background: #fdf6ee;
       .container {
         flex-direction: column;
         align-items: center;
@@ -828,6 +1022,7 @@
       padding: 124px 0px 61px;
       width: 100%;
       height: 860px;
+      background: #fdf6ee;
       display: flex;
       flex-direction: row;
       .container {
