@@ -10,10 +10,19 @@
     box-shadow: none;
     background: #fff;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    .dark-mode & {
+      background: #1e2128;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
     .settings-icon-admin {
       margin-right: 15px;
       color: #7b809a;
       cursor: pointer;
+      transition: color 0.3s ease;
+      .dark-mode & {
+        color: rgba(255, 255, 255, 0.7);
+      }
     }
   }
   .aside {
@@ -28,6 +37,10 @@
     }
     .user {
       background: #f5f5f5;
+      transition: background-color 0.3s ease;
+      .dark-mode & {
+        background: #2a2d35;
+      }
     }
     hr {
       margin: 24px 0;
@@ -50,8 +63,16 @@
       font-weight: 600;
       background: #FDF4F4;
       color: #F54D56;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      .dark-mode & {
+        background: rgba(245, 77, 86, 0.2);
+      }
       span {
         color: #212121;
+        transition: color 0.3s ease;
+        .dark-mode & {
+          color: rgba(255, 255, 255, 0.9);
+        }
       }
     }
   }
@@ -60,6 +81,11 @@
     margin-left: auto;
     padding: 116px 24px;
     align-items: center;
+    background: #fff;
+    transition: background-color 0.3s ease;
+    .dark-mode & {
+      background: $bg-dark;
+    }
     .flex-space {
       display: flex;
       flex-direction: row;
@@ -310,6 +336,11 @@
       background: #fff;
       border-radius: 4px;
       box-shadow: rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      .dark-mode & {
+        background: #1e2128;
+        box-shadow: rgb(0 0 0 / 30%) 0px 0px 2px 0px, rgb(0 0 0 / 20%) 0px 12px 24px -4px;
+      }
       .tab-menu {
         display: flex;
         flex-direction: row;
@@ -321,11 +352,18 @@
           padding: 12px 16px;
           color: #bdbdbd;
           font-size: 14px;
+          transition: color 0.3s ease;
+          .dark-mode & {
+            color: rgba(255, 255, 255, 0.6);
+          }
         }
         li.on {
           font-weight: 500;
           color: #e92c28;
           border-bottom: 2px solid #e92c28;
+          .dark-mode & {
+            color: #e92c28;
+          }
         }
       }
       &.check-table-wrap {
@@ -334,16 +372,25 @@
           padding: 0 0 0 15px;
         }
       }
-      thead {
-        tr {
-          background: #fafafa;
-        }
-        th {
-          font-weight: bold;
-          color: #374151;
-          font-size: 14px;
-          border-bottom: 1px solid #eee;
-        }
+        thead {
+          tr {
+            background: #fafafa;
+            transition: background-color 0.3s ease;
+            .dark-mode & {
+              background: #2a2d35;
+            }
+          }
+          th {
+            font-weight: bold;
+            color: #374151;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+          }
         th:last-child {
           padding-right: 24px;
         }
@@ -351,22 +398,34 @@
           padding-left: 24px;
         }
       }
-      tbody {
-        color: #616161;
-        tr {
-          border-bottom: 1px solid #eee;
-        }
-        tr:last-child {
-          border-bottom: 0;
-        }
-        th:first-child {
-          padding-left: 24px;
-        }
-        td {
-          padding: 12px 16px;
-          border-bottom: 0;
-          font-size: 14px;
+        tbody {
           color: #616161;
+          transition: color 0.3s ease;
+          .dark-mode & {
+            color: rgba(255, 255, 255, 0.8);
+          }
+          tr {
+            border-bottom: 1px solid #eee;
+            transition: border-color 0.3s ease;
+            .dark-mode & {
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+          }
+          tr:last-child {
+            border-bottom: 0;
+          }
+          th:first-child {
+            padding-left: 24px;
+          }
+          td {
+            padding: 12px 16px;
+            border-bottom: 0;
+            font-size: 14px;
+            color: #616161;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.8);
+            }
           &.info {
             display: flex;
             flex-direction: row;
@@ -461,6 +520,10 @@
         height: 48px;
         background: #fff;
         font-size: 14px;
+        transition: background-color 0.3s ease;
+        .dark-mode & {
+          background: #2a2d35;
+        }
       }
       .MuiTableCell-root {
         padding: 12px 20px;
@@ -479,6 +542,12 @@
         border: 1px solid #eee;
         color: #757575;
         margin-right: 8px;
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        .dark-mode & {
+          background: #2a2d35;
+          border-color: rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.8);
+        }
       }
       thead { font-weight: 600; }
     }
@@ -509,10 +578,18 @@
     h5 {
       font-size: 20px;
       font-family: $font;
+      transition: color 0.3s ease;
+      .dark-mode & {
+        color: rgba(255, 255, 255, 0.9);
+      }
     }
     p {
       color: #344767;
       font-family: $font;
+      transition: color 0.3s ease;
+      .dark-mode & {
+        color: rgba(255, 255, 255, 0.8);
+      }
     }
     .close-icon {
       position: absolute;
