@@ -10,13 +10,14 @@ import { alpha, styled } from '@mui/material/styles';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import { useRouter, withRouter } from 'next/router';
-import { CaretDown } from 'phosphor-react';
+import { CaretDown, Moon, Sun } from 'phosphor-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { userVar } from '../../apollo/store';
 import { getJwtToken, logOut, updateUserInfo } from '../auth';
 
 import { REACT_APP_API_URL } from '../config';
 import useDeviceDetect from '../hooks/useDeviceDetect';
+import { useDarkMode } from '../hooks/useDarkMode';
 import HighlandLogo from './common/HighlandLogo';
 
 const Top = () => {
@@ -24,6 +25,7 @@ const Top = () => {
   const user = useReactiveVar(userVar);
   const { t, i18n } = useTranslation('common');
   const router = useRouter();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
   const [lang, setLang] = useState<string | null>('en');
   const drop = Boolean(anchorEl2);
@@ -146,6 +148,9 @@ const Top = () => {
         <Link href={'/'}>
           <div>{t('Home')}</div>
         </Link>
+        <Link href={'/about'}>
+          <div>{t('About')}</div>
+        </Link>
         <Link href={'/property'}>
           <div>{t('Properties')}</div>
         </Link>
@@ -168,9 +173,6 @@ const Top = () => {
             bgColor ? 'transparent' : ''
           }`}
         >
-          <video className={'navbar-video'} autoPlay loop muted playsInline>
-            <source src="/video/top2.mp4" type="video/mp4" />
-          </video>
           <Stack className={'container'}>
             <Box component={'div'} className={'logo-box'}>
               <Link href={'/'}>
@@ -180,6 +182,9 @@ const Top = () => {
             <Box component={'div'} className={'router-box'}>
               <Link href={'/'}>
                 <div>{t('Home')}</div>
+              </Link>
+              <Link href={'/about'}>
+                <div>{t('About')}</div>
               </Link>
               <Link href={'/property'}>
                 <div>{t('Properties')}</div>
@@ -236,7 +241,7 @@ const Top = () => {
                   <div className={'join-box'}>
                     <AccountCircleOutlinedIcon />
                     <span>
-                      {t('Login')} / {t('Register')}
+                      {t('Login')} / Apply
                     </span>
                   </div>
                 </Link>
@@ -244,6 +249,17 @@ const Top = () => {
 
               <div className={'lan-box'}>
                 {user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
+                <button
+                  className="btn-dark-mode"
+                  onClick={toggleDarkMode}
+                  aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {isDarkMode ? (
+                    <Sun size={18} weight="fill" />
+                  ) : (
+                    <Moon size={18} weight="fill" />
+                  )}
+                </button>
                 <Button
                   disableRipple
                   className="btn-lang"
