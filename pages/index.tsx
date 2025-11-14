@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { initializeApollo } from '../apollo/client';
 import { GET_PROPERTIES } from '../apollo/user/query';
+import ScrollAnimation from '../libs/components/common/ScrollAnimation';
 import Advertisement from '../libs/components/homepage/Advertisement';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
 import Events from '../libs/components/homepage/Events';
@@ -14,7 +15,6 @@ import withLayoutMain from '../libs/components/layout/LayoutHome';
 import { Direction } from '../libs/enums/common.enum';
 import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 import { PropertiesInquiry } from '../libs/types/property/property.input';
-import ScrollAnimation from '../libs/components/common/ScrollAnimation';
 
 export const getServerSideProps = async ({ locale }: any) => {
   const apolloClient = initializeApollo();

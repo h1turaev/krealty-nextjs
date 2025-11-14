@@ -1,10 +1,17 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { ReactNode, useRef, useEffect, useState } from 'react';
 
 interface ScrollAnimationProps {
   children: ReactNode;
-  animationType?: 'fadeIn' | 'slideUp' | 'slideDown' | 'slideLeft' | 'slideRight' | 'scale' | 'continuous';
+  animationType?:
+    | 'fadeIn'
+    | 'slideUp'
+    | 'slideDown'
+    | 'slideLeft'
+    | 'slideRight'
+    | 'scale'
+    | 'continuous';
   delay?: number;
   duration?: number;
   className?: string;
@@ -23,7 +30,6 @@ const ContinuousScrollAnimation = ({
   const { scrollYProgress } = useScroll({
     target: scrollRef,
     offset: ['start end', 'end start'],
-    layoutEffect: false,
   });
 
   const continuousY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
