@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Autoplay } from 'swiper';
@@ -126,8 +126,8 @@ const TrendProperties = (props: TrendPropertiesProps) => {
               <span className={'title'}>Discover Our Featured Properties</span>
             </Box>
             <Box component={'div'} className={'right'}>
-              <Link href={'/property'} passHref>
-                <Button className={'all-properties-btn'}>All Properties</Button>
+              <Link href={'/property'}>
+                <button className={'all-properties-btn'}>All Properties</button>
               </Link>
             </Box>
           </Stack>
