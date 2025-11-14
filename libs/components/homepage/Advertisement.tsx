@@ -10,75 +10,75 @@ interface PropertyTypeCard {
 // SVG Icon Components
 const MultiFamilyIcon = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="8" y="20" width="8" height="20" fill="#181a20" />
-    <rect x="10" y="22" width="2" height="2" fill="#f6f6f6" />
-    <rect x="12" y="22" width="2" height="2" fill="#f6f6f6" />
-    <rect x="10" y="25" width="2" height="2" fill="#f6f6f6" />
-    <rect x="12" y="25" width="2" height="2" fill="#f6f6f6" />
-    <rect x="20" y="12" width="8" height="28" fill="#181a20" />
-    <rect x="22" y="14" width="2" height="2" fill="#f6f6f6" />
-    <rect x="24" y="14" width="2" height="2" fill="#f6f6f6" />
-    <rect x="22" y="17" width="2" height="2" fill="#f6f6f6" />
-    <rect x="24" y="17" width="2" height="2" fill="#f6f6f6" />
-    <rect x="22" y="20" width="2" height="2" fill="#f6f6f6" />
-    <rect x="24" y="20" width="2" height="2" fill="#f6f6f6" />
-    <rect x="32" y="16" width="8" height="24" fill="#181a20" />
-    <rect x="34" y="18" width="2" height="2" fill="#f6f6f6" />
-    <rect x="36" y="18" width="2" height="2" fill="#f6f6f6" />
-    <rect x="34" y="21" width="2" height="2" fill="#f6f6f6" />
-    <rect x="36" y="21" width="2" height="2" fill="#f6f6f6" />
-    <rect x="6" y="38" width="36" height="2" fill="#181a20" />
+    <rect x="8" y="20" width="8" height="20" fill="#ffffff" />
+    <rect x="10" y="22" width="2" height="2" fill="#181a20" />
+    <rect x="12" y="22" width="2" height="2" fill="#181a20" />
+    <rect x="10" y="25" width="2" height="2" fill="#181a20" />
+    <rect x="12" y="25" width="2" height="2" fill="#181a20" />
+    <rect x="20" y="12" width="8" height="28" fill="#ffffff" />
+    <rect x="22" y="14" width="2" height="2" fill="#181a20" />
+    <rect x="24" y="14" width="2" height="2" fill="#181a20" />
+    <rect x="22" y="17" width="2" height="2" fill="#181a20" />
+    <rect x="24" y="17" width="2" height="2" fill="#181a20" />
+    <rect x="22" y="20" width="2" height="2" fill="#181a20" />
+    <rect x="24" y="20" width="2" height="2" fill="#181a20" />
+    <rect x="32" y="16" width="8" height="24" fill="#ffffff" />
+    <rect x="34" y="18" width="2" height="2" fill="#181a20" />
+    <rect x="36" y="18" width="2" height="2" fill="#181a20" />
+    <rect x="34" y="21" width="2" height="2" fill="#181a20" />
+    <rect x="36" y="21" width="2" height="2" fill="#181a20" />
+    <rect x="6" y="38" width="36" height="2" fill="#ffffff" />
   </svg>
 );
 
 const StudentIcon = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 8L12 14V20L24 26L36 20V14L24 8Z" fill="#181a20" />
-    <rect x="20" y="26" width="8" height="14" fill="#181a20" />
-    <rect x="18" y="28" width="12" height="2" fill="#181a20" />
-    <circle cx="24" cy="34" r="2" fill="#f6f6f6" />
-    <rect x="22" y="36" width="4" height="4" fill="#181a20" />
-    <rect x="16" y="38" width="16" height="2" fill="#181a20" />
+    <path d="M24 8L12 14V20L24 26L36 20V14L24 8Z" fill="#ffffff" />
+    <rect x="20" y="26" width="8" height="14" fill="#ffffff" />
+    <rect x="18" y="28" width="12" height="2" fill="#ffffff" />
+    <circle cx="24" cy="34" r="2" fill="#181a20" />
+    <rect x="22" y="36" width="4" height="4" fill="#ffffff" />
+    <rect x="16" y="38" width="16" height="2" fill="#ffffff" />
   </svg>
 );
 
 const HOAIcon = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 8L12 18V36H20V28H28V36H36V18L24 8Z" fill="#181a20" />
-    <rect x="20" y="24" width="8" height="4" fill="#f6f6f6" />
-    <rect x="6" y="36" width="36" height="2" fill="#181a20" />
-    <rect x="8" y="38" width="2" height="8" fill="#181a20" />
-    <rect x="14" y="38" width="2" height="8" fill="#181a20" />
-    <rect x="20" y="38" width="2" height="8" fill="#181a20" />
-    <rect x="26" y="38" width="2" height="8" fill="#181a20" />
-    <rect x="32" y="38" width="2" height="8" fill="#181a20" />
-    <rect x="38" y="38" width="2" height="8" fill="#181a20" />
+    <path d="M24 8L12 18V36H20V28H28V36H36V18L24 8Z" fill="#ffffff" />
+    <rect x="20" y="24" width="8" height="4" fill="#181a20" />
+    <rect x="6" y="36" width="36" height="2" fill="#ffffff" />
+    <rect x="8" y="38" width="2" height="8" fill="#ffffff" />
+    <rect x="14" y="38" width="2" height="8" fill="#ffffff" />
+    <rect x="20" y="38" width="2" height="8" fill="#ffffff" />
+    <rect x="26" y="38" width="2" height="8" fill="#ffffff" />
+    <rect x="32" y="38" width="2" height="8" fill="#ffffff" />
+    <rect x="38" y="38" width="2" height="8" fill="#ffffff" />
   </svg>
 );
 
 const CommercialIcon = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="10" y="12" width="28" height="28" fill="#181a20" />
-    <rect x="12" y="14" width="8" height="6" fill="#f6f6f6" />
-    <rect x="22" y="14" width="8" height="6" fill="#f6f6f6" />
-    <rect x="32" y="14" width="4" height="6" fill="#f6f6f6" />
-    <rect x="12" y="22" width="8" height="6" fill="#f6f6f6" />
-    <rect x="22" y="22" width="8" height="6" fill="#f6f6f6" />
-    <rect x="32" y="22" width="4" height="6" fill="#f6f6f6" />
-    <rect x="12" y="30" width="8" height="6" fill="#f6f6f6" />
-    <rect x="22" y="30" width="8" height="6" fill="#f6f6f6" />
-    <rect x="32" y="30" width="4" height="6" fill="#f6f6f6" />
-    <rect x="8" y="38" width="32" height="2" fill="#181a20" />
+    <rect x="10" y="12" width="28" height="28" fill="#ffffff" />
+    <rect x="12" y="14" width="8" height="6" fill="#181a20" />
+    <rect x="22" y="14" width="8" height="6" fill="#181a20" />
+    <rect x="32" y="14" width="4" height="6" fill="#181a20" />
+    <rect x="12" y="22" width="8" height="6" fill="#181a20" />
+    <rect x="22" y="22" width="8" height="6" fill="#181a20" />
+    <rect x="32" y="22" width="4" height="6" fill="#181a20" />
+    <rect x="12" y="30" width="8" height="6" fill="#181a20" />
+    <rect x="22" y="30" width="8" height="6" fill="#181a20" />
+    <rect x="32" y="30" width="4" height="6" fill="#181a20" />
+    <rect x="8" y="38" width="32" height="2" fill="#ffffff" />
   </svg>
 );
 
 const ActiveAdultIcon = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="14" r="4" fill="#181a20" />
-    <rect x="22" y="18" width="4" height="12" fill="#181a20" />
+    <circle cx="24" cy="14" r="4" fill="#ffffff" />
+    <rect x="22" y="18" width="4" height="12" fill="#ffffff" />
     <path
       d="M16 30L20 34L16 38"
-      stroke="#181a20"
+      stroke="#ffffff"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -86,16 +86,16 @@ const ActiveAdultIcon = () => (
     />
     <path
       d="M32 30L28 34L32 38"
-      stroke="#181a20"
+      stroke="#ffffff"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       fill="none"
     />
-    <line x1="20" y1="24" x2="16" y2="28" stroke="#181a20" strokeWidth="2" strokeLinecap="round" />
-    <line x1="28" y1="24" x2="32" y2="28" stroke="#181a20" strokeWidth="2" strokeLinecap="round" />
-    <line x1="24" y1="30" x2="24" y2="38" stroke="#181a20" strokeWidth="2" strokeLinecap="round" />
-    <line x1="20" y1="38" x2="28" y2="38" stroke="#181a20" strokeWidth="2" strokeLinecap="round" />
+    <line x1="20" y1="24" x2="16" y2="28" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+    <line x1="28" y1="24" x2="32" y2="28" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+    <line x1="24" y1="30" x2="24" y2="38" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+    <line x1="20" y1="38" x2="28" y2="38" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
