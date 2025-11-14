@@ -16,6 +16,11 @@ a {
   white-space: nowrap;
   text-decoration: none;
   color: #212121;
+  transition: color 0.3s ease;
+
+  .dark-mode & {
+    color: $text-light;
+  }
 }
 button {
   text-transform: none;
@@ -34,7 +39,9 @@ p {
 }
 body {
   font-family: $font;
-  cursor: none; // Hide default cursor
+  background-color: $bg-light;
+  color: $text-dark;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &::-webkit-scrollbar {
     width: 9px;
@@ -52,18 +59,17 @@ body {
     box-shadow: none;
   }
 
-  // Show default cursor on mobile
-  @media (max-width: 768px) {
-    cursor: auto;
-  }
-}
+  // Dark mode styles
+  &.dark-mode {
+    background-color: $bg-dark;
+    color: $text-light;
 
-// Custom cursor styles
-* {
-  cursor: none !important;
-
-  @media (max-width: 768px) {
-    cursor: auto !important;
+    &::-webkit-scrollbar-thumb {
+      background: #4a4a4a;
+    }
+    &::-webkit-scrollbar-track {
+      background: #2a2d35;
+    }
   }
 }
 hr {
