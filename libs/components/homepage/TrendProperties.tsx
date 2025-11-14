@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { Message } from '../../enums/common.enum';
+import { PropertyType } from '../../enums/property.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
@@ -22,6 +23,8 @@ const TrendProperties = (props: TrendPropertiesProps) => {
   const { initialInput } = props;
   const device = useDeviceDetect();
   const [trendProperties, setTrendProperties] = useState<Property[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(initialInput);
 
   /** APOLLO REQUESTS **/
   // Simulating fetching trend properties
@@ -41,7 +44,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
     refetch: getPropertiesRefetch,
   } = useQuery(GET_PROPERTIES, {
     fetchPolicy: 'cache-and-network',
-    variables: { input: initialInput },
+    variables: { input: searchFilter },
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
       setTrendProperties(data?.getProperties?.list);
@@ -65,7 +68,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
       await likeTargetProperty({
         variables: { input: id },
       });
-      await getPropertiesRefetch({ input: initialInput });
+      await getPropertiesRefetch({ input: searchFilter });
 
       await sweetTopSmallSuccessAlert('success', 800);
     } catch (err: any) {
@@ -73,6 +76,25 @@ const TrendProperties = (props: TrendPropertiesProps) => {
       sweetMixinErrorAlert(err.message).then();
     }
   };
+
+  const filterHandler = (filterType: string) => {
+    setActiveFilter(filterType);
+    const newFilter: PropertiesInquiry = {
+      ...initialInput,
+      search: {
+        ...initialInput.search,
+        typeList: filterType === 'all' ? undefined : [filterType as PropertyType],
+      },
+    };
+    setSearchFilter(newFilter);
+  };
+
+  const propertyTypeFilters = [
+    { id: 'all', name: 'All' },
+    { id: PropertyType.APARTMENT, name: 'Apartments' },
+    { id: PropertyType.VILLA, name: 'Villa' },
+    { id: PropertyType.HOUSE, name: 'House' },
+  ];
 
   if (trendProperties) console.log('trendProperties: +++', trendProperties);
   if (!trendProperties) return null;
@@ -83,6 +105,17 @@ const TrendProperties = (props: TrendPropertiesProps) => {
         <Stack className={'container'}>
           <Stack className={'info-box'}>
             <span>Trend Properties</span>
+          </Stack>
+          <Stack className={'filter-tabs-container'}>
+            {propertyTypeFilters.map((filter) => (
+              <Box
+                key={filter.id}
+                className={`filter-tab ${activeFilter === filter.id ? 'active' : ''}`}
+                onClick={() => filterHandler(filter.id)}
+              >
+                {filter.name}
+              </Box>
+            ))}
           </Stack>
           <Stack className={'card-box'}>
             {trendProperties.length === 0 ? (
@@ -130,6 +163,17 @@ const TrendProperties = (props: TrendPropertiesProps) => {
                 <button className={'all-properties-btn'}>All Properties</button>
               </Link>
             </Box>
+          </Stack>
+          <Stack className={'filter-tabs-container'}>
+            {propertyTypeFilters.map((filter) => (
+              <Box
+                key={filter.id}
+                className={`filter-tab ${activeFilter === filter.id ? 'active' : ''}`}
+                onClick={() => filterHandler(filter.id)}
+              >
+                {filter.name}
+              </Box>
+            ))}
           </Stack>
           <Stack className={'card-box'}>
             {trendProperties.length === 0 ? (

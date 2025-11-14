@@ -5,6 +5,7 @@ import { initializeApollo } from '../apollo/client';
 import { GET_PROPERTIES } from '../apollo/user/query';
 import ScrollAnimation from '../libs/components/common/ScrollAnimation';
 import Advertisement from '../libs/components/homepage/Advertisement';
+import Amenities from '../libs/components/homepage/Amenities';
 import CommitmentSection from '../libs/components/homepage/CommitmentSection';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
 import Events from '../libs/components/homepage/Events';
@@ -68,6 +69,9 @@ const Home: NextPage = ({ initialInput }: any) => {
         <ScrollAnimation animationType="slideUp" delay={0.2}>
           <PopularProperties initialInput={initialInput} />
         </ScrollAnimation>
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <Amenities />
+        </ScrollAnimation>
         <ScrollAnimation animationType="scale" delay={0.1}>
           <Advertisement />
         </ScrollAnimation>
@@ -90,6 +94,9 @@ const Home: NextPage = ({ initialInput }: any) => {
         </ScrollAnimation>
         <ScrollAnimation animationType="slideUp" delay={0.2}>
           <PopularProperties initialInput={initialInput} />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <Amenities />
         </ScrollAnimation>
         <ScrollAnimation animationType="slideUp" delay={0.2}>
           <CommitmentSection />
