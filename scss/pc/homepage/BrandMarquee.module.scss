@@ -18,17 +18,18 @@
   &__container {
     position: relative;
     width: 100%;
-    max-width: 1920px;
+    // Match main container width from app.scss (1300px) or use full width
+    max-width: 100%;
     margin: 0 auto;
     padding: 0;
   }
 
-  // Gradient masks for fade effect on left and right edges
-  &__mask {
+  // Fade masks for smooth edges
+  &__fade {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 500px;
+    width: clamp(100px, 10vw, 300px); // Responsive width: adapts to viewport
     z-index: 2;
     pointer-events: none;
 
@@ -37,11 +38,9 @@
       background: linear-gradient(
         to right,
         $bg-dark 0%,
-        $bg-dark 25%,
-        rgba(24, 26, 32, 0.95) 40%,
-        rgba(24, 26, 32, 0.8) 55%,
-        rgba(24, 26, 32, 0.5) 70%,
-        rgba(24, 26, 32, 0.2) 85%,
+        rgba(24, 26, 32, 0.95) 30%,
+        rgba(24, 26, 32, 0.7) 60%,
+        rgba(24, 26, 32, 0.3) 85%,
         transparent 100%
       );
     }
@@ -51,11 +50,9 @@
       background: linear-gradient(
         to left,
         $bg-dark 0%,
-        $bg-dark 25%,
-        rgba(24, 26, 32, 0.95) 40%,
-        rgba(24, 26, 32, 0.8) 55%,
-        rgba(24, 26, 32, 0.5) 70%,
-        rgba(24, 26, 32, 0.2) 85%,
+        rgba(24, 26, 32, 0.95) 30%,
+        rgba(24, 26, 32, 0.7) 60%,
+        rgba(24, 26, 32, 0.3) 85%,
         transparent 100%
       );
     }
@@ -89,7 +86,6 @@
     align-items: center;
     gap: 80px;
     padding: 0 40px;
-    // Remove mask-image - gradient masks handle fading
   }
 
   // Individual brand item
@@ -173,11 +169,19 @@
 
 // Keyframe animation is defined globally in app.scss
 
-// Large screen styles for better fading
+// Responsive fade masks for different screen sizes
 @media (min-width: 1920px) {
   .brandMarquee {
-    &__mask {
-      width: 500px;
+    &__fade {
+      width: clamp(250px, 12vw, 400px); // Larger fade for big screens
+    }
+  }
+}
+
+@media (min-width: 2560px) {
+  .brandMarquee {
+    &__fade {
+      width: clamp(300px, 12vw, 500px); // Even larger fade for WQHD screens
     }
   }
 }
@@ -187,8 +191,8 @@
   .brandMarquee {
     padding: 40px 0;
 
-    &__mask {
-      width: 150px;
+    &__fade {
+      width: clamp(80px, 12vw, 150px); // Smaller fade for mobile
     }
 
     &__list {
@@ -238,18 +242,6 @@
   }
 }
 
-// Tablet styles
-@media (min-width: 769px) and (max-width: 1024px) {
-  .brandMarquee {
-    &__list {
-      gap: 60px;
-    }
-
-    &__brand {
-      font-size: 22px;
-    }
-  }
-}
 
 // High DPI displays optimization
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {

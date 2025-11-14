@@ -55,11 +55,9 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
   return (
     <section className={`${styles.brandMarquee} ${styles[`brandMarquee--${itemSize}`]}`}>
       <div className={styles.brandMarquee__container}>
-        {/* Gradient masks for fade effect on edges */}
-        <div className={`${styles.brandMarquee__mask} ${styles['brandMarquee__mask--left']}`}></div>
-        <div
-          className={`${styles.brandMarquee__mask} ${styles['brandMarquee__mask--right']}`}
-        ></div>
+        {/* Fade masks for smooth edges */}
+        <div className={`${styles.brandMarquee__fade} ${styles['brandMarquee__fade--left']}`}></div>
+        <div className={`${styles.brandMarquee__fade} ${styles['brandMarquee__fade--right']}`}></div>
 
         {/* Marquee wrapper */}
         <div
