@@ -34,9 +34,9 @@ const CustomCursor = () => {
         const dx = mouseX - currentX;
         const dy = mouseY - currentY;
 
-        // Smooth easing with faster speed
-        trailingPositionRef.current.x += dx * 0.25;
-        trailingPositionRef.current.y += dy * 0.25;
+        // Smooth easing - trailing circle follows cursor with slight delay
+        trailingPositionRef.current.x += dx * 0.15; // Slower for more delay
+        trailingPositionRef.current.y += dy * 0.15;
 
         trailingRef.current.style.left = `${trailingPositionRef.current.x}px`;
         trailingRef.current.style.top = `${trailingPositionRef.current.y}px`;
@@ -68,23 +68,14 @@ const CustomCursor = () => {
   }
 
   return (
-    <>
-      <div
-        className={styles.cursor}
-        style={{
-          left: `${mousePosition.x}px`,
-          top: `${mousePosition.y}px`,
-        }}
-      />
-      <div
-        ref={trailingRef}
-        className={styles.cursorTrail}
-        style={{
-          left: `${trailingPositionRef.current.x}px`,
-          top: `${trailingPositionRef.current.y}px`,
-        }}
-      />
-    </>
+    <div
+      ref={trailingRef}
+      className={styles.cursorTrail}
+      style={{
+        left: `${trailingPositionRef.current.x}px`,
+        top: `${trailingPositionRef.current.y}px`,
+      }}
+    />
   );
 };
 

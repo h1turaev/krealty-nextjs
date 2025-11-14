@@ -1,35 +1,20 @@
 @import '../../variables.scss';
 
-.cursor {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: $text-dark;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out;
-  mix-blend-mode: difference;
-  will-change: transform;
-
-  // Hide on mobile
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
+// Trailing orange circle that follows cursor with delay
 .cursorTrail {
   position: fixed;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #ff6b35; // Orange color
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9999;
   transform: translate(-50%, -50%);
-  opacity: 0.7;
-  box-shadow: 0 0 12px rgba(255, 107, 53, 0.6), 0 0 24px rgba(255, 107, 53, 0.3);
+  opacity: 0.8;
+  box-shadow:
+    0 0 8px rgba(255, 107, 53, 0.5),
+    0 0 16px rgba(255, 107, 53, 0.3),
+    0 0 24px rgba(255, 107, 53, 0.2);
   will-change: left, top;
   transition: none; // Remove transition for smooth animation
 
