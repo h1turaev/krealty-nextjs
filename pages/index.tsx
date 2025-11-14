@@ -5,11 +5,11 @@ import { initializeApollo } from '../apollo/client';
 import { GET_PROPERTIES } from '../apollo/user/query';
 import ScrollAnimation from '../libs/components/common/ScrollAnimation';
 import Advertisement from '../libs/components/homepage/Advertisement';
+import CommitmentSection from '../libs/components/homepage/CommitmentSection';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
 import Events from '../libs/components/homepage/Events';
 import PopularProperties from '../libs/components/homepage/PopularProperties';
 import TopAgents from '../libs/components/homepage/TopAgents';
-import TopProperties from '../libs/components/homepage/TopProperties';
 import TrendProperties from '../libs/components/homepage/TrendProperties';
 import withLayoutMain from '../libs/components/layout/LayoutHome';
 import { Direction } from '../libs/enums/common.enum';
@@ -72,7 +72,7 @@ const Home: NextPage = ({ initialInput }: any) => {
           <Advertisement />
         </ScrollAnimation>
         <ScrollAnimation animationType="slideUp" delay={0.2}>
-          <TopProperties initialInput={initialInput} />
+          <CommitmentSection />
         </ScrollAnimation>
         <ScrollAnimation animationType="fadeIn" delay={0.1}>
           <TopAgents />
@@ -92,7 +92,7 @@ const Home: NextPage = ({ initialInput }: any) => {
           <PopularProperties initialInput={initialInput} />
         </ScrollAnimation>
         <ScrollAnimation animationType="slideUp" delay={0.2}>
-          <TopProperties initialInput={initialInput} />
+          <CommitmentSection />
         </ScrollAnimation>
         <ScrollAnimation animationType="fadeIn" delay={0.1}>
           <TopAgents />
