@@ -11,6 +11,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Chat from '../Chat';
 import Footer from '../Footer';
 import Top from '../Top';
+import BrandMarquee from '../homepage/BrandMarquee';
 import HomeHero from '../homepage/HomeHero';
 
 const withLayoutMain = (Component: any) => {
@@ -113,6 +114,8 @@ const withLayoutMain = (Component: any) => {
               </div>
               <HomeHero />
             </Stack>
+
+            <BrandMarquee speed={35} itemSize="medium" pauseOnHover={true} />
 
             <Stack id={'main'}>
               <Component {...props} />
