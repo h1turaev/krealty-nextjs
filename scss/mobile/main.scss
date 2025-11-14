@@ -33,7 +33,7 @@
     padding: 0px 10px;
     width: 100%;
     height: auto;
-    background: #fdf6ee;
+    background: $bg-light;
     display: flex;
     flex-direction: row;
     .container {
@@ -320,7 +320,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #fdf6ee;
+    background: $bg-light;
     .container {
       width: 100%;
       flex-direction: column;
@@ -515,7 +515,7 @@
   .property-types-section {
     padding: 48px 20px;
     width: 100%;
-    background: #fdf6ee;
+    background: $bg-dark; // Dark background matching BrandMarquee
     display: flex;
     flex-direction: row;
     .container {
@@ -536,7 +536,7 @@
           margin-bottom: 8px;
         }
         .title {
-          color: #181a20;
+          color: $text-light; // White text on dark background
           font-family: $font;
           font-size: 24px;
           font-weight: 500;
@@ -548,14 +548,14 @@
         display: flex;
         flex-direction: column;
         gap: 16px;
-        .property-type-card {
-          width: 100%;
-          background: #fdf6ee;
-          border-radius: 12px;
-          padding: 24px 20px;
-          display: flex;
-          flex-direction: column;
-          border: 1px solid rgba(24, 26, 32, 0.05);
+          .property-type-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05); // Light background on dark
+            border-radius: 12px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
           .icon {
             display: flex;
             align-items: center;
@@ -567,7 +567,7 @@
             }
           }
           .card-title {
-            color: #181a20;
+            color: $text-light; // White text on dark background
             font-family: $font;
             font-size: 20px;
             font-weight: 700;
@@ -575,15 +575,15 @@
             margin-bottom: 10px;
           }
           .card-description {
-            color: #717171;
+            color: $text-gray; // Light gray text on dark background
             font-family: $font;
             font-size: 14px;
             font-weight: 400;
             line-height: 1.5;
           }
           &.dark-card {
-            background: #fdf6ee;
-            border: 1px solid rgba(24, 26, 32, 0.05);
+            background: rgba(255, 255, 255, 0.05); // Light background on dark
+            border: 1px solid $border-light;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -593,7 +593,7 @@
             position: relative;
             overflow: hidden;
             .dark-text-top {
-              color: #181a20;
+              color: $text-gray; // Light text on dark background
               font-family: $font;
               font-size: 12px;
               font-weight: 400;
@@ -604,7 +604,7 @@
               z-index: 1;
             }
             .dark-number {
-              color: #181a20;
+              color: $text-light; // White text on dark background
               font-family: $font;
               font-size: 56px;
               font-weight: 700;
@@ -614,7 +614,7 @@
               z-index: 1;
             }
             .dark-text-bottom {
-              color: #181a20;
+              color: rgba(255, 255, 255, 0.8); // Light text on dark background
               font-family: $font;
               font-size: 16px;
               font-weight: 500;
@@ -632,7 +632,7 @@
     padding: 0px 10px;
     width: 100%;
     height: auto;
-    background: #fdf6ee;
+    background: $bg-light;
     display: flex;
     flex-direction: row;
     .container {
@@ -790,7 +790,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #fdf6ee;
+    background: $bg-light;
     .container {
       position: relative;
       width: 100%;
