@@ -82,19 +82,37 @@ const HomeHero = () => {
 
   return (
     <Stack className="home-hero">
-      <Stack className="hero-content">
-        <Box className="welcome-text">[WELCOME TO HIGHLAND]</Box>
-        <Box className="hero-title">Find Your Next Great Space</Box>
-        <Box className="hero-subtitle">
-          Premium properties for rent or sale — managed with professionalism and care
-        </Box>
-        <Link href="/property" passHref>
-          <Button className="browse-button" variant="outlined">
-            Browse Properties
-          </Button>
-        </Link>
+      {/* Top section with left content and right info card */}
+      <Stack className="hero-top">
+        {/* Left side: Welcome text, title, and browse button */}
+        <Stack className="hero-content">
+          <Box className="welcome-text">[WELCOME TO HIGHLAND]</Box>
+          <Box className="hero-title">Find Your Next Great Space</Box>
+          <Link href="/property" passHref>
+            <Button className="browse-button" variant="outlined">
+              Browse Properties
+            </Button>
+          </Link>
+        </Stack>
+
+        {/* Right side: Info card with subtitle and Talk to Agent */}
+        <Stack className="hero-info-card">
+          <Box className="hero-subtitle">
+            Premium properties for rent or sale — managed with professionalism and care
+          </Box>
+          <Link href="/agent" passHref>
+            <Stack className="talk-to-agent">
+              <Box className="agent-avatar">
+                <img src="/img/profile/agent-sofy.avif" alt="Agent" />
+              </Box>
+              <Box className="agent-text">Talk to an Agent</Box>
+              <Box className="agent-arrow">→</Box>
+            </Stack>
+          </Link>
+        </Stack>
       </Stack>
 
+      {/* Bottom section: Search bar centered */}
       <Stack className="hero-search">
         <TextField
           className="search-input"

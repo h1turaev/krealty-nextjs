@@ -49,12 +49,12 @@ body::-webkit-scrollbar {
       .navbar-main {
         position: fixed;
         top: 20px;
-        padding: 10px 18px;
+        padding: 8px 18px;
         width: calc(100% - 80px);
         left: 50%;
         transform: translateX(-50%);
         height: auto;
-        min-height: 56px;
+        min-height: 48px;
         display: flex;
         flex-direction: row;
         box-sizing: border-box;
@@ -65,28 +65,42 @@ body::-webkit-scrollbar {
         pointer-events: none;
         overflow: hidden;
         border-radius: 16px;
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        // Glass effect for navbar - transparent
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(60px) saturate(250%);
+        -webkit-backdrop-filter: blur(60px) saturate(250%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
         transition: all 0.3s ease;
-        .navbar-video {
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 120%;
-          height: 120%;
-          object-fit: cover;
-          object-position: center center;
-          z-index: -1;
-          opacity: 0.5;
-        }
         &.transparent {
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.6);
+          backdrop-filter: blur(60px) saturate(250%);
+          -webkit-backdrop-filter: blur(60px) saturate(250%);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        // Dark mode styles
+        .dark-mode & {
+          background: rgba(30, 33, 40, 0.5);
+          backdrop-filter: blur(60px) saturate(250%);
+          -webkit-backdrop-filter: blur(60px) saturate(250%);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          &.transparent {
+            background: rgba(30, 33, 40, 0.6);
+            backdrop-filter: blur(60px) saturate(250%);
+            -webkit-backdrop-filter: blur(60px) saturate(250%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow:
+              0 12px 40px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          }
         }
         .container {
           pointer-events: auto;
@@ -112,6 +126,12 @@ body::-webkit-scrollbar {
               cursor: pointer;
               height: 40px;
               width: auto;
+              transition: all 0.3s ease;
+            }
+            .dark-mode & {
+              svg {
+                filter: brightness(0) invert(1);
+              }
             }
           }
           .router-box {
@@ -148,6 +168,15 @@ body::-webkit-scrollbar {
                 background: #22211f;
                 transform: translateX(-50%);
                 transition: width 0.2s ease-out;
+                .dark-mode & {
+                  background: rgba(255, 255, 255, 0.8);
+                }
+              }
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.8);
+                &:hover {
+                  color: rgba(255, 255, 255, 1);
+                }
               }
               &:hover {
                 color: #22211f;
@@ -220,6 +249,19 @@ body::-webkit-scrollbar {
                 line-height: normal;
                 color: inherit;
               }
+              // Dark mode styles
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.8);
+                &:hover {
+                  color: rgba(255, 255, 255, 1);
+                }
+                svg {
+                  color: rgba(255, 255, 255, 0.8);
+                }
+                &:hover svg {
+                  color: rgba(255, 255, 255, 1);
+                }
+              }
             }
             .login-user {
               cursor: pointer;
@@ -241,6 +283,40 @@ body::-webkit-scrollbar {
             .notification-icon {
               color: #504f4c;
               cursor: pointer;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.8);
+              }
+            }
+            .btn-dark-mode {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 8px;
+              background: transparent;
+              border: none;
+              cursor: pointer;
+              transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+              color: #504f4c;
+              padding: 0;
+              &:hover {
+                background: rgba(0, 0, 0, 0.05);
+                transform: scale(1.05);
+                .dark-mode & {
+                  background: rgba(255, 255, 255, 0.1);
+                }
+              }
+              &:active {
+                transform: scale(0.95);
+              }
+              svg {
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              }
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
             .btn-lang {
               border-radius: 6px;
@@ -257,6 +333,15 @@ body::-webkit-scrollbar {
                 letter-spacing: 0.1em;
                 color: #504f4c;
                 text-transform: uppercase;
+                transition: color 0.3s ease;
+                .dark-mode & {
+                  color: rgba(255, 255, 255, 0.8);
+                }
+              }
+              .dark-mode & {
+                &:hover {
+                  background: rgba(255, 255, 255, 0.1);
+                }
               }
             }
           }
@@ -299,6 +384,7 @@ body::-webkit-scrollbar {
     overflow: hidden;
     margin: 100px auto 0;
     border-radius: 16px;
+    background: $bg-light; // Same background as other components
     .video-container {
       position: absolute;
       top: 0;
@@ -343,11 +429,24 @@ body::-webkit-scrollbar {
         transparent 100%
       );
       border-radius: 0 0 16px 16px;
+
+      // Top section with left content and right info card
+      .hero-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 40px;
+        width: 100%;
+      }
+
+      // Left side: Welcome text, title, and browse button
       .hero-content {
         display: flex;
         flex-direction: column;
         gap: 16px;
-        max-width: 650px;
+        max-width: 500px;
+        flex: 0 0 auto;
         .welcome-text {
           color: rgba(255, 255, 255, 0.9);
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
@@ -360,28 +459,21 @@ body::-webkit-scrollbar {
         .hero-title {
           color: #ffffff;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-          font-size: 64px;
+          font-size: 48px;
           font-weight: 700;
           line-height: 1.1;
           letter-spacing: -0.03em;
-          margin-bottom: 8px;
-        }
-        .hero-subtitle {
-          color: rgba(255, 255, 255, 0.9);
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-          font-size: 17px;
-          font-weight: 400;
-          line-height: 1.6;
-          max-width: 550px;
-          margin-bottom: 8px;
+          margin-bottom: 16px;
         }
         .browse-button {
           align-self: flex-start;
-          margin-top: 12px;
           padding: 14px 36px;
-          border: 1px solid rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 8px;
-          background: transparent;
+          // Glass effect for browse button
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
           color: #ffffff;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
           font-size: 14px;
@@ -389,18 +481,93 @@ body::-webkit-scrollbar {
           text-transform: none;
           transition: all 0.2s ease;
           cursor: pointer;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
           &:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
           }
         }
       }
+
+      // Right side: Info card with subtitle and Talk to Agent
+      .hero-info-card {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-width: 400px;
+        flex: 0 0 auto;
+        // Glass effect for info card
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 32px 40px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        .hero-subtitle {
+          color: rgba(255, 255, 255, 0.9);
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+          font-size: 17px;
+          font-weight: 400;
+          line-height: 1.6;
+          margin-bottom: 0;
+        }
+        .talk-to-agent {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          text-decoration: none;
+          &:hover {
+            transform: translateX(4px);
+          }
+          .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px; // Slightly rounded square
+            overflow: hidden;
+            flex-shrink: 0;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+          .agent-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+          }
+          .agent-arrow {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            font-weight: 600;
+          }
+        }
+      }
+
+      // Bottom section: Search bar centered
       .hero-search {
         display: flex;
         flex-direction: row;
         gap: 12px;
         max-width: 900px;
-        margin-top: 8px;
+        width: 100%;
+        margin: 0 auto;
         align-items: stretch;
         .search-input {
           flex: 1;
@@ -430,7 +597,7 @@ body::-webkit-scrollbar {
         .search-button {
           height: 48px;
           padding: 0 36px;
-          background: #8b4513;
+          background: #181a20; // Black color
           color: #ffffff;
           border-radius: 8px;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
@@ -443,9 +610,10 @@ body::-webkit-scrollbar {
           display: flex;
           align-items: center;
           justify-content: center;
+          border: none;
           &:hover {
-            background: #6b3410;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background: #000000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             transform: translateY(-1px);
           }
         }
