@@ -1,0 +1,274 @@
+/**
+ * Premium Infinite Horizontal Marquee Animation
+ * GPU-optimized, seamless loop, luxury real estate style
+ * Compatible with reduced motion preferences
+ */
+
+@import '../../variables.scss';
+
+.brandMarquee {
+  width: 100%;
+  padding: 60px 0;
+  margin-top: 20px; // Spacing from HomeHero
+  background: $bg-dark; // Dark background
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; // Create new stacking context for performance
+
+  &__container {
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  // Gradient masks for fade effect on left and right edges
+  &__mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 500px;
+    z-index: 2;
+    pointer-events: none;
+
+    &--left {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        $bg-dark 0%,
+        $bg-dark 25%,
+        rgba(24, 26, 32, 0.95) 40%,
+        rgba(24, 26, 32, 0.8) 55%,
+        rgba(24, 26, 32, 0.5) 70%,
+        rgba(24, 26, 32, 0.2) 85%,
+        transparent 100%
+      );
+    }
+
+    &--right {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        $bg-dark 0%,
+        $bg-dark 25%,
+        rgba(24, 26, 32, 0.95) 40%,
+        rgba(24, 26, 32, 0.8) 55%,
+        rgba(24, 26, 32, 0.5) 70%,
+        rgba(24, 26, 32, 0.2) 85%,
+        transparent 100%
+      );
+    }
+  }
+
+  // Marquee track - contains the animated lists
+  &__track {
+    display: flex;
+    width: fit-content;
+    will-change: transform; // GPU acceleration hint
+    transform: translateZ(0); // Force GPU acceleration
+    backface-visibility: hidden; // Prevent flickering
+    perspective: 1000px; // 3D rendering context
+    // Animation will be applied via inline styles using global keyframe
+
+    // Pause animation on hover
+    &--pauseOnHover:hover {
+      animation-play-state: paused !important;
+    }
+
+    // Disable animation for reduced motion preference
+    &--reducedMotion {
+      animation: none !important;
+    }
+  }
+
+  // Individual brand list container
+  &__list {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 80px;
+    padding: 0 40px;
+    // Remove mask-image - gradient masks handle fading
+  }
+
+  // Individual brand item
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    position: relative;
+    opacity: 1;
+    transition: opacity 0.6s ease-in-out;
+  }
+
+  // Brand name styling
+  &__brand {
+    display: inline-block;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-weight: 500;
+    color: $text-light; // White text on dark background
+    letter-spacing: 0.02em;
+    transition: color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+
+    &:hover {
+      color: #d4af37; // Gold color on hover
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      color: #d4af37;
+      outline: 2px solid #d4af37;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  // Size variants
+  &--small {
+    padding: 40px 0;
+
+    .brandMarquee__brand {
+      font-size: 18px;
+    }
+
+    .brandMarquee__list {
+      gap: 60px;
+    }
+  }
+
+  &--medium {
+    padding: 60px 0;
+
+    .brandMarquee__brand {
+      font-size: 24px;
+    }
+
+    .brandMarquee__list {
+      gap: 80px;
+    }
+  }
+
+  &--large {
+    padding: 80px 0;
+
+    .brandMarquee__brand {
+      font-size: 32px;
+    }
+
+    .brandMarquee__list {
+      gap: 100px;
+    }
+  }
+}
+
+// Keyframe animation is defined globally in app.scss
+
+// Large screen styles for better fading
+@media (min-width: 1920px) {
+  .brandMarquee {
+    &__mask {
+      width: 500px;
+    }
+  }
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .brandMarquee {
+    padding: 40px 0;
+
+    &__mask {
+      width: 150px;
+    }
+
+    &__list {
+      gap: 50px;
+      padding: 0 20px;
+    }
+
+    &__brand {
+      font-size: 18px;
+    }
+
+    &--small {
+      padding: 30px 0;
+
+      .brandMarquee__brand {
+        font-size: 16px;
+      }
+
+      .brandMarquee__list {
+        gap: 40px;
+      }
+    }
+
+    &--medium {
+      padding: 40px 0;
+
+      .brandMarquee__brand {
+        font-size: 20px;
+      }
+
+      .brandMarquee__list {
+        gap: 50px;
+      }
+    }
+
+    &--large {
+      padding: 50px 0;
+
+      .brandMarquee__brand {
+        font-size: 24px;
+      }
+
+      .brandMarquee__list {
+        gap: 60px;
+      }
+    }
+  }
+}
+
+// Tablet styles
+@media (min-width: 769px) and (max-width: 1024px) {
+  .brandMarquee {
+    &__list {
+      gap: 60px;
+    }
+
+    &__brand {
+      font-size: 22px;
+    }
+  }
+}
+
+// High DPI displays optimization
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .brandMarquee__track {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+// Reduced motion media query support
+@media (prefers-reduced-motion: reduce) {
+  .brandMarquee__track {
+    animation: none !important;
+  }
+
+  .brandMarquee__track--reducedMotion {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+}
