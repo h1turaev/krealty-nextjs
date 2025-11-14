@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { Stack, Box } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper';
-import WestIcon from '@mui/icons-material/West';
-import EastIcon from '@mui/icons-material/East';
-import PopularPropertyCard from './PopularPropertyCard';
-import { Property } from '../../types/property/property';
-import Link from 'next/link';
-import { PropertiesInquiry } from '../../types/property/property.input';
 import { useQuery } from '@apollo/client';
+import { Box, Stack } from '@mui/material';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { T } from '../../types/common';
+import { Property } from '../../types/property/property';
+import { PropertiesInquiry } from '../../types/property/property.input';
+import PopularPropertyCard from './PopularPropertyCard';
 
 interface PopularPropertiesProps {
   initialInput: PropertiesInquiry;
@@ -43,22 +41,29 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 
   if (device === 'mobile') {
     return (
-      <Stack className={'popular-properties'}>
+      <Stack className={'featured-properties'}>
         <Stack className={'container'}>
-          <Stack className={'info-box'}>
-            <span>Popular properties</span>
+          <Stack className={'header-box'}>
+            <span className={'label'}>[FEATURED PROPERTIES]</span>
+            <span className={'title'}>Discover Our Most Featured Properties</span>
           </Stack>
           <Stack className={'card-box'}>
             <Swiper
-              className={'popular-property-swiper'}
+              className={'featured-property-swiper'}
               slidesPerView={'auto'}
               centeredSlides={true}
               spaceBetween={25}
               modules={[Autoplay]}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+                stopOnLastSlide: false,
+              }}
             >
               {popularProperties.map((property: Property) => {
                 return (
-                  <SwiperSlide key={property._id} className={'popular-property-slide'}>
+                  <SwiperSlide key={property._id} className={'featured-property-slide'}>
                     <PopularPropertyCard property={property} />
                   </SwiperSlide>
                 );
@@ -70,49 +75,40 @@ const PopularProperties = (props: PopularPropertiesProps) => {
     );
   } else {
     return (
-      <Stack className={'popular-properties'}>
+      <Stack className={'featured-properties'}>
         <Stack className={'container'}>
-          <Stack className={'info-box'}>
+          <Stack className={'header-box'}>
             <Box component={'div'} className={'left'}>
-              <span>Popular properties</span>
-              <p>Popularity is based on views</p>
+              <span className={'label'}>[FEATURED PROPERTIES]</span>
+              <span className={'title'}>Discover Our Most Featured Properties</span>
             </Box>
             <Box component={'div'} className={'right'}>
-              <div className={'more-box'}>
-                <Link href={'/property'}>
-                  <span>See All Categories</span>
-                </Link>
-                <img src="/img/icons/rightup.svg" alt="" />
-              </div>
+              <Link href={'/property'}>
+                <button className={'all-properties-btn'}>All Properties</button>
+              </Link>
             </Box>
           </Stack>
           <Stack className={'card-box'}>
             <Swiper
-              className={'popular-property-swiper'}
+              className={'featured-property-swiper'}
               slidesPerView={'auto'}
               spaceBetween={25}
-              modules={[Autoplay, Navigation, Pagination]}
-              navigation={{
-                nextEl: '.swiper-popular-next',
-                prevEl: '.swiper-popular-prev',
-              }}
-              pagination={{
-                el: '.swiper-popular-pagination',
+              modules={[Autoplay]}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+                stopOnLastSlide: false,
               }}
             >
               {popularProperties.map((property: Property) => {
                 return (
-                  <SwiperSlide key={property._id} className={'popular-property-slide'}>
+                  <SwiperSlide key={property._id} className={'featured-property-slide'}>
                     <PopularPropertyCard property={property} />
                   </SwiperSlide>
                 );
               })}
             </Swiper>
-          </Stack>
-          <Stack className={'pagination-box'}>
-            <WestIcon className={'swiper-popular-prev'} />
-            <div className={'swiper-popular-pagination'}></div>
-            <EastIcon className={'swiper-popular-next'} />
           </Stack>
         </Stack>
       </Stack>

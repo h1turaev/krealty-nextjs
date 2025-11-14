@@ -1,13 +1,8 @@
-import React from 'react';
-import { Stack, Box, Divider, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { Box, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { REACT_APP_API_URL } from '../../config';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { REACT_APP_API_URL, topPropertyRank } from '../../config';
-import { useRouter } from 'next/router';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
 
 interface PopularPropertyCardProps {
   property: Property;
@@ -17,7 +12,6 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
   const { property } = props;
   const device = useDeviceDetect();
   const router = useRouter();
-  const user = useReactiveVar(userVar);
 
   /** HANDLERS **/
   const pushDetailHandler = async (propertyId: string) => {
@@ -27,7 +21,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
 
   if (device === 'mobile') {
     return (
-      <Stack className="popular-card-box">
+      <Stack className="featured-card-box">
         <Box
           component={'div'}
           className={'card-img'}
@@ -36,49 +30,19 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
             pushDetailHandler(property._id);
           }}
         >
-          {property && property?.propertyRank >= topPropertyRank ? (
-            <div className={'status'}>
-              <img src="/img/icons/electricity.svg" alt="" />
-              <span>top</span>
-            </div>
-          ) : (
-            ''
-          )}
-
-          <div className={'price'}>${property.propertyPrice}</div>
-        </Box>
-        <Box component={'div'} className={'info'}>
-          <strong
-            className={'title'}
-            onClick={() => {
-              pushDetailHandler(property._id);
-            }}
-          >
-            {property.propertyTitle}
-          </strong>
-          <p className={'desc'}>{property.propertyAddress}</p>
-          <div className={'options'}>
-            <div>
-              <img src="/img/icons/bed.svg" alt="" />
-              <span>{property?.propertyBeds} bed</span>
-            </div>
-            <div>
-              <img src="/img/icons/room.svg" alt="" />
-              <span>{property?.propertyRooms} rooms</span>
-            </div>
-            <div>
-              <img src="/img/icons/expand.svg" alt="" />
-              <span>{property?.propertySquare} m2</span>
-            </div>
-          </div>
-          <Divider sx={{ mt: '15px', mb: '17px' }} />
-          <div className={'bott'}>
-            <p>{property?.propertyRent ? 'rent' : 'sale'}</p>
-            <div className="view-like-box">
-              <IconButton color={'default'}>
-                <RemoveRedEyeIcon />
-              </IconButton>
-              <Typography className="view-cnt">{property?.propertyViews}</Typography>
+          <div className={'overlay'}>
+            <div className={'overlay-content'}>
+              <div className={'left-info'}>
+                <h3 className={'property-name'}>{property.propertyTitle}</h3>
+                <p className={'location'}>{property.propertyAddress}</p>
+              </div>
+              <div className={'right-info'}>
+                <p className={'price-label'}>Starting Price</p>
+                <p className={'price'}>
+                  ${property.propertyPrice}
+                  {property?.propertyRent ? '/mo' : ''}
+                </p>
+              </div>
             </div>
           </div>
         </Box>
@@ -86,7 +50,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
     );
   } else {
     return (
-      <Stack className="popular-card-box">
+      <Stack className="featured-card-box">
         <Box
           component={'div'}
           className={'card-img'}
@@ -95,49 +59,19 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
             pushDetailHandler(property._id);
           }}
         >
-          {property && property?.propertyRank >= topPropertyRank ? (
-            <div className={'status'}>
-              <img src="/img/icons/electricity.svg" alt="" />
-              <span>top</span>
-            </div>
-          ) : (
-            ''
-          )}
-
-          <div className={'price'}>${property.propertyPrice}</div>
-        </Box>
-        <Box component={'div'} className={'info'}>
-          <strong
-            className={'title'}
-            onClick={() => {
-              pushDetailHandler(property._id);
-            }}
-          >
-            {property.propertyTitle}
-          </strong>
-          <p className={'desc'}>{property.propertyAddress}</p>
-          <div className={'options'}>
-            <div>
-              <img src="/img/icons/bed.svg" alt="" />
-              <span>{property?.propertyBeds} bed</span>
-            </div>
-            <div>
-              <img src="/img/icons/room.svg" alt="" />
-              <span>{property?.propertyRooms} rooms</span>
-            </div>
-            <div>
-              <img src="/img/icons/expand.svg" alt="" />
-              <span>{property?.propertySquare} m2</span>
-            </div>
-          </div>
-          <Divider sx={{ mt: '15px', mb: '17px' }} />
-          <div className={'bott'}>
-            <p>{property?.propertyRent ? 'rent' : 'sale'}</p>
-            <div className="view-like-box">
-              <IconButton color={'default'}>
-                <RemoveRedEyeIcon />
-              </IconButton>
-              <Typography className="view-cnt">{property?.propertyViews}</Typography>
+          <div className={'overlay'}>
+            <div className={'overlay-content'}>
+              <div className={'left-info'}>
+                <h3 className={'property-name'}>{property.propertyTitle}</h3>
+                <p className={'location'}>{property.propertyAddress}</p>
+              </div>
+              <div className={'right-info'}>
+                <p className={'price-label'}>Starting Price</p>
+                <p className={'price'}>
+                  ${property.propertyPrice}
+                  {property?.propertyRent ? '/mo' : ''}
+                </p>
+              </div>
             </div>
           </div>
         </Box>
