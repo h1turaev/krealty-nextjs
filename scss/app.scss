@@ -83,6 +83,11 @@ hr {
 #pc-wrap {
   width: 100%;
   height: 100%;
+  background: #ffffff;
+  transition: background-color 0.3s ease;
+  .dark-mode & {
+    background: #ffffff;
+  }
 
   .container {
     position: relative;
