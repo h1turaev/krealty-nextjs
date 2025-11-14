@@ -2,6 +2,16 @@
 @import 'variables.scss';
 @import 'reset.scss';
 
+// Global keyframe animation for BrandMarquee component
+@keyframes marqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
 a {
   white-space: nowrap;
   text-decoration: none;
@@ -24,6 +34,8 @@ p {
 }
 body {
   font-family: $font;
+  cursor: none; // Hide default cursor
+
   &::-webkit-scrollbar {
     width: 9px;
   }
@@ -38,6 +50,20 @@ body {
 
   .MuiPopover-paper {
     box-shadow: none;
+  }
+
+  // Show default cursor on mobile
+  @media (max-width: 768px) {
+    cursor: auto;
+  }
+}
+
+// Custom cursor styles
+* {
+  cursor: none !important;
+
+  @media (max-width: 768px) {
+    cursor: auto !important;
   }
 }
 hr {
