@@ -1,11 +1,15 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Box, Stack } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
+import { userVar } from '../../../apollo/store';
+import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Property } from '../../types/property/property';
 import { PropertiesInquiry } from '../../types/property/property.input';
@@ -18,10 +22,12 @@ interface PopularPropertiesProps {
 const PopularProperties = (props: PopularPropertiesProps) => {
   const { initialInput } = props;
   const device = useDeviceDetect();
+  const user = useReactiveVar(userVar);
   const [popularProperties, setPopularProperties] = useState<Property[]>([]);
 
   /** APOLLO REQUESTS **/
-  // Simulating fetching popular properties
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
   const {
     loading: getPropertiesLoading,
     data: getPropertiesData,
@@ -35,7 +41,24 @@ const PopularProperties = (props: PopularPropertiesProps) => {
       setPopularProperties(data?.getProperties?.list);
     },
   });
+
   /** HANDLERS **/
+  const likePropertyHandler = async (user: T, id: string) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+      await likeTargetProperty({
+        variables: { input: id },
+      });
+      await getPropertiesRefetch({ input: initialInput });
+
+      await sweetTopSmallSuccessAlert('success', 800);
+    } catch (err: any) {
+      console.log('ERROR, likePropertyHandler:', err.message);
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
   if (!popularProperties) return null;
 
@@ -64,7 +87,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
               {popularProperties.map((property: Property) => {
                 return (
                   <SwiperSlide key={property._id} className={'featured-property-slide'}>
-                    <PopularPropertyCard property={property} />
+                    <PopularPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
                   </SwiperSlide>
                 );
               })}
@@ -104,7 +127,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
               {popularProperties.map((property: Property) => {
                 return (
                   <SwiperSlide key={property._id} className={'featured-property-slide'}>
-                    <PopularPropertyCard property={property} />
+                    <PopularPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
                   </SwiperSlide>
                 );
               })}

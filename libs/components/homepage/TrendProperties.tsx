@@ -96,7 +96,6 @@ const TrendProperties = (props: TrendPropertiesProps) => {
     { id: PropertyType.HOUSE, name: 'House' },
   ];
 
-  if (trendProperties) console.log('trendProperties: +++', trendProperties);
   if (!trendProperties) return null;
 
   if (device === 'mobile') {
