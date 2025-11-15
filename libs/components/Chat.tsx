@@ -1,166 +1,327 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Avatar, Box, Stack } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
-import MarkChatUnreadIcon from '@mui/icons-material/MarkChatUnread';
+import SendIcon from '@mui/icons-material/Send';
+import { Avatar, Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ScrollableFeed from 'react-scrollable-feed';
-import { useReactiveVar } from '@apollo/client';
-import { RippleBadge } from '../../scss/MaterialTheme/styled';
-import { socketVar, userVar } from '../../apollo/store';
-import { Member } from '../types/member/member';
-import { Messages, REACT_APP_API_URL } from '../config';
+import { Messages } from '../config';
+import { useDarkMode } from '../hooks/useDarkMode';
 import { sweetErrorAlert } from '../sweetAlert';
 
-interface MessagePayload {
-	event: string;
-	text: string;
-	memberData: Member | null;
+interface AIMessage {
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 const Chat = () => {
-	const chatContentRef = useRef<HTMLDivElement>(null);
-	const [messagesList, setMessagesList] = useState<MessagePayload[]>([]);
-	const [onlineUsers, setOnlineUsers] = useState<number>(0);
-	const [messageInput, setMessageInput] = useState<string>('');
-	const [open, setOpen] = useState(false);
-	const [openButton, setOpenButton] = useState(false);
-	const router = useRouter();
-	const user = useReactiveVar(userVar);
-	const socket = useReactiveVar(socketVar);
+  const chatContentRef = useRef<HTMLDivElement>(null);
+  const [aiMessages, setAiMessages] = useState<AIMessage[]>([]);
+  const [messageInput, setMessageInput] = useState<string>('');
+  const [open, setOpen] = useState(false);
+  const [openButton, setOpenButton] = useState(false);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const router = useRouter();
+  const { isDarkMode } = useDarkMode();
 
-	/** LIFECYCLES **/
-	useEffect(() => {
-		if (!socket) return;
+  /** LIFECYCLES **/
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setOpenButton(true), 100);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
-		socket.onmessage = (msg) => {
-			const data = JSON.parse(msg.data);
+  useEffect(() => {
+    setOpenButton(false);
+  }, [router.pathname]);
 
-			switch (data.event) {
-				case 'info':
-					setOnlineUsers(data.totalClients);
-					break;
-				case 'getMessage':
-					setMessagesList(data.list);
-					break;
-				case 'message':
-					setMessagesList((prev) => [...prev, data]);
-					break;
-			}
-		};
-	}, [socket]);
+  /** HANDLERS **/
+  const handleOpenChat = () => {
+    setOpen((prevState) => !prevState);
+  };
 
-	useEffect(() => {
-		const timeoutId = setTimeout(() => setOpenButton(true), 100);
-		return () => clearTimeout(timeoutId);
-	}, []);
+  const getInputMessageHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessageInput(e.target.value);
+  }, []);
 
-	useEffect(() => {
-		setOpenButton(false);
-	}, [router.pathname]);
+  const getKeyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
 
-	/** HANDLERS **/
-	const handleOpenChat = () => {
-		setOpen((prevState) => !prevState);
-	};
+  const sendMessage = async () => {
+    if (!messageInput.trim()) {
+      sweetErrorAlert(Messages.error4);
+      return;
+    }
 
-	const getInputMessageHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-		setMessageInput(e.target.value);
-	}, []);
+    // AI Chat Mode
+    const userMessage: AIMessage = {
+      role: 'user',
+      content: messageInput,
+    };
 
-	const getKeyHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter') {
-			sendMessage();
-		}
-	};
+    setAiMessages((prev) => [...prev, userMessage]);
+    setMessageInput('');
+    setIsAiLoading(true);
 
-	const sendMessage = () => {
-		if (!messageInput.trim()) {
-			sweetErrorAlert(Messages.error4);
-			return;
-		}
+    try {
+      // Limit messages sent to API (only send last 8 messages to save tokens)
+      const messagesToSend =
+        aiMessages.length > 8
+          ? [...aiMessages.slice(-8), userMessage]
+          : [...aiMessages, userMessage];
 
-		if (socket) {
-			socket.send(
-				JSON.stringify({
-					event: 'message',
-					data: messageInput,
-				}),
-			);
-			setMessageInput('');
-		}
-	};
+      const response = await fetch('/api/chat/ai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: messagesToSend,
+        }),
+      });
 
-	const getMemberImage = (memberData: Member | null): string => {
-		return memberData?.memberImage ? `${REACT_APP_API_URL}/${memberData.memberImage}` : '/img/profile/defaultUser.svg';
-	};
+      const data = await response.json();
 
-	return (
-		<Stack className="chatting">
-			{openButton && (
-				<button className="chat-button" onClick={handleOpenChat}>
-					{open ? <CloseFullscreenIcon /> : <MarkChatUnreadIcon />}
-				</button>
-			)}
+      if (!response.ok) {
+        // Show user-friendly error message from API
+        const errorMessage =
+          data.userMessage || data.message || 'Failed to get AI response. Please try again.';
 
-			<Stack className={`chat-frame ${open ? 'open' : ''}`}>
-				<Box className="chat-top" component="div">
-					<div style={{ fontFamily: 'Nunito' }}>Online Chat</div>
-					<RippleBadge style={{ margin: '-18px 0 0 21px' }} badgeContent={onlineUsers} />
-				</Box>
+        // Add error message as AI response so user can see it
+        const errorAiMessage: AIMessage = {
+          role: 'assistant',
+          content: errorMessage,
+        };
+        setAiMessages((prev) => [...prev, errorAiMessage]);
 
-				<Box className="chat-content" id="chat-content" ref={chatContentRef} component="div">
-					<ScrollableFeed>
-						<Stack className="chat-main">
-							<Box flexDirection="row" style={{ display: 'flex' }} sx={{ m: '10px 0px' }} component="div">
-								<div className="welcome">Welcome to Live chat!</div>
-							</Box>
+        // Also show alert for important errors
+        if (response.status === 429 || response.status === 401) {
+          sweetErrorAlert(errorMessage);
+        }
+        return;
+      }
 
-							{messagesList.map((message: MessagePayload, index: number) => {
-								const { text, memberData } = message;
-								const isOwnMessage = memberData?._id === user?._id;
-								const memberImage = getMemberImage(memberData);
+      const aiMessage: AIMessage = {
+        role: 'assistant',
+        content: data.message,
+      };
 
-								return isOwnMessage ? (
-									<Box
-										key={index}
-										component="div"
-										flexDirection="row"
-										style={{ display: 'flex' }}
-										alignItems="flex-end"
-										justifyContent="flex-end"
-										sx={{ m: '10px 0px' }}
-									>
-										<div className="msg-right">{text}</div>
-									</Box>
-								) : (
-									<Box key={index} flexDirection="row" style={{ display: 'flex' }} sx={{ m: '10px 0px' }} component="div">
-										<Avatar alt={memberData?.memberNick || 'User'} src={memberImage} />
-										<div className="msg-left">{text}</div>
-									</Box>
-								);
-							})}
-						</Stack>
-					</ScrollableFeed>
-				</Box>
+      setAiMessages((prev) => [...prev, aiMessage]);
+    } catch (error: any) {
+      console.error('AI chat error:', error);
+      const errorMessage = 'Network error. Please check your connection and try again.';
 
-				<Box className="chat-bott" component="div">
-					<input
-						type="text"
-						name="message"
-						className="msg-input"
-						placeholder="Type message"
-						value={messageInput}
-						onChange={getInputMessageHandler}
-						onKeyDown={getKeyHandler}
-					/>
-					<button className="send-msg-btn" onClick={sendMessage}>
-						<SendIcon style={{ color: '#fff' }} />
-					</button>
-				</Box>
-			</Stack>
-		</Stack>
-	);
+      // Add error message as AI response
+      const errorAiMessage: AIMessage = {
+        role: 'assistant',
+        content: errorMessage,
+      };
+      setAiMessages((prev) => [...prev, errorAiMessage]);
+
+      sweetErrorAlert(errorMessage);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
+
+  const SimpleRobotIcon = ({
+    size = 24,
+    color = '#ffffff',
+    bgColor = '#007AFF',
+    animated = false,
+  }: {
+    size?: number;
+    color?: string;
+    bgColor?: string;
+    animated?: boolean;
+  }) => {
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={animated ? 'animated-robot' : ''}
+        style={{ display: 'block' }}
+      >
+        {/* Robot Head - Yumaloq bosh */}
+        <rect
+          x="6"
+          y="6"
+          width="12"
+          height="12"
+          rx="3"
+          fill={bgColor}
+          stroke={color}
+          strokeWidth="1.5"
+        />
+
+        {/* Quloqlar - Ikki yonida */}
+        <rect
+          x="3"
+          y="9"
+          width="3"
+          height="6"
+          rx="1.5"
+          fill={bgColor}
+          stroke={color}
+          strokeWidth="1.5"
+        />
+        <rect
+          x="18"
+          y="9"
+          width="3"
+          height="6"
+          rx="1.5"
+          fill={bgColor}
+          stroke={color}
+          strokeWidth="1.5"
+        />
+
+        {/* Antenna - Yuqorida */}
+        <line
+          x1="12"
+          y1="6"
+          x2="12"
+          y2="3"
+          stroke={color}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <circle cx="12" cy="3" r="1.5" fill={color} />
+
+        {/* Ko'zlar - 2 ta oq nuqta */}
+        <circle cx="9.5" cy="10.5" r="1.2" fill={color} />
+        <circle cx="14.5" cy="10.5" r="1.2" fill={color} />
+      </svg>
+    );
+  };
+
+  // AI Chat Logo Component - Faqat "AI Assistant" text
+  const AIChatLogo = useMemo(() => {
+    return (
+      <Box className="ai-chat-logo" component="div">
+        <span className="ai-chat-text">AI Assistant</span>
+      </Box>
+    );
+  }, [isDarkMode]);
+
+  return (
+    <Stack className="chatting">
+      {openButton && (
+        <button
+          className={`chat-button ${open ? 'chat-button-close' : ''}`}
+          onClick={handleOpenChat}
+        >
+          {open ? (
+            <CloseFullscreenIcon style={{ fontSize: '24px', color: '#ffffff' }} />
+          ) : (
+            <Box className="chat-button-content">
+              <SimpleRobotIcon size={30} color="#ffffff" bgColor="#007AFF" animated={false} />
+              <span className="chat-button-text">AI Chat</span>
+            </Box>
+          )}
+        </button>
+      )}
+
+      <Stack className={`chat-frame ${open ? 'open' : ''}`}>
+        <Box className="chat-top" component="div">
+          {AIChatLogo}
+        </Box>
+
+        <Box className="chat-content" id="chat-content" ref={chatContentRef} component="div">
+          <ScrollableFeed>
+            <Stack className="chat-main">
+              <Box
+                flexDirection="row"
+                style={{ display: 'flex' }}
+                sx={{ m: '10px 0px' }}
+                component="div"
+              >
+                <div className="welcome">
+                  Hello! I'm your AI assistant. Ask me anything about properties or interior design!
+                </div>
+              </Box>
+
+              {aiMessages.map((message: AIMessage, index: number) => {
+                const isUser = message.role === 'user';
+
+                return isUser ? (
+                  <Box
+                    key={index}
+                    component="div"
+                    flexDirection="row"
+                    style={{ display: 'flex' }}
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                    sx={{ m: '10px 0px' }}
+                  >
+                    <div className="msg-right">{message.content}</div>
+                  </Box>
+                ) : (
+                  <Box
+                    key={index}
+                    flexDirection="row"
+                    style={{ display: 'flex' }}
+                    sx={{ m: '10px 0px' }}
+                    component="div"
+                  >
+                    <Avatar alt="AI Assistant" className="ai-avatar">
+                      <SimpleRobotIcon
+                        size={18}
+                        color="#ffffff"
+                        bgColor="#007AFF"
+                        animated={true}
+                      />
+                    </Avatar>
+                    <div className="msg-left">{message.content}</div>
+                  </Box>
+                );
+              })}
+
+              {isAiLoading && (
+                <Box
+                  flexDirection="row"
+                  style={{ display: 'flex' }}
+                  sx={{ m: '10px 0px' }}
+                  component="div"
+                >
+                  <Avatar alt="AI Assistant" className="ai-avatar">
+                    <SimpleRobotIcon size={30} color="#ffffff" bgColor="#007AFF" animated={true} />
+                  </Avatar>
+                  <div className="msg-left">
+                    <div className="typing-indicator">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </Box>
+              )}
+            </Stack>
+          </ScrollableFeed>
+        </Box>
+
+        <Box className="chat-bott" component="div">
+          <input
+            type="text"
+            name="message"
+            className="msg-input"
+            placeholder="Ask about properties or interior design..."
+            value={messageInput}
+            onChange={getInputMessageHandler}
+            onKeyDown={getKeyHandler}
+            disabled={isAiLoading}
+          />
+          <button className="send-msg-btn" onClick={sendMessage} disabled={isAiLoading}>
+            <SendIcon style={{ color: '#ffffff' }} />
+          </button>
+        </Box>
+      </Stack>
+    </Stack>
+  );
 };
 
 export default Chat;
