@@ -19,6 +19,7 @@ import { REACT_APP_API_URL } from '../config';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import { useDarkMode } from '../hooks/useDarkMode';
 import HighlandLogo from './common/HighlandLogo';
+import NotificationComponent from './Notification';
 
 const Top = () => {
   const device = useDeviceDetect();
@@ -251,7 +252,7 @@ const Top = () => {
               )}
 
               <div className={'lan-box'}>
-                {user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
+                {user?._id && <NotificationComponent />}
                 <button
                   className="btn-dark-mode"
                   onClick={toggleDarkMode}

@@ -10,8 +10,10 @@ import { getJwtToken } from '../../auth';
 import { sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert } from '../../sweetAlert';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
-import { CREATE_PROPERTY, UPDATE_PROPERTY } from '@/apollo/user/mutation';
-import { GET_PROPERTY } from '@/apollo/user/query';
+import { CREATE_PROPERTY, UPDATE_PROPERTY, CREATE_NOTIFICATION } from '@/apollo/user/mutation';
+import { GET_PROPERTY, GET_MEMBER_FOLLOWERS } from '@/apollo/user/query';
+import { NotificationInput } from '../../types/notification/notification.input';
+import { NotificationType, NotificationGroup } from '../../types/notification/notification';
 
 const AddProperty = ({ initialValues, ...props }: any) => {
   const device = useDeviceDetect();
@@ -27,7 +29,22 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
   /** APOLLO REQUESTS **/
   const [createProperty] = useMutation(CREATE_PROPERTY);
- const [updateProperty] = useMutation(UPDATE_PROPERTY);
+  const [updateProperty] = useMutation(UPDATE_PROPERTY);
+  const [createNotification] = useMutation(CREATE_NOTIFICATION);
+
+  // Query to get followers when property is created
+  const { refetch: refetchFollowers } = useQuery(GET_MEMBER_FOLLOWERS, {
+    skip: true, // Skip by default, only use refetch
+    variables: {
+      input: {
+        page: 1,
+        limit: 1000,
+        search: {
+          followingId: user?._id,
+        },
+      },
+    },
+  });
 
  const {
  loading: getPropertyLoading,
@@ -119,10 +136,8 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
       const responseImages = response.data.data.imagesUploader;
 
-      console.log('+responseImages: ', responseImages);
       setInsertPropertyData({ ...insertPropertyData, propertyImages: responseImages });
     } catch (err: any) {
-      console.log('err: ', err.message);
       await sweetMixinErrorAlert(err.message);
     }
   }
@@ -154,6 +169,54 @@ const insertPropertyHandler = useCallback(async () => {
       },
     });
 
+    const createdProperty = result.data?.createProperty;
+    if (createdProperty && user?._id) {
+      // Get all followers of the agent
+      try {
+        const followersResult = await refetchFollowers({
+          input: {
+            page: 1,
+            limit: 1000,
+            search: {
+              followingId: user._id,
+            },
+          },
+        });
+
+        const followers = followersResult?.data?.getMemberFollowers?.list || [];
+
+        // Send notifications to all followers (users and agents)
+        const notificationPromises = followers.map((follow: any) => {
+          const followerId = follow.followerId || follow.followerData?._id;
+          if (!followerId) return null;
+
+          const notificationInput: NotificationInput = {
+            notificationType: NotificationType.PROPERTY,
+            notificationGroup: NotificationGroup.PROPERTY,
+            notificationTitle: `${user.memberFullName || user.memberNick} added a new property: ${insertPropertyData.propertyTitle}`,
+            notificationDesc: `New property available: ${insertPropertyData.propertyTitle}`,
+            receiverId: followerId,
+            propertyId: createdProperty._id,
+          };
+
+          return createNotification({
+            variables: { input: notificationInput },
+          }).catch((err) => {
+            console.error('Error creating notification:', err);
+            return null;
+          });
+        });
+
+        // Also send notification to all agents (optional - if you want all agents to be notified)
+        // This can be done via a separate query to get all agents
+
+        await Promise.all(notificationPromises.filter(Boolean));
+      } catch (notificationErr: any) {
+        console.error('Error sending notifications:', notificationErr);
+        // Don't fail the property creation if notification fails
+      }
+    }
+
     await sweetMixinSuccessAlert('This property has been created successfully.');
     await router.push({
       pathname: '/mypage',
@@ -162,7 +225,7 @@ const insertPropertyHandler = useCallback(async () => {
   } catch (err: any) {
     await sweetErrorHandling(err).then();
   }
-}, [insertPropertyData]);
+}, [insertPropertyData, createProperty, createNotification, user, token, router]);
 
 const updatePropertyHandler = useCallback(async () => {
   try {
@@ -189,7 +252,6 @@ const updatePropertyHandler = useCallback(async () => {
     router.back();
   }
 
-  console.log('+insertPropertyData', insertPropertyData);
 
   if (device === 'mobile') {
     return <div>ADD NEW PROPERTY MOBILE PAGE</div>;
