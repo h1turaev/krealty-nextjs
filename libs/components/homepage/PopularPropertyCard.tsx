@@ -1,22 +1,35 @@
-import { Box, Stack } from '@mui/material';
+import { useReactiveVar } from '@apollo/client';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { userVar } from '../../../apollo/store';
 import { REACT_APP_API_URL } from '../../config';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
+import { T } from '../../types/common';
 
 interface PopularPropertyCardProps {
   property: Property;
+  likePropertyHandler?: (user: T, id: string) => void;
 }
 
 const PopularPropertyCard = (props: PopularPropertyCardProps) => {
-  const { property } = props;
+  const { property, likePropertyHandler } = props;
   const device = useDeviceDetect();
   const router = useRouter();
+  const user = useReactiveVar(userVar);
 
   /** HANDLERS **/
   const pushDetailHandler = async (propertyId: string) => {
-    console.log('propertyId:', propertyId);
     await router.push({ pathname: '/property/detail', query: { id: propertyId } });
+  };
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (user?._id && likePropertyHandler) {
+      likePropertyHandler(user, property._id);
+    }
   };
 
   if (device === 'mobile') {
@@ -59,6 +72,34 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
             pushDetailHandler(property._id);
           }}
         >
+          {/* Hover view and like icons */}
+          <Box className={'hover-icons'}>
+            <Box className={'hover-icon-item'}>
+              <Typography className={'hover-icon-text'}>viewed</Typography>
+              <Typography className={'hover-icon-count'}>{property?.propertyViews || 0}</Typography>
+            </Box>
+            <Box className={'hover-icon-item'}>
+              <IconButton
+                className={'hover-icon-button'}
+                onClick={handleLikeClick}
+                sx={{
+                  color: property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                  padding: 0,
+                  minWidth: 'auto',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                  },
+                }}
+              >
+                {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+                  <FavoriteIcon sx={{ fontSize: 16 }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ fontSize: 16 }} />
+                )}
+              </IconButton>
+              <Typography className={'hover-icon-count'}>{property?.propertyLikes || 0}</Typography>
+            </Box>
+          </Box>
           <div className={'overlay'}>
             <div className={'overlay-content'}>
               <div className={'left-info'}>

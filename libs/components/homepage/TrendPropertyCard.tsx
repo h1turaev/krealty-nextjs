@@ -1,6 +1,6 @@
 import { useReactiveVar } from '@apollo/client';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/router';
@@ -23,7 +23,6 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
 
   /** HANDLERS **/
   const pushDetailHandler = async (propertyId: string) => {
-    console.log('propertyId:', propertyId);
     await router.push({ pathname: '/property/detail', query: { id: propertyId } });
   };
 
@@ -38,6 +37,13 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
       return parts[parts.length - 1]?.trim() || property.propertyAddress;
     }
     return property.propertyLocation || 'Location';
+  };
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (user?._id) {
+      likePropertyHandler(user, property._id);
+    }
   };
 
   if (device === 'mobile') {
@@ -84,20 +90,6 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
               {property.propertyRent && property.propertyBarter && '/'}{' '}
               {property.propertyBarter ? 'Barter' : ''}
             </p>
-            <div className="view-like-box">
-              <IconButton color={'default'}>
-                <RemoveRedEyeIcon />
-              </IconButton>
-              <Typography className="view-cnt">{property?.propertyViews}</Typography>
-              <IconButton color={'default'} onClick={() => likePropertyHandler(user, property._id)}>
-                {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-                  <FavoriteIcon style={{ color: 'red' }} />
-                ) : (
-                  <FavoriteIcon />
-                )}
-              </IconButton>
-              <Typography className="view-cnt">{property?.propertyLikes}</Typography>
-            </div>
           </div>
         </Box>
       </Stack>
@@ -111,6 +103,34 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
             className={'card-img'}
             style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
           >
+            {/* Hover view and like icons */}
+            <Box className={'hover-icons'}>
+              <Box className={'hover-icon-item'}>
+                <Typography className={'hover-icon-text'}>viewed</Typography>
+                <Typography className={'hover-icon-count'}>{property?.propertyViews || 0}</Typography>
+              </Box>
+              <Box className={'hover-icon-item'}>
+                <IconButton
+                  className={'hover-icon-button'}
+                  onClick={handleLikeClick}
+                  sx={{
+                    color: property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                    padding: 0,
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                >
+                  {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+                    <FavoriteIcon sx={{ fontSize: 16 }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ fontSize: 16 }} />
+                  )}
+                </IconButton>
+                <Typography className={'hover-icon-count'}>{property?.propertyLikes || 0}</Typography>
+              </Box>
+            </Box>
             <Box className={'glass-overlay'}>
               <Box className={'overlay-content'}>
                 <Box className={'property-info'}>
@@ -136,6 +156,34 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
             className={'card-img'}
             style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
           >
+            {/* Hover view and like icons */}
+            <Box className={'hover-icons'}>
+              <Box className={'hover-icon-item'}>
+                <Typography className={'hover-icon-text'}>viewed</Typography>
+                <Typography className={'hover-icon-count'}>{property?.propertyViews || 0}</Typography>
+              </Box>
+              <Box className={'hover-icon-item'}>
+                <IconButton
+                  className={'hover-icon-button'}
+                  onClick={handleLikeClick}
+                  sx={{
+                    color: property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                    padding: 0,
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                >
+                  {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+                    <FavoriteIcon sx={{ fontSize: 16 }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ fontSize: 16 }} />
+                  )}
+                </IconButton>
+                <Typography className={'hover-icon-count'}>{property?.propertyLikes || 0}</Typography>
+              </Box>
+            </Box>
             <Box className={'glass-overlay'}>
               <Box className={'overlay-content'}>
                 <Box className={'property-info'}>
