@@ -8,7 +8,6 @@ import Advertisement from '../libs/components/homepage/Advertisement';
 import Amenities from '../libs/components/homepage/Amenities';
 import CommitmentSection from '../libs/components/homepage/CommitmentSection';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
-import Events from '../libs/components/homepage/Events';
 import PopularProperties from '../libs/components/homepage/PopularProperties';
 import TopAgents from '../libs/components/homepage/TopAgents';
 import TrendProperties from '../libs/components/homepage/TrendProperties';
@@ -103,9 +102,6 @@ const Home: NextPage = ({ initialInput }: any) => {
         </ScrollAnimation>
         <ScrollAnimation animationType="fadeIn" delay={0.1}>
           <TopAgents />
-        </ScrollAnimation>
-        <ScrollAnimation animationType="slideLeft" delay={0.2}>
-          <Events />
         </ScrollAnimation>
         <ScrollAnimation animationType="slideRight" delay={0.2}>
           <CommunityBoards />

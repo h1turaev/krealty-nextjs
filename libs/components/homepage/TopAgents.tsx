@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Stack, Box } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useMemo, useState } from 'react';
+import { Autoplay } from 'swiper';
+import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper';
-import TopAgentCard from './TopAgentCard';
+import { GET_AGENTS } from '../../../apollo/user/query';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { T } from '../../types/common';
 import { Member } from '../../types/member/member';
 import { AgentsInquiry } from '../../types/member/member.input';
-import { useQuery } from '@apollo/client';
-import { GET_AGENTS } from '../../../apollo/user/query';
-import { T } from '../../types/common';
+import TopAgentCard from './TopAgentCard';
 
 interface TopAgentsProps {
   initialInput: AgentsInquiry;
@@ -39,12 +39,20 @@ const TopAgents = (props: TopAgentsProps) => {
   });
   /** HANDLERS **/
 
+  const swiperModules = useMemo(() => {
+    const modules: any[] = [];
+    if (topAgents.length > 1) {
+      modules.push(Autoplay);
+    }
+    return modules;
+  }, [topAgents.length]);
+
   if (device === 'mobile') {
     return (
       <Stack className={'top-agents'}>
         <Stack className={'container'}>
           <Stack className={'info-box'}>
-            <span>Top Agents</span>
+            <span>[Testimonials]</span>
           </Stack>
           <Stack className={'wrapper'}>
             <Swiper
@@ -52,7 +60,13 @@ const TopAgents = (props: TopAgentsProps) => {
               slidesPerView={'auto'}
               centeredSlides={true}
               spaceBetween={29}
-              modules={[Autoplay]}
+              modules={topAgents.length > 1 ? [Autoplay] : []}
+              {...(topAgents.length > 1 && {
+                autoplay: {
+                  delay: 3000,
+                  disableOnInteraction: false,
+                },
+              })}
             >
               {topAgents.map((agent: Member) => {
                 return (
@@ -72,30 +86,23 @@ const TopAgents = (props: TopAgentsProps) => {
         <Stack className={'container'}>
           <Stack className={'info-box'}>
             <Box component={'div'} className={'left'}>
-              <span>Top Agents</span>
-              <p>Our Top Agents always ready to serve you</p>
-            </Box>
-            <Box component={'div'} className={'right'}>
-              <div className={'more-box'}>
-                <span>See All Agents</span>
-                <img src="/img/icons/rightup.svg" alt="" />
-              </div>
+              <span className={'label'}>[Testimonials]</span>
+              <span className={'title'}>Trusted by Our Community</span>
             </Box>
           </Stack>
           <Stack className={'wrapper'}>
-            <Box component={'div'} className={'switch-btn swiper-agents-prev'}>
-              <ArrowBackIosNewIcon />
-            </Box>
             <Box component={'div'} className={'card-wrapper'}>
               <Swiper
                 className={'top-agents-swiper'}
-                slidesPerView={'auto'}
-                spaceBetween={29}
-                modules={[Autoplay, Navigation, Pagination]}
-                navigation={{
-                  nextEl: '.swiper-agents-next',
-                  prevEl: '.swiper-agents-prev',
-                }}
+                slidesPerView={1}
+                spaceBetween={0}
+                loop={topAgents.length > 1}
+                {...(topAgents.length > 1 && {
+                  autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  },
+                })}
               >
                 {topAgents.map((agent: Member) => {
                   return (
@@ -105,9 +112,6 @@ const TopAgents = (props: TopAgentsProps) => {
                   );
                 })}
               </Swiper>
-            </Box>
-            <Box component={'div'} className={'switch-btn swiper-agents-next'}>
-              <ArrowBackIosNewIcon />
             </Box>
           </Stack>
         </Stack>

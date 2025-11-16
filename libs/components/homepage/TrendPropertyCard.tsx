@@ -106,15 +106,18 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
             {/* Hover view and like icons */}
             <Box className={'hover-icons'}>
               <Box className={'hover-icon-item'}>
-                <Typography className={'hover-icon-text'}>viewed</Typography>
-                <Typography className={'hover-icon-count'}>{property?.propertyViews || 0}</Typography>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyViews || 0}
+                </Typography>
+                <Typography className={'hover-icon-text'}>VIEWS</Typography>
               </Box>
               <Box className={'hover-icon-item'}>
                 <IconButton
                   className={'hover-icon-button'}
                   onClick={handleLikeClick}
                   sx={{
-                    color: property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                    color:
+                      property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
                     padding: 0,
                     minWidth: 'auto',
                     '&:hover': {
@@ -128,7 +131,9 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
                     <FavoriteBorderIcon sx={{ fontSize: 16 }} />
                   )}
                 </IconButton>
-                <Typography className={'hover-icon-count'}>{property?.propertyLikes || 0}</Typography>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyLikes || 0}
+                </Typography>
               </Box>
             </Box>
             <Box className={'glass-overlay'}>
@@ -140,7 +145,7 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
                 <Box className={'price-info'}>
                   <Typography className={'price-label'}>Starting Price</Typography>
                   <Typography className={'price-value'}>
-                    ${formatPrice(property.propertyPrice)}/mo
+                    ${formatPrice(property.propertyPrice)}
                   </Typography>
                 </Box>
               </Box>
@@ -159,15 +164,18 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
             {/* Hover view and like icons */}
             <Box className={'hover-icons'}>
               <Box className={'hover-icon-item'}>
-                <Typography className={'hover-icon-text'}>viewed</Typography>
-                <Typography className={'hover-icon-count'}>{property?.propertyViews || 0}</Typography>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyViews || 0}
+                </Typography>
+                <Typography className={'hover-icon-text'}>VIEWS</Typography>
               </Box>
               <Box className={'hover-icon-item'}>
                 <IconButton
                   className={'hover-icon-button'}
                   onClick={handleLikeClick}
                   sx={{
-                    color: property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                    color:
+                      property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
                     padding: 0,
                     minWidth: 'auto',
                     '&:hover': {
@@ -181,7 +189,9 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
                     <FavoriteBorderIcon sx={{ fontSize: 16 }} />
                   )}
                 </IconButton>
-                <Typography className={'hover-icon-count'}>{property?.propertyLikes || 0}</Typography>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyLikes || 0}
+                </Typography>
               </Box>
             </Box>
             <Box className={'glass-overlay'}>

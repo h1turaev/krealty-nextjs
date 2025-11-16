@@ -6,8 +6,8 @@ import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 import { REACT_APP_API_URL } from '../../config';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Property } from '../../types/property/property';
 import { T } from '../../types/common';
+import { Property } from '../../types/property/property';
 
 interface PopularPropertyCardProps {
   property: Property;
@@ -75,15 +75,16 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
           {/* Hover view and like icons */}
           <Box className={'hover-icons'}>
             <Box className={'hover-icon-item'}>
-              <Typography className={'hover-icon-text'}>viewed</Typography>
               <Typography className={'hover-icon-count'}>{property?.propertyViews || 0}</Typography>
+              <Typography className={'hover-icon-text'}>Views</Typography>
             </Box>
             <Box className={'hover-icon-item'}>
               <IconButton
                 className={'hover-icon-button'}
                 onClick={handleLikeClick}
                 sx={{
-                  color: property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                  color:
+                    property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
                   padding: 0,
                   minWidth: 'auto',
                   '&:hover': {
