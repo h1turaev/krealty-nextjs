@@ -10,24 +10,16 @@ import CommunityCard from './CommunityCard';
 
 const CommunityBoards = () => {
   const device = useDeviceDetect();
-  const [searchCommunity, setSearchCommunity] = useState({
-    page: 1,
-    sort: 'createdAt',
-    direction: 'DESC',
-  });
   const [blogArticles, setBlogArticles] = useState<BoardArticle[]>([]);
 
   /** APOLLO REQUESTS **/
-  const {
-    loading: getBlogArticlesLoading,
-    data: getBlogArticlesData,
-    error: getBlogArticlesError,
-    refetch: getBlogArticlesRefetch,
-  } = useQuery(GET_BOARD_ARTICLES, {
+  useQuery(GET_BOARD_ARTICLES, {
     fetchPolicy: 'network-only',
     variables: {
       input: {
-        ...searchCommunity,
+        page: 1,
+        sort: 'createdAt',
+        direction: 'DESC',
         limit: 2,
         search: {},
       },

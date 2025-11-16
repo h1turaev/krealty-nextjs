@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { Box, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Autoplay } from 'swiper';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -19,17 +18,10 @@ interface TopAgentsProps {
 const TopAgents = (props: TopAgentsProps) => {
   const { initialInput } = props;
   const device = useDeviceDetect();
-  const router = useRouter();
   const [topAgents, setTopAgents] = useState<Member[]>([]);
 
   /** APOLLO REQUESTS **/
-  // Simulating fetching top agents
-  const {
-    loading: getAgentsLoading,
-    data: getAgentsData,
-    error: getAgentsError,
-    refetch: getAgentsRefetch,
-  } = useQuery(GET_AGENTS, {
+  useQuery(GET_AGENTS, {
     fetchPolicy: 'cache-and-network',
     variables: { input: initialInput },
     notifyOnNetworkStatusChange: true,
@@ -37,15 +29,6 @@ const TopAgents = (props: TopAgentsProps) => {
       setTopAgents(data?.getAgents?.list);
     },
   });
-  /** HANDLERS **/
-
-  const swiperModules = useMemo(() => {
-    const modules: any[] = [];
-    if (topAgents.length > 1) {
-      modules.push(Autoplay);
-    }
-    return modules;
-  }, [topAgents.length]);
 
   if (device === 'mobile') {
     return (
@@ -71,7 +54,7 @@ const TopAgents = (props: TopAgentsProps) => {
               {topAgents.map((agent: Member) => {
                 return (
                   <SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-                    <TopAgentCard agent={agent} key={agent?.memberNick} />
+                    <TopAgentCard agent={agent} />
                   </SwiperSlide>
                 );
               })}
@@ -107,7 +90,7 @@ const TopAgents = (props: TopAgentsProps) => {
                 {topAgents.map((agent: Member) => {
                   return (
                     <SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-                      <TopAgentCard agent={agent} key={agent?.memberNick} />
+                      <TopAgentCard agent={agent} />
                     </SwiperSlide>
                   );
                 })}

@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { Box, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GET_COMMENTS, GET_PROPERTIES } from '../../../apollo/user/query';
 import { REACT_APP_API_URL } from '../../config';
@@ -20,7 +19,6 @@ interface TopAgentProps {
 const TopAgentCard = (props: TopAgentProps) => {
   const { agent } = props;
   const device = useDeviceDetect();
-  const router = useRouter();
   const [mostLikedProperty, setMostLikedProperty] = useState<Property | null>(null);
   const [propertyComments, setPropertyComments] = useState<Comment[]>([]);
   const [isHovering, setIsHovering] = useState(false);
@@ -40,7 +38,7 @@ const TopAgentCard = (props: TopAgentProps) => {
     },
   };
 
-  const { loading: getPropertiesLoading, data: getPropertiesData } = useQuery(GET_PROPERTIES, {
+  useQuery(GET_PROPERTIES, {
     fetchPolicy: 'cache-and-network',
     variables: { input: propertiesInquiry },
     skip: !agent?._id,
@@ -57,7 +55,7 @@ const TopAgentCard = (props: TopAgentProps) => {
   });
 
   // Fetch comments for the most liked property
-  const { loading: getCommentsLoading, data: getCommentsData } = useQuery(GET_COMMENTS, {
+  useQuery(GET_COMMENTS, {
     fetchPolicy: 'cache-and-network',
     variables: {
       input: {
@@ -81,8 +79,6 @@ const TopAgentCard = (props: TopAgentProps) => {
   const propertyImage = mostLikedProperty?.propertyImages?.[0]
     ? `${REACT_APP_API_URL}/${mostLikedProperty.propertyImages[0]}`
     : '/img/property/defaultProperty.jpg';
-
-  /** HANDLERS **/
 
   if (device === 'mobile') {
     return (
