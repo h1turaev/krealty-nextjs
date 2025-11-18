@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { userVar } from '../../../apollo/store';
 import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
-import { userVar } from '../../../apollo/store';
 import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
@@ -87,7 +87,10 @@ const PopularProperties = (props: PopularPropertiesProps) => {
               {popularProperties.map((property: Property) => {
                 return (
                   <SwiperSlide key={property._id} className={'featured-property-slide'}>
-                    <PopularPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
+                    <PopularPropertyCard
+                      property={property}
+                      likePropertyHandler={likePropertyHandler}
+                    />
                   </SwiperSlide>
                 );
               })}
@@ -127,7 +130,10 @@ const PopularProperties = (props: PopularPropertiesProps) => {
               {popularProperties.map((property: Property) => {
                 return (
                   <SwiperSlide key={property._id} className={'featured-property-slide'}>
-                    <PopularPropertyCard property={property} likePropertyHandler={likePropertyHandler} />
+                    <PopularPropertyCard
+                      property={property}
+                      likePropertyHandler={likePropertyHandler}
+                    />
                   </SwiperSlide>
                 );
               })}

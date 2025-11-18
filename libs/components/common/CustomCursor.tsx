@@ -68,14 +68,14 @@ const CustomCursor = () => {
   }
 
   return (
-    <div
-      ref={trailingRef}
-      className={styles.cursorTrail}
-      style={{
-        left: `${trailingPositionRef.current.x}px`,
-        top: `${trailingPositionRef.current.y}px`,
-      }}
-    />
+      <div
+        ref={trailingRef}
+        className={styles.cursorTrail}
+        style={{
+          left: `${trailingPositionRef.current.x}px`,
+          top: `${trailingPositionRef.current.y}px`,
+        }}
+      />
   );
 };
 

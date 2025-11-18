@@ -29,7 +29,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
   /** APOLLO REQUESTS **/
   const [createProperty] = useMutation(CREATE_PROPERTY);
-  const [updateProperty] = useMutation(UPDATE_PROPERTY);
+ const [updateProperty] = useMutation(UPDATE_PROPERTY);
   const [createNotification] = useMutation(CREATE_NOTIFICATION);
 
   // Query to get followers when property is created

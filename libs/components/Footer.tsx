@@ -93,6 +93,25 @@ const Footer = () => {
   } else {
     return (
       <Stack className={'footer-container'}>
+        {/* Stacked Images Section */}
+        <Stack className={'stacked-images-section'}>
+          <Stack className={'section-header'}>
+            <span className={'label'}>[Featured Spaces]</span>
+            <span className={'title'}>Contact Informations</span>
+          </Stack>
+          <Box className={'cards-container'}>
+            <Box className={'image-card'}>
+              <img src="/img/interior/bathroom.jpg" alt="Luxury Interior" />
+            </Box>
+            <Box className={'text-card'}>
+              <h2>Let's find your next property together.</h2>
+              <Link href={'/agent'} className={'buy-button'}>
+                Contact Us
+              </Link>
+            </Box>
+          </Box>
+        </Stack>
+
         <Stack className={'main'}>
           <Stack className={'left'}>
             <Box component={'div'} className={'footer-box'}>

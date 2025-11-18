@@ -1,0 +1,52 @@
+.property-search-filter {
+  width: 100%;
+  padding: 24px 0;
+  background: transparent;
+  border-radius: 12px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .filter-top-section {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+
+    .search-button {
+      height: 48px;
+      padding: 0 36px;
+      background: #181a20;
+      color: #ffffff;
+      border-radius: 8px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      min-width: 120px;
+      flex-shrink: 0;
+      &:hover {
+        background: #000000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+      .dark-mode & {
+        background: #2a2d35;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        &:hover {
+          background: #1e2128;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
+  }
+}

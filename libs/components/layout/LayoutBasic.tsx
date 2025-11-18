@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import Head from 'next/head';
-import Top from '../Top';
-import Footer from '../Footer';
-import { Stack } from '@mui/material';
-import { getJwtToken, updateUserInfo } from '../../auth';
-import Chat from '../Chat';
 import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
+import { Stack } from '@mui/material';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { userVar } from '../../../apollo/store';
+import { getJwtToken, updateUserInfo } from '../../auth';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import Chat from '../Chat';
+import Footer from '../Footer';
+import Top from '../Top';
 
 const withLayoutBasic = (Component: any) => {
   return (props: any) => {
@@ -24,61 +24,77 @@ const withLayoutBasic = (Component: any) => {
 
     const memoizedValues = useMemo(() => {
       let title = '',
+        titleHighlight = '',
         desc = '',
         bgImage = '';
 
       switch (router.pathname) {
         case '/property':
-          title = 'Property Search';
-          desc = 'We are glad to see you again!';
-          bgImage = '/img/banner/properties.png';
+          title = 'Explore Our';
+          titleHighlight = 'Properties';
+          desc = 'PROPERTIES';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/agent':
-          title = 'Agents';
-          desc = 'Home / For Rent';
-          bgImage = '/img/banner/agents.webp';
+          title = 'Meet Our';
+          titleHighlight = 'Agents';
+          desc = 'AGENTS';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/agent/detail':
-          title = 'Agent Page';
-          desc = 'Home / For Rent';
-          bgImage = '/img/banner/header2.svg';
+          title = 'Agent';
+          titleHighlight = 'Profile';
+          desc = 'AGENT';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/mypage':
-          title = 'my page';
-          desc = 'Home / For Rent';
-          bgImage = '/img/banner/header1.svg';
+          title = 'My';
+          titleHighlight = 'Page';
+          desc = 'MY PAGE';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/community':
           title = 'Community';
-          desc = 'Home / For Rent';
-          bgImage = '/img/banner/header2.svg';
+          titleHighlight = 'Boards';
+          desc = 'COMMUNITY';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/community/detail':
-          title = 'Community Detail';
-          desc = 'Home / For Rent';
-          bgImage = '/img/banner/header2.svg';
+          title = 'Community';
+          titleHighlight = 'Detail';
+          desc = 'COMMUNITY';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/cs':
-          title = 'CS';
-          desc = 'We are glad to see you again!';
-          bgImage = '/img/banner/header2.svg';
+          title = 'Customer';
+          titleHighlight = 'Service';
+          desc = 'CS';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/account/join':
-          title = 'Login/Signup';
-          desc = 'Authentication Process';
-          bgImage = '/img/banner/header2.svg';
+          title = 'Login /';
+          titleHighlight = 'Signup';
+          desc = 'AUTHENTICATION';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           setAuthHeader(true);
           break;
         case '/member':
-          title = 'Member Page';
-          desc = 'Home / For Rent';
-          bgImage = '/img/banner/header1.svg';
+          title = 'Member';
+          titleHighlight = 'Page';
+          desc = 'MEMBER';
+          bgImage = '/img/banner/basiclaybanner.jpg';
+          break;
+        case '/about':
+          title = 'About';
+          titleHighlight = 'Us';
+          desc = 'ABOUT';
+          bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         default:
           break;
       }
 
-      return { title, desc, bgImage };
+      return { title, titleHighlight, desc, bgImage };
     }, [router.pathname]);
 
     /** LIFECYCLES **/
@@ -132,8 +148,11 @@ const withLayoutBasic = (Component: any) => {
               }}
             >
               <Stack className={'container'}>
-                <strong>{t(memoizedValues.title)}</strong>
-                <span>{t(memoizedValues.desc)}</span>
+                <div className="header-badge">[ {memoizedValues.desc} ]</div>
+                <div className="header-title">
+                  {memoizedValues.title}{' '}
+                  <span className="header-title-highlight">{memoizedValues.titleHighlight}</span>
+                </div>
               </Stack>
             </Stack>
 

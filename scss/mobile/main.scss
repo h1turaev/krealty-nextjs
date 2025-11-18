@@ -480,7 +480,7 @@
               bottom: 0;
               background: linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.7) 100%);
               border-radius: 16px;
-            }
+              }
             .overlay {
               position: absolute;
               bottom: 0;
@@ -494,61 +494,61 @@
                 justify-content: space-between;
                 align-items: flex-end;
                 .left-info {
-                  display: flex;
-                  flex-direction: column;
+            display: flex;
+            flex-direction: column;
                   gap: 6px;
                   flex: 1;
                   .property-name {
                     color: #ffffff;
-                    font-family: $font;
+              font-family: $font;
                     font-size: 18px;
-                    font-style: normal;
+              font-style: normal;
                     font-weight: 700;
                     line-height: 1.3;
                     margin: 0;
-                    text-transform: capitalize;
-                  }
+              text-transform: capitalize;
+            }
                   .location {
                     color: rgba(255, 255, 255, 0.7);
-                    font-family: $font;
+              font-family: $font;
                     font-size: 12px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                     margin: 0;
                   }
                 }
                 .right-info {
-                  display: flex;
+                display: flex;
                   flex-direction: column;
                   align-items: flex-end;
                   gap: 4px;
                   .price-label {
                     color: rgba(255, 255, 255, 0.7);
-                    font-family: $font;
+                  font-family: $font;
                     font-size: 11px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: normal;
                     margin: 0;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                   }
                   .price {
                     color: #ffffff;
-                    font-family: $font;
+                font-family: $font;
                     font-size: 20px;
-                    font-style: normal;
+                font-style: normal;
                     font-weight: 700;
-                    line-height: normal;
+                line-height: normal;
                     margin: 0;
-                  }
                 }
               }
             }
           }
+        }
         }
       }
     }

@@ -32,96 +32,37 @@ const PropertyCard = (props: PropertyCardType) => {
   } else {
     return (
       <Stack className="card-config">
-        <Stack className="top">
-          <Link
-            href={{
-              pathname: '/property/detail',
-              query: { id: property?._id },
-            }}
-          >
-            <img src={imagePath} alt="" />
-          </Link>
-          {property && property?.propertyRank > topPropertyRank && (
-            <Box component={'div'} className={'top-badge'}>
-              <img src="/img/icons/electricity.svg" alt="" />
-              <Typography>TOP</Typography>
-            </Box>
-          )}
-          <Box component={'div'} className={'price-box'}>
-            <Typography>${formatterStr(property?.propertyPrice)}</Typography>
-          </Box>
-        </Stack>
-        <Stack className="bottom">
-          <Stack className="name-address">
-            <Stack className="name">
-              <Link
-                href={{
-                  pathname: '/property/detail',
-                  query: { id: property?._id },
-                }}
-              >
-                <Typography>{property.propertyTitle}</Typography>
-              </Link>
-            </Stack>
-            <Stack className="address">
-              <Typography>
-                {property.propertyAddress}, {property.propertyLocation}
-              </Typography>
-            </Stack>
-          </Stack>
-          <Stack className="options">
-            <Stack className="option">
-              <img src="/img/icons/bed.svg" alt="" />{' '}
-              <Typography>{property.propertyBeds} bed</Typography>
-            </Stack>
-            <Stack className="option">
-              <img src="/img/icons/room.svg" alt="" />{' '}
-              <Typography>{property.propertyRooms} room</Typography>
-            </Stack>
-            <Stack className="option">
-              <img src="/img/icons/expand.svg" alt="" />{' '}
-              <Typography>{property.propertySquare} m2</Typography>
-            </Stack>
-          </Stack>
-          <Stack className="divider"></Stack>
-          <Stack className="type-buttons">
-            <Stack className="type">
-              <Typography
-                sx={{ fontWeight: 500, fontSize: '13px' }}
-                className={property.propertyRent ? '' : 'disabled-type'}
-              >
-                Rent
-              </Typography>
-              <Typography
-                sx={{ fontWeight: 500, fontSize: '13px' }}
-                className={property.propertyBarter ? '' : 'disabled-type'}
-              >
-                Barter
-              </Typography>
-            </Stack>
-            {!recentlyVisited && (
-              <Stack className="buttons">
-                <IconButton color={'default'}>
-                  <RemoveRedEyeIcon />
-                </IconButton>
-                <Typography className="view-cnt">{property?.propertyViews}</Typography>
-                <IconButton
-                  color={'default'}
-                  onClick={() => likePropertyHandler(user, property?._id)}
-                >
-                  {myFavorites ? (
-                    <FavoriteIcon color="primary" />
-                  ) : property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-                    <FavoriteIcon color="primary" />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
-                </IconButton>
-                <Typography className="view-cnt">{property?.propertyLikes}</Typography>
-              </Stack>
+        <Link
+          href={{
+            pathname: '/property/detail',
+            query: { id: property?._id },
+          }}
+          className="card-link"
+        >
+          <Stack className="card-image-container">
+            <img src={imagePath} alt={property.propertyTitle} className="card-image" />
+            {property && property?.propertyRank > topPropertyRank && (
+              <Box component={'div'} className={'top-badge'}>
+                <img src="/img/icons/electricity.svg" alt="" />
+                <Typography>TOP</Typography>
+              </Box>
             )}
+            <Stack className="card-overlay">
+              <Stack className="card-overlay-left">
+                <Typography className="card-title">{property.propertyTitle}</Typography>
+                <Typography className="card-location">
+                  {property.propertyLocation.toUpperCase()}
+                </Typography>
+              </Stack>
+              <Stack className="card-overlay-right">
+                <Typography className="card-price-label">Starting Price</Typography>
+                <Typography className="card-price-value">
+                  ${formatterStr(property?.propertyPrice)}
+                </Typography>
+              </Stack>
+            </Stack>
           </Stack>
-        </Stack>
+        </Link>
       </Stack>
     );
   }

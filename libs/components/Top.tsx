@@ -184,9 +184,7 @@ const Top = () => {
               <Link href={'/'}>
                 <div>{t('Home')}</div>
               </Link>
-              <Link href={'/about'}>
-                <div>{t('About')}</div>
-              </Link>
+
               <Link href={'/property'}>
                 <div>{t('Properties')}</div>
               </Link>
@@ -206,6 +204,9 @@ const Top = () => {
               )}
               <Link href={'/cs'}>
                 <div> {t('CS')} </div>
+              </Link>
+              <Link href={'/about'}>
+                <div>{t('About')}</div>
               </Link>
             </Box>
             <Box component={'div'} className={'user-box'}>
