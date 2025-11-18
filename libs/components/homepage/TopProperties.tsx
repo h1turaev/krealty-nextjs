@@ -74,6 +74,10 @@ const TopProperties = (props: TopPropertiesProps) => {
               centeredSlides={true}
               spaceBetween={15}
               modules={[Autoplay]}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
             >
               {topProperties.map((property: Property) => {
                 return (
@@ -113,6 +117,10 @@ const TopProperties = (props: TopPropertiesProps) => {
               slidesPerView={'auto'}
               spaceBetween={15}
               modules={[Autoplay, Navigation, Pagination]}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
               navigation={{
                 nextEl: '.swiper-top-next',
                 prevEl: '.swiper-top-prev',

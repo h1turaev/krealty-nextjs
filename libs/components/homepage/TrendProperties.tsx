@@ -128,6 +128,10 @@ const TrendProperties = (props: TrendPropertiesProps) => {
                 centeredSlides={true}
                 spaceBetween={15}
                 modules={[Autoplay]}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
               >
                 {trendProperties.map((property: Property) => {
                   return (

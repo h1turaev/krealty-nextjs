@@ -13,7 +13,7 @@ const darkMenuProps = {
       '& .MuiMenuItem-root': {
         color: 'rgba(255, 255, 255, 0.9)',
         '&:hover': {
-          backgroundColor: '#252830',
+          backgroundColor: '#black',
         },
         '&.Mui-selected': {
           backgroundColor: 'transparent',
@@ -61,6 +61,7 @@ const PropertySearchFilter: React.FC<PropertySearchFilterProps> = ({
   onSearch,
 }) => {
   const { isDarkMode } = useDarkMode();
+  const [isMounted, setIsMounted] = React.useState(false);
 
   // Initialize states with empty values - will be synced via useEffect
   const [minPrice, setMinPrice] = useState<string>('');
@@ -68,6 +69,11 @@ const PropertySearchFilter: React.FC<PropertySearchFilterProps> = ({
   const [city, setCity] = useState<string>('');
   const [type, setType] = useState<string>('');
   const [room, setRoom] = useState<string>('');
+
+  // Ensure component is mounted before applying dark mode styles
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Sync filter inputs with searchFilter prop changes
   React.useEffect(() => {
@@ -166,60 +172,77 @@ const PropertySearchFilter: React.FC<PropertySearchFilterProps> = ({
     onSearch(newFilter);
   };
 
-  const commonTextFieldStyles = {
-    flex: 1,
-    minWidth: 120,
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '8px',
-      backgroundColor: isDarkMode ? '#1e2128' : '#f5f5f5',
-      height: '48px',
-      border: isDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
-      transition: 'border-color 0.3s ease',
-      '& fieldset': {
-        border: 'none',
-      },
-      '&:hover': {
-        backgroundColor: isDarkMode ? '#252830' : '#f5f5f5',
-        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #d0d0d0',
-      },
-      '&.Mui-focused': {
-        backgroundColor: isDarkMode ? '#1e2128' : '#f5f5f5',
-        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #e0e0e0',
-      },
-    },
-    '& .MuiInputBase-input': {
-      color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#333',
-      fontSize: '14px',
-      transition: 'color 0.3s ease',
-      '&::placeholder': {
-        color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#666',
-        opacity: 1,
-      },
-    },
-  };
+  // Memoize styles to ensure they update when isDarkMode changes
+  // Always use isDarkMode value, but check isMounted to prevent hydration issues
+  const commonTextFieldStyles = React.useMemo(() => {
+    // During SSR or before mount, use light mode styles
+    const shouldUseDarkMode = isMounted && isDarkMode;
 
-  const commonFormControlStyles = {
-    flex: 1,
-    minWidth: 120,
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '8px',
-      backgroundColor: isDarkMode ? '#1e2128' : '#f5f5f5',
-      height: '48px',
-      border: isDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
-      transition: 'border-color 0.3s ease',
-      '& fieldset': {
-        border: 'none',
+    return {
+      flex: 1,
+      minWidth: 120,
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '8px',
+        backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
+        height: '48px',
+        border: shouldUseDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
+        transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease',
+        color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#ffffff',
+        '& fieldset': {
+          border: 'none',
+        },
+        '&:hover': {
+          backgroundColor: shouldUseDarkMode ? '#252830' : '#ffffff',
+          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #d0d0d0',
+        },
+        '&.Mui-focused': {
+          backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
+          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #e0e0e0',
+        },
+        '& .MuiInputBase-input': {
+          color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9) !important' : '#181a20 !important',
+          fontSize: '14px',
+          transition: 'color 0.3s ease',
+          '&::placeholder': {
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.5) !important' : '#666 !important',
+            opacity: 1,
+          },
+        },
       },
-      '&:hover': {
-        backgroundColor: isDarkMode ? '#252830' : '#f5f5f5',
-        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #d0d0d0',
+    };
+  }, [isDarkMode, isMounted]);
+
+  const commonFormControlStyles = React.useMemo(() => {
+    // During SSR or before mount, use light mode styles
+    const shouldUseDarkMode = isMounted && isDarkMode;
+
+    return {
+      flex: 1,
+      minWidth: 120,
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '8px',
+        backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
+        height: '48px',
+        border: shouldUseDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
+        transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease',
+        color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#ffffff',
+        '& fieldset': {
+          border: 'none',
+        },
+        '&:hover': {
+          backgroundColor: shouldUseDarkMode ? '#252830' : '#ffffff',
+          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #d0d0d0',
+        },
+        '&.Mui-focused': {
+          backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
+          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #e0e0e0',
+        },
+        '& .MuiSelect-select': {
+          color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9) !important' : '#181a20 !important',
+        },
       },
-      '&.Mui-focused': {
-        backgroundColor: isDarkMode ? '#1e2128' : '#f5f5f5',
-        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #e0e0e0',
-      },
-    },
-  };
+    };
+  }, [isDarkMode, isMounted]);
 
   return (
     <Box className="property-search-filter">
@@ -247,37 +270,53 @@ const PropertySearchFilter: React.FC<PropertySearchFilterProps> = ({
             displayEmpty
             onChange={(e) => setType(e.target.value)}
             sx={{
-              color: isDarkMode ? '#fff' : '#333',
+              color: isMounted && isDarkMode ? '#fff' : '#181a20',
               fontSize: '14px',
               transition: 'color 0.3s ease',
               '& .MuiSelect-icon': {
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666',
+                color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666',
                 transition: 'color 0.3s ease',
               },
             }}
             renderValue={(selected) => {
               if (!selected) {
                 return (
-                  <span style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#666' }}>
+                  <span
+                    style={{ color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#666' }}
+                  >
                     Type
                   </span>
                 );
               }
               const capitalizeFirst = (str: string) =>
                 str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-              return capitalizeFirst(selected);
+              return (
+                <span
+                  style={{
+                    color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                  }}
+                >
+                  {capitalizeFirst(selected)}
+                </span>
+              );
             }}
-            MenuProps={isDarkMode ? darkMenuProps : lightMenuProps}
+            MenuProps={isMounted && isDarkMode ? darkMenuProps : lightMenuProps}
           >
             <MenuItem value="">
-              <span style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666' }}>Any</span>
+              <span
+                style={{ color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666' }}
+              >
+                Any
+              </span>
             </MenuItem>
             {Object.values(PropertyType).map((propertyType) => {
               const capitalizeFirst = (str: string) =>
                 str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
               return (
                 <MenuItem key={propertyType} value={propertyType}>
-                  <span style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666' }}>
+                  <span
+                    style={{ color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666' }}
+                  >
                     {capitalizeFirst(propertyType)}
                   </span>
                 </MenuItem>
@@ -360,7 +399,7 @@ const PropertySearchFilter: React.FC<PropertySearchFilterProps> = ({
             },
           }}
         />
-        <Button className="search-button" variant="contained" onClick={handleSearch}>
+        <Button className="search-button" variant="text" onClick={handleSearch}>
           Search
         </Button>
       </Stack>

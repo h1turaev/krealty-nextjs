@@ -80,6 +80,7 @@ const TopAgents = (props: TopAgentsProps) => {
                 slidesPerView={1}
                 spaceBetween={0}
                 loop={topAgents.length > 1}
+                modules={topAgents.length > 1 ? [Autoplay] : []}
                 {...(topAgents.length > 1 && {
                   autoplay: {
                     delay: 3000,

@@ -243,8 +243,8 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
                   })
                 )}
               </Stack>
-              <Stack className="pagination-config">
-                {properties.length !== 0 && (
+              {properties.length !== 0 && (
+                <Stack className="pagination-config">
                   <Stack className="pagination-box">
                     <Pagination
                       page={currentPage}
@@ -254,16 +254,13 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
                       color="primary"
                     />
                   </Stack>
-                )}
-
-                {properties.length !== 0 && (
                   <Stack className="total-result">
                     <Typography>
-                      Total {total} propert{total > 1 ? 'ies' : 'y'} available
+                      [ Total propert{total > 1 ? 'ies' : 'y'}: {total}  ]
                     </Typography>
                   </Stack>
-                )}
-              </Stack>
+                </Stack>
+              )}
             </Stack>
           </Stack>
         </div>

@@ -1,8 +1,7 @@
-import React from 'react';
+import { Box, Stack } from '@mui/material';
 import { NextPage } from 'next';
-import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import { Stack, Box } from '@mui/material';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 
 const About: NextPage = () => {
   const device = useDeviceDetect();
@@ -50,7 +49,7 @@ const About: NextPage = () => {
         <Stack className={'statistics'}>
           <Stack className={'container'}>
             <Stack className={'banner'}>
-              <img src="/img/banner/header1.svg" alt="" />
+              <img src="/img/banner/basiclaybanner.jpg" alt="" />
             </Stack>
             <Stack className={'info'}>
               <Box component={'div'}>
@@ -80,7 +79,7 @@ const About: NextPage = () => {
           </Stack>
         </Stack>
         <Stack className={'options'}>
-          <img src="/img/banner/aboutBanner.svg" alt="" className={'about-banner'} />
+          <img src="/img/banner/basiclaybanner.jpg" alt="" className={'about-banner'} />
           <Stack className={'container'}>
             <strong>Let’s find the right selling option for you</strong>
             <Stack>
@@ -120,11 +119,12 @@ const About: NextPage = () => {
           <Stack className={'container'}>
             <span>Trusted bu the world's best</span>
             <Stack className={'wrap'}>
-              <img src="/img/icons/brands/amazon.svg" alt="" />
+              {/* Brand icons removed - files don't exist */}
+              {/* <img src="/img/icons/brands/amazon.svg" alt="" />
               <img src="/img/icons/brands/amd.svg" alt="" />
               <img src="/img/icons/brands/cisco.svg" alt="" />
               <img src="/img/icons/brands/dropcam.svg" alt="" />
-              <img src="/img/icons/brands/spotify.svg" alt="" />
+              <img src="/img/icons/brands/spotify.svg" alt="" /> */}
             </Stack>
           </Stack>
         </Stack>
