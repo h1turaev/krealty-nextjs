@@ -67,32 +67,31 @@ body::-webkit-scrollbar {
         overflow: hidden;
         border-radius: 0;
         // Glass effect for navbar - transparent
-        background: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(60px) saturate(250%);
-        -webkit-backdrop-filter: blur(60px) saturate(250%);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
         &.transparent {
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(60px) saturate(250%);
-          -webkit-backdrop-filter: blur(60px) saturate(250%);
-          border: 1px solid rgba(255, 255, 255, 0.25);
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         // Dark mode styles
         .dark-mode & {
           background: rgba(30, 33, 40, 0.5);
           backdrop-filter: blur(60px) saturate(250%);
           -webkit-backdrop-filter: blur(60px) saturate(250%);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           &.transparent {
             background: rgba(30, 33, 40, 0.6);
             backdrop-filter: blur(60px) saturate(250%);
             -webkit-backdrop-filter: blur(60px) saturate(250%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           }
         }
         .container {
@@ -291,49 +290,56 @@ body::-webkit-scrollbar {
               background: transparent;
               border: none;
               cursor: pointer;
-              transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+              transition: background-color 0.2s ease, color 0.2s ease;
               color: #504f4c;
               padding: 0;
               &:hover {
                 background: rgba(0, 0, 0, 0.05);
-                transform: scale(1.05);
                 .dark-mode & {
                   background: rgba(255, 255, 255, 0.1);
                 }
               }
               &:active {
-                transform: scale(0.95);
+                background: rgba(0, 0, 0, 0.1);
+                .dark-mode & {
+                  background: rgba(255, 255, 255, 0.15);
+                }
               }
               svg {
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: color 0.2s ease;
               }
               .dark-mode & {
                 color: rgba(255, 255, 255, 0.9);
+                &:hover {
+                  color: rgba(255, 255, 255, 1);
+                }
               }
             }
             .btn-lang {
               border-radius: 6px;
               background: transparent;
               padding: 6px 12px;
-              transition: all 0.2s ease;
+              transition: background-color 0.2s ease, color 0.2s ease;
+              color: #504f4c;
               &:hover {
                 background: rgba(0, 0, 0, 0.05);
+                .dark-mode & {
+                  background: rgba(255, 255, 255, 0.1);
+                }
               }
               .lang-text {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
                 font-size: 11px;
                 font-weight: 500;
                 letter-spacing: 0.1em;
-                color: #504f4c;
+                color: inherit;
                 text-transform: uppercase;
-                transition: color 0.3s ease;
-                .dark-mode & {
-                  color: rgba(255, 255, 255, 0.8);
-                }
+                transition: color 0.2s ease;
               }
               .dark-mode & {
+                color: rgba(255, 255, 255, 0.8);
                 &:hover {
-                  background: rgba(255, 255, 255, 0.1);
+                  color: rgba(255, 255, 255, 1);
                 }
               }
             }
@@ -1653,39 +1659,32 @@ body::-webkit-scrollbar {
           width: 100%;
 
           .image-card {
-            width: 55%;
-            height: 480px;
+            width: 50%;
+            height: 320px;
             border-radius: 32px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-            background: #d4c5b0;
+            background: transparent;
 
             img {
               width: 100%;
               height: 100%;
               object-fit: cover;
             }
-
-            .dark-mode & {
-              box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            }
           }
 
           .text-card {
-            width: 45%;
-            height: 480px;
-            padding: 80px 60px;
+            width: 50%;
+            height: 320px;
+            padding: 50px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             border-radius: 32px;
             background: #333847;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
 
             .dark-mode & {
               background: #1e2128;
-              box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             }
 
             h2 {
@@ -1739,11 +1738,11 @@ body::-webkit-scrollbar {
           @media (max-width: 1200px) {
             .image-card,
             .text-card {
-              height: 420px;
+              height: 280px;
             }
 
             .text-card {
-              padding: 60px 50px;
+              padding: 40px 35px;
 
               h2 {
                 font-size: 28px;
@@ -1757,13 +1756,13 @@ body::-webkit-scrollbar {
 
             .image-card {
               width: 100%;
-              height: 350px;
+              height: 280px;
             }
 
             .text-card {
               width: 100%;
               height: auto;
-              padding: 50px 40px;
+              padding: 40px 35px;
 
               h2 {
                 font-size: 26px;
@@ -2320,6 +2319,10 @@ body::-webkit-scrollbar {
   p {
     color: #bdbdbd;
     text-align: center;
+    transition: color 0.3s ease;
+    .dark-mode & {
+      color: rgba(255, 255, 255, 0.7);
+    }
   }
 }
 

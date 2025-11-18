@@ -120,20 +120,31 @@ const Top = () => {
       borderRadius: 6,
       marginTop: theme.spacing(1),
       minWidth: 160,
-      color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-      boxShadow:
-        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+      backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
+      color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : 'rgb(55, 65, 81)',
+      border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.05)',
+      boxShadow: isDarkMode
+        ? '0px 10px 15px -3px rgba(0, 0, 0, 0.3), 0px 4px 6px -2px rgba(0, 0, 0, 0.2)'
+        : 'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease',
       '& .MuiMenu-list': {
         padding: '4px 0',
       },
       '& .MuiMenuItem-root': {
+        color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : 'rgb(55, 65, 81)',
+        transition: 'background-color 0.2s ease, color 0.2s ease',
         '& .MuiSvgIcon-root': {
           fontSize: 18,
-          color: theme.palette.text.secondary,
+          color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : theme.palette.text.secondary,
           marginRight: theme.spacing(1.5),
         },
+        '&:hover': {
+          backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+        },
         '&:active': {
-          backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+          backgroundColor: isDarkMode
+            ? 'rgba(255, 255, 255, 0.15)'
+            : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
         },
       },
     },
@@ -233,10 +244,33 @@ const Top = () => {
                     onClose={() => {
                       setLogoutAnchor(null);
                     }}
-                    sx={{ mt: '5px' }}
+                    sx={{
+                      mt: '5px',
+                      '& .MuiPaper-root': {
+                        backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
+                        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.05)',
+                        boxShadow: isDarkMode
+                          ? '0px 10px 15px -3px rgba(0, 0, 0, 0.3), 0px 4px 6px -2px rgba(0, 0, 0, 0.2)'
+                          : '0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        transition: 'background-color 0.3s ease, border-color 0.3s ease',
+                        '& .MuiMenuItem-root': {
+                          color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#333',
+                          transition: 'background-color 0.2s ease, color 0.2s ease',
+                          '&:hover': {
+                            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                          },
+                        },
+                      },
+                    }}
                   >
                     <MenuItem onClick={() => logOut()}>
-                      <Logout fontSize="small" style={{ color: 'blue', marginRight: '10px' }} />
+                      <Logout
+                        fontSize="small"
+                        style={{
+                          color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'blue',
+                          marginRight: '10px',
+                        }}
+                      />
                       Logout
                     </MenuItem>
                   </Menu>
