@@ -164,6 +164,17 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
               >
                 Trends
               </Typography>
+
+              <Typography
+                className={`filter-tab ${
+                  searchCommunity.search.articleCategory === BoardArticleCategory.HUMOR
+                    ? 'active'
+                    : ''
+                }`}
+                onClick={() => handleCategoryClick('Neighborhood')}
+              >
+                Neighborhood
+              </Typography>
             </Stack>
 
             <Stack className="card-wrapper">

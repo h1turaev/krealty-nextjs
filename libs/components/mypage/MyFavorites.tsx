@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { NextPage } from 'next';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../property/PropertyCard';
-import { Property } from '../../types/property/property';
-import { T } from '../../types/common';
 import { LIKE_TARGET_PROPERTY } from '@/apollo/user/mutation';
 import { GET_FAVORITES } from '@/apollo/user/query';
-import { useMutation, useQuery } from '@apollo/client';
 import { Messages } from '@/libs/config';
 import { sweetMixinErrorAlert } from '@/libs/sweetAlert';
+import { useMutation, useQuery } from '@apollo/client';
+import { Pagination, Stack, Typography } from '@mui/material';
+import { NextPage } from 'next';
+import { useState } from 'react';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { T } from '../../types/common';
+import { Property } from '../../types/property/property';
+import PropertyCard from '../property/PropertyCard';
 
 const MyFavorites: NextPage = () => {
   const device = useDeviceDetect();
@@ -70,7 +70,13 @@ const MyFavorites: NextPage = () => {
         <Stack className="favorites-list-box">
           {myFavorites?.length ? (
             myFavorites?.map((property: Property) => {
-              return <PropertyCard property={property} likePropertyHandler={likePropertyHandler} myFavorites={true} />;
+              return (
+                <PropertyCard
+                  property={property}
+                  likePropertyHandler={likePropertyHandler}
+                  myFavorites={true}
+                />
+              );
             })
           ) : (
             <div className={'no-data'}>
@@ -86,8 +92,16 @@ const MyFavorites: NextPage = () => {
                 count={Math.ceil(total / searchFavorites.limit)}
                 page={searchFavorites.page}
                 shape="circular"
-                color="primary"
                 onChange={paginationHandler}
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    color: '#181a20',
+                    '&.Mui-selected': {
+                      backgroundColor: '#181a20',
+                      color: '#ffffff',
+                    },
+                  },
+                }}
               />
             </Stack>
             <Stack className="total-result">

@@ -101,8 +101,16 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
                 count={Math.ceil(totalCount / searchCommunity.limit)}
                 page={searchCommunity.page}
                 shape="circular"
-                color="primary"
                 onChange={paginationHandler}
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    color: '#181a20',
+                    '&.Mui-selected': {
+                      backgroundColor: '#181a20',
+                      color: '#ffffff',
+                    },
+                  },
+                }}
               />
             </Stack>
             <Stack className="total">

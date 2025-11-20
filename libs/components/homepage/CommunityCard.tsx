@@ -54,9 +54,10 @@ const CommunityCard = (props: CommunityCardProps) => {
 
   // Truncate text to a reasonable length for card display
   const maxDescriptionLength = 150;
-  const truncatedText = plainTextContent.length > maxDescriptionLength
-    ? plainTextContent.substring(0, maxDescriptionLength) + '...'
-    : plainTextContent;
+  const truncatedText =
+    plainTextContent.length > maxDescriptionLength
+      ? plainTextContent.substring(0, maxDescriptionLength) + '...'
+      : plainTextContent;
 
   if (device === 'mobile') {
     return <div>COMMUNITY CARD (MOBILE)</div>;

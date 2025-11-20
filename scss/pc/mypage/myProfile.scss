@@ -22,6 +22,10 @@
             line-height: normal;
             letter-spacing: 0.6px;
             text-transform: capitalize;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .sub-title {
             color: #181a20;
@@ -30,6 +34,10 @@
             font-style: normal;
             font-weight: 400;
             line-height: 26px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
           }
         }
       }
@@ -42,6 +50,11 @@
         border: 1px solid #c4c4c4;
         background: #fff;
         box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        .dark-mode & {
+          background: #1e2128;
+          border-color: rgba(255, 255, 255, 0.1);
+        }
         .photo-box {
           gap: 23px;
           .title {
@@ -51,6 +64,10 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .image-big-box {
             flex-direction: row;
@@ -76,6 +93,10 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 12px;
+                transition: background-color 0.3s ease;
+                .dark-mode & {
+                  background-color: #1e2128;
+                }
               }
             }
             .upload-big-box {
@@ -90,6 +111,11 @@
                 cursor: pointer;
                 border-radius: 12px;
                 border: 1px solid #181a20;
+                transition: border-color 0.3s ease, background-color 0.3s ease;
+                .dark-mode & {
+                  border-color: rgba(255, 255, 255, 0.3);
+                  background-color: rgba(255, 255, 255, 0.05);
+                }
                 p {
                   color: #181a20;
                   font-family: $font;
@@ -97,6 +123,10 @@
                   font-style: normal;
                   font-weight: 600;
                   line-height: normal;
+                  transition: color 0.3s ease;
+                  .dark-mode & {
+                    color: rgba(255, 255, 255, 0.9);
+                  }
                 }
               }
               .upload-text {
@@ -106,6 +136,10 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 26px;
+                transition: color 0.3s ease;
+                .dark-mode & {
+                  color: rgba(255, 255, 255, 0.7);
+                }
               }
             }
           }
@@ -126,6 +160,10 @@
               font-style: normal;
               font-weight: 600;
               line-height: normal;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
             input {
               height: 55px;
@@ -133,6 +171,14 @@
               padding: 0px 15px;
               border-radius: 8px;
               border: 1px solid #ddd;
+              background: #fff;
+              color: #181a20;
+              transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+              .dark-mode & {
+                background: #181a20;
+                border-color: rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.9);
+              }
               ::placeholder {
                 color: #717171;
                 font-family: $font;
@@ -140,6 +186,9 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 26px;
+                .dark-mode & {
+                  color: rgba(255, 255, 255, 0.5);
+                }
               }
             }
           }
@@ -153,6 +202,10 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           input {
             height: 55px;
@@ -160,6 +213,14 @@
             padding: 0px 15px;
             border-radius: 8px;
             border: 1px solid #ddd;
+            background: #fff;
+            color: #181a20;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            .dark-mode & {
+              background: #181a20;
+              border-color: rgba(255, 255, 255, 0.1);
+              color: rgba(255, 255, 255, 0.9);
+            }
             ::placeholder {
               color: #717171;
               font-family: $font;
@@ -167,6 +228,9 @@
               font-style: normal;
               font-weight: 400;
               line-height: 26px;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.5);
+              }
             }
           }
         }
@@ -179,6 +243,10 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .about-textarea {
             height: 170px;
@@ -186,11 +254,18 @@
             border-radius: 8px;
             border: 1px solid #ddd;
             color: #717171;
+            background: #fff;
             font-family: $font;
             font-size: 12px;
             font-style: normal;
             font-weight: 400;
             line-height: 26px;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            .dark-mode & {
+              background: #181a20;
+              border-color: rgba(255, 255, 255, 0.1);
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .update-button {
             display: flex;
@@ -203,6 +278,13 @@
             margin-top: 30px;
             border-radius: 12px;
             background-color: #000000;
+            transition: background-color 0.3s ease;
+            .dark-mode & {
+              background-color: rgba(255, 255, 255, 0.9);
+              p {
+                color: #181a20;
+              }
+            }
             p {
               color: #fff;
               font-family: $font;
@@ -210,10 +292,14 @@
               font-style: normal;
               font-weight: 600;
               line-height: normal;
+              transition: color 0.3s ease;
             }
           }
           button:disabled {
             background: #181a2045;
+            .dark-mode & {
+              background: rgba(255, 255, 255, 0.2);
+            }
           }
         }
       }
@@ -225,6 +311,11 @@
         border: 1px solid #c4c4c4;
         background: #fff;
         box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        .dark-mode & {
+          background: #1e2128;
+          border-color: rgba(255, 255, 255, 0.1);
+        }
         .top-inner-box {
           gap: 20px;
           .title {
@@ -234,6 +325,10 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .old-password-box {
             gap: 10px;
@@ -244,6 +339,10 @@
               font-style: normal;
               font-weight: 600;
               line-height: normal;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
             input {
               width: 50%;
@@ -252,6 +351,14 @@
               padding: 0px 15px;
               border-radius: 8px;
               border: 1px solid #ddd;
+              background: #fff;
+              color: #181a20;
+              transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+              .dark-mode & {
+                background: #181a20;
+                border-color: rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.9);
+              }
               ::placeholder {
                 color: #717171;
                 font-family: $font;
@@ -259,6 +366,9 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 26px;
+                .dark-mode & {
+                  color: rgba(255, 255, 255, 0.5);
+                }
               }
             }
           }
@@ -277,6 +387,10 @@
               font-style: normal;
               font-weight: 600;
               line-height: normal;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
             input {
               height: 55px;
@@ -284,6 +398,14 @@
               padding: 0px 15px;
               border-radius: 8px;
               border: 1px solid #ddd;
+              background: #fff;
+              color: #181a20;
+              transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+              .dark-mode & {
+                background: #181a20;
+                border-color: rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.9);
+              }
               ::placeholder {
                 color: #717171;
                 font-family: $font;
@@ -291,6 +413,9 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 26px;
+                .dark-mode & {
+                  color: rgba(255, 255, 255, 0.5);
+                }
               }
             }
           }
@@ -306,6 +431,13 @@
           margin-top: 18px;
           border-radius: 12px;
           background-color: #000000;
+          transition: background-color 0.3s ease;
+          .dark-mode & {
+            background-color: rgba(255, 255, 255, 0.9);
+            p {
+              color: #181a20;
+            }
+          }
           p {
             color: #fff;
             font-family: $font;
@@ -313,6 +445,7 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            transition: color 0.3s ease;
           }
         }
       }

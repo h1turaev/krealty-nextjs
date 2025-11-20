@@ -48,8 +48,8 @@ const withLayoutBasic = (Component: any) => {
           bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/mypage':
-          title = 'My';
-          titleHighlight = 'Page';
+          title = '';
+          titleHighlight = 'Account Settings';
           desc = 'MY PAGE';
           bgImage = '/img/banner/basiclaybanner.jpg';
           break;

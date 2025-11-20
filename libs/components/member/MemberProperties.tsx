@@ -124,8 +124,16 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
                     count={Math.ceil(total / searchFilter.limit)}
                     page={searchFilter.page}
                     shape="circular"
-                    color="primary"
                     onChange={paginationHandler}
+                    sx={{
+                      '& .MuiPaginationItem-root': {
+                        color: '#181a20',
+                        '&.Mui-selected': {
+                          backgroundColor: '#181a20',
+                          color: '#ffffff',
+                        },
+                      },
+                    }}
                   />
                 </Stack>
                 <Stack className="total-result">

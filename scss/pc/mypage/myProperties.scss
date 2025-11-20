@@ -22,6 +22,10 @@
             line-height: normal;
             letter-spacing: 0.6px;
             text-transform: capitalize;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .sub-title {
             color: #181a20;
@@ -30,6 +34,10 @@
             font-style: normal;
             font-weight: 400;
             line-height: 26px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
           }
         }
       }
@@ -47,6 +55,11 @@
           background: rgba(143, 143, 143, 0.08);
           border-radius: 12px 12px 0px 0px;
           border: 1px solid rgba(196, 196, 196, 0.79);
+          transition: background-color 0.3s ease, border-color 0.3s ease;
+          .dark-mode & {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+          }
           .tab-name {
             width: 110px;
             height: 32px;
@@ -55,6 +68,10 @@
             align-items: center;
             cursor: pointer;
             color: #000;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
             font-family: $font;
             font-size: 16px;
             font-style: normal;
@@ -88,6 +105,11 @@
         border-top: none;
         background: #fff;
         box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        .dark-mode & {
+          background: #1e2128;
+          border-color: rgba(255, 255, 255, 0.1);
+        }
         .listing-title-box {
           width: 100%;
           height: auto;
@@ -96,6 +118,10 @@
           padding: 18px 15px 18px 33px;
           border-radius: 12px;
           background: #f6f6f6;
+          transition: background-color 0.3s ease;
+          .dark-mode & {
+            background: rgba(255, 255, 255, 0.05);
+          }
           .title-text {
             color: #181a20;
             font-family: $font;
@@ -103,6 +129,10 @@
             font-style: normal;
             font-weight: 600;
             line-height: normal;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           :first-child {
             margin-right: 138px;
@@ -115,6 +145,10 @@
           margin-top: 30px;
           padding-bottom: 30px;
           border-bottom: 1px solid #ddd;
+          transition: border-color 0.3s ease;
+          .dark-mode & {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+          }
           .image-box {
             width: 110px;
             height: 90px;
@@ -140,10 +174,18 @@
               font-style: normal;
               font-weight: 600;
               line-height: normal;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
             .address {
               margin-bottom: 13px;
               color: #717171;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.6);
+              }
               font-family: $font;
               font-size: 11px;
               font-style: normal;
@@ -157,6 +199,10 @@
               font-style: normal;
               font-weight: 400;
               line-height: normal;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
           }
           .date-box {
@@ -167,6 +213,10 @@
             margin-right: 55px;
             .date {
               color: #181a20;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
               font-family: $font;
               font-size: 12px;
               font-style: normal;
@@ -245,6 +295,10 @@
               font-style: normal;
               font-weight: 400;
               line-height: 26px;
+              transition: color 0.3s ease;
+              .dark-mode & {
+                color: rgba(255, 255, 255, 0.9);
+              }
             }
           }
         }

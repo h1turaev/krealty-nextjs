@@ -126,7 +126,10 @@ const MemberFollowers = (props: MemberFollowsProps) => {
                   <Box className={'info-box'} component={'div'}>
                     {follower?.meLiked && follower?.meLiked[0]?.myFavorite ? (
                       <FavoriteIcon
-                        color="primary"
+                        sx={{
+                          color: '#181a20',
+                          '.dark-mode &': { color: 'rgba(255, 255, 255, 0.9)' },
+                        }}
                         onClick={() =>
                           likeMemberHandler(
                             follower?.followerData?._id,
@@ -137,6 +140,10 @@ const MemberFollowers = (props: MemberFollowsProps) => {
                       />
                     ) : (
                       <FavoriteBorderIcon
+                        sx={{
+                          color: '#181a20',
+                          '.dark-mode &': { color: 'rgba(255, 255, 255, 0.9)' },
+                        }}
                         onClick={() =>
                           likeMemberHandler(
                             follower?.followerData?._id,
@@ -235,7 +242,15 @@ const MemberFollowers = (props: MemberFollowsProps) => {
                 count={Math.ceil(total / followInquiry.limit)}
                 onChange={paginationHandler}
                 shape="circular"
-                color="primary"
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    color: '#181a20',
+                    '&.Mui-selected': {
+                      backgroundColor: '#181a20',
+                      color: '#ffffff',
+                    },
+                  },
+                }}
               />
             </Stack>
             <Stack className="total-result">

@@ -1,7 +1,5 @@
 import { useReactiveVar } from '@apollo/client';
-import { Logout } from '@mui/icons-material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { Box, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
@@ -13,11 +11,11 @@ import { useRouter, withRouter } from 'next/router';
 import { CaretDown, Moon, Sun } from 'phosphor-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { userVar } from '../../apollo/store';
-import { getJwtToken, logOut, updateUserInfo } from '../auth';
+import { getJwtToken, updateUserInfo } from '../auth';
 
 import { REACT_APP_API_URL } from '../config';
-import useDeviceDetect from '../hooks/useDeviceDetect';
 import { useDarkMode } from '../hooks/useDarkMode';
+import useDeviceDetect from '../hooks/useDeviceDetect';
 import HighlandLogo from './common/HighlandLogo';
 import NotificationComponent from './Notification';
 
@@ -34,8 +32,6 @@ const Top = () => {
   const [anchorEl, setAnchorEl] = React.useState<any | HTMLElement>(null);
   let open = Boolean(anchorEl);
   const [bgColor, setBgColor] = useState<boolean>(false);
-  const [logoutAnchor, setLogoutAnchor] = React.useState<null | HTMLElement>(null);
-  const logoutOpen = Boolean(logoutAnchor);
 
   /** LIFECYCLES **/
   useEffect(() => {
@@ -208,11 +204,6 @@ const Top = () => {
               <Link href={'/community'}>
                 <div> {t('Community')} </div>
               </Link>
-              {user?._id && (
-                <Link href={'/mypage'}>
-                  <div> {t('My Page')} </div>
-                </Link>
-              )}
               <Link href={'/cs'}>
                 <div> {t('CS')} </div>
               </Link>
@@ -225,7 +216,8 @@ const Top = () => {
                 <>
                   <div
                     className={'login-user'}
-                    onClick={(event: any) => setLogoutAnchor(event.currentTarget)}
+                    onClick={() => router.push('/mypage')}
+                    style={{ cursor: 'pointer' }}
                   >
                     <img
                       src={
@@ -236,52 +228,12 @@ const Top = () => {
                       alt=""
                     />
                   </div>
-
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={logoutAnchor}
-                    open={logoutOpen}
-                    onClose={() => {
-                      setLogoutAnchor(null);
-                    }}
-                    sx={{
-                      mt: '5px',
-                      '& .MuiPaper-root': {
-                        backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
-                        border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.05)',
-                        boxShadow: isDarkMode
-                          ? '0px 10px 15px -3px rgba(0, 0, 0, 0.3), 0px 4px 6px -2px rgba(0, 0, 0, 0.2)'
-                          : '0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                        transition: 'background-color 0.3s ease, border-color 0.3s ease',
-                        '& .MuiMenuItem-root': {
-                          color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#333',
-                          transition: 'background-color 0.2s ease, color 0.2s ease',
-                          '&:hover': {
-                            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                          },
-                        },
-                      },
-                    }}
-                  >
-                    <MenuItem onClick={() => logOut()}>
-                      <Logout
-                        fontSize="small"
-                        style={{
-                          color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'blue',
-                          marginRight: '10px',
-                        }}
-                      />
-                      Logout
-                    </MenuItem>
-                  </Menu>
                 </>
               ) : (
                 <Link href={'/account/join'}>
                   <div className={'join-box'}>
                     <AccountCircleOutlinedIcon />
-                    <span>
-                      {t('Login')} / Apply
-                    </span>
+                    <span>{t('Login')} / Apply</span>
                   </div>
                 </Link>
               )}
@@ -293,11 +245,7 @@ const Top = () => {
                   onClick={toggleDarkMode}
                   aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                 >
-                  {isDarkMode ? (
-                    <Sun size={18} weight="fill" />
-                  ) : (
-                    <Moon size={18} weight="fill" />
-                  )}
+                  {isDarkMode ? <Sun size={18} weight="fill" /> : <Moon size={18} weight="fill" />}
                 </button>
                 <Button
                   disableRipple

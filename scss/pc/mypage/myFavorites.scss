@@ -22,6 +22,10 @@
             line-height: normal;
             letter-spacing: 0.6px;
             text-transform: capitalize;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
           .sub-title {
             color: #181a20;
@@ -30,6 +34,10 @@
             font-style: normal;
             font-weight: 400;
             line-height: 26px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
           }
         }
       }
@@ -46,6 +54,10 @@
           border-radius: 12px;
           background: #fff;
           box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+          transition: background-color 0.3s ease;
+          .dark-mode & {
+            background: #1e2128;
+          }
           .top {
             position: relative;
             width: 100%;
@@ -123,6 +135,10 @@
                   font-weight: 600;
                   line-height: normal;
                   text-transform: capitalize;
+                  transition: color 0.3s ease;
+                  .dark-mode & {
+                    color: rgba(255, 255, 255, 0.9);
+                  }
                 }
               }
               .address {
@@ -130,6 +146,10 @@
                 overflow: hidden;
                 p {
                   color: #717171;
+                  transition: color 0.3s ease;
+                  .dark-mode & {
+                    color: rgba(255, 255, 255, 0.6);
+                  }
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -163,6 +183,10 @@
               height: 1px;
               background: #ddd;
               margin-bottom: 17px;
+              transition: background-color 0.3s ease;
+              .dark-mode & {
+                background: rgba(255, 255, 255, 0.1);
+              }
             }
             .type-buttons {
               flex-direction: row;

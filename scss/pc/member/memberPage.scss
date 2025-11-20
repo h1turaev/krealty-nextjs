@@ -6,253 +6,199 @@
       background: #181a20;
     }
     .container {
+      padding-top: 100px;
       .member-page {
         position: relative;
         width: 100%;
-        flex-direction: row;
-        gap: 25px;
-        padding-top: 96px;
-        .back-frame {
-          width: 1260px;
-          height: auto;
-          display: flex;
-          flex-direction: row;
-          margin: 100px 0 200px 0;
-          border-radius: 12px;
-          border: 1px solid #c4c4c4;
-          background: #fff;
-          box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-          transition: background-color 0.3s ease, border-color 0.3s ease;
-          .dark-mode & {
-            background: #1e2128;
-            border-color: rgba(255, 255, 255, 0.1);
-          }
-          .right-config {
+        max-width: 1400px;
+        margin: 0 auto 100px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+        // Top Profile Header
+        .profile-header {
+          width: 100%;
+          background: url('/img/banner/basicbanner-2.webp');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: 12px 12px 0 0;
+          padding: 60px 40px;
+          margin-bottom: 0;
+          position: relative;
+          overflow: hidden;
+          .profile-header-content {
             position: relative;
-            padding: 0 0 0 0;
-            width: 266px;
-            height: 700px;
-            border-radius: 12px;
-            background: #fff;
-            border: 1px solid rgba(196, 196, 196, 0.79);
-            box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-            margin: 180px 20px 40px 20px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            .dark-mode & {
-              background: #1e2128;
-              border-color: rgba(255, 255, 255, 0.1);
-            }
-            .profile {
-              margin-top: 5px;
-              position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            .profile-info {
               display: flex;
               flex-direction: row;
-              .profile-img {
-                img {
-                  width: 79px;
-                  height: 79px;
+              align-items: center;
+              gap: 24px;
+              .profile-img-wrapper {
+                position: relative;
+                .profile-img {
+                  width: 120px;
+                  height: 120px;
                   border-radius: 50%;
-                  right: 30px;
-                  bottom: 12px;
                   object-fit: cover;
+                  border: 4px solid rgba(255, 255, 255, 0.3);
+                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 }
               }
-              .user-info {
-                margin-left: 20px;
+              .profile-details {
                 display: flex;
                 flex-direction: column;
-                .user-name {
-                  color: #181a20;
+                gap: 8px;
+                .profile-name {
+                  color: #ffffff;
                   font-family: $font;
-                  font-size: 15px;
-                  font-style: normal;
-                  font-weight: 600;
-                  line-height: normal;
-                  transition: color 0.3s ease;
+                  font-size: 32px;
+                  font-weight: 700;
+                  line-height: 1.2;
                   .dark-mode & {
                     color: rgba(255, 255, 255, 0.9);
                   }
                 }
-                .user-phone {
-                  display: flex;
-                  flex-direction: row;
-                  margin-top: 5px;
-                  img {
-                    margin-top: 3px;
-                    margin-right: 4px;
-                    width: 16px;
-                    height: 16px;
+                .profile-phone {
+                  color: rgba(255, 255, 255, 0.9);
+                  font-family: $font;
+                  font-size: 16px;
+                  font-weight: 400;
+                  .dark-mode & {
+                    color: rgba(255, 255, 255, 0.7);
                   }
                 }
-                .view-list {
-                  margin-top: 5px;
-                  font-weight: 300;
-                  color: rgb(187, 187, 187);
-                  transition: color 0.3s ease;
+                .profile-type {
+                  color: rgba(255, 255, 255, 0.8);
+                  font-family: $font;
+                  font-size: 14px;
+                  font-weight: 500;
+                  text-transform: uppercase;
                   .dark-mode & {
-                    color: rgba(255, 255, 255, 0.5);
+                    color: rgba(255, 255, 255, 0.6);
                   }
                 }
               }
             }
-            .follow-button-box {
-              height: auto;
-              flex-direction: row;
-              gap: 10px;
-              align-items: center;
-              margin-top: 15px;
-              width: 100%;
-              .all-properties-btn {
+            .follow-button-wrapper {
+              .follow-button {
+                padding: 10px 24px;
+                border-radius: 20px;
+                background: #181a20 !important;
+                border: none;
                 color: #ffffff !important;
+                font-family: $font;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: normal;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: none;
+                box-shadow: none;
                 .dark-mode & {
                   background: #ffffff !important;
                   color: #181a20 !important;
+                }
+                &:hover {
+                  background: #2a2d35 !important;
+                  .dark-mode & {
+                    background: #e8e8e8 !important;
+                  }
+                }
+                &.MuiButton-outlined {
+                  background: transparent !important;
+                  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                  color: #ffffff !important;
+                  .dark-mode & {
+                    border-color: rgba(255, 255, 255, 0.5) !important;
+                  }
                   &:hover {
-                    background: #f0f0f0 !important;
-                  }
-                }
-              }
-              button {
-                border: 1px solid #b9b9b9;
-                color: #181a20;
-                font-family: $font;
-                font-size: 14px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-                transition: color 0.3s ease, border-color 0.3s ease;
-                .dark-mode & {
-                  color: rgba(255, 255, 255, 0.9);
-                  border-color: rgba(255, 255, 255, 0.2);
-                }
-              }
-              p {
-                color: #b9b9b9;
-                font-family: $font;
-                font-size: 14px;
-                font-style: italic;
-                font-weight: 400;
-                line-height: normal;
-                transition: color 0.3s ease;
-                .dark-mode & {
-                  color: rgba(255, 255, 255, 0.5);
-                }
-              }
-            }
-            .sections {
-              height: auto;
-              margin-top: 30px;
-              .section {
-                height: auto;
-                .title {
-                  font-family: $font;
-                  font-size: 15px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: 28px;
-                }
-                .sub-section {
-                  width: 100%;
-                  height: auto;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  cursor: pointer;
-                  padding: 0;
-                  li {
-                    width: 100%;
-                    height: auto;
-                    min-height: 25px;
-                    margin-bottom: 6px;
-                    padding: 6px 20px;
-                    border-radius: 20px;
-                    transition: all 0.3s ease;
-                  }
-                  .focus {
-                    background: #181a20;
-                    border-radius: 20px;
-                    p {
-                      font-size: 14px;
-                      color: #ffffff;
-                    }
-                    .dark-mode & {
-                      background: #ffffff;
-                      p {
-                        color: #181a20;
-                      }
-                    }
-                  }
-                  .flex-box {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    .com-icon {
-                      display: flex;
-                      flex-direction: row;
-                      justify-content: flex-end;
-                      margin-left: 11px;
-                    }
-                    p {
-                      width: 40%;
-                      font-size: 14px;
-                    }
-                  }
-                }
-                img {
-                  width: 16px;
-                  height: 16px;
-                }
-                svg {
-                  width: 16px;
-                  height: 16px;
-                }
-                .sub-title {
-                  margin-left: 12px;
-                  color: #181a20;
-                  font-family: $font;
-                  font-size: 14px;
-                  font-style: normal;
-                  font-weight: 600;
-                  line-height: 55px;
-                  transition: color 0.3s ease;
-                  .dark-mode & {
-                    color: rgba(255, 255, 255, 0.9);
-                  }
-                }
-                .count-title {
-                  display: flex;
-                  justify-content: flex-end;
-                  padding-right: 10px;
-                  color: #181a20;
-                  font-family: $font;
-                  font-size: 14px;
-                  font-style: normal;
-                  font-weight: 600;
-                  line-height: 55px;
-                  transition: color 0.3s ease;
-                  .dark-mode & {
-                    color: rgba(255, 255, 255, 0.9);
+                    background: rgba(255, 255, 255, 0.1) !important;
+                    border-color: rgba(255, 255, 255, 0.5) !important;
                   }
                 }
               }
             }
           }
-          .main-config {
-            position: relative;
-            width: 936px;
-            margin-top: 52px;
-            margin-left: 20px;
-            align-items: flex-start;
-            gap: 109px;
-            .list-config {
-              display: flex;
-              width: 100%;
-              height: auto;
-              flex-direction: row;
-              flex-wrap: wrap;
-              gap: 22px;
+        }
+
+        // Navigation Tabs
+        .nav-tabs-container {
+          width: 100%;
+          background: #ffffff;
+          border-radius: 0;
+          padding: 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s ease, border-color 0.3s ease;
+          .dark-mode & {
+            background: #1e2128;
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+          }
+          .nav-tabs {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 40px;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            .nav-tab {
+              padding: 8px 20px;
+              border-radius: 20px;
+              background: #f5f5f5;
+              color: #181a20;
+              font-family: $font;
+              font-size: 14px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              border: none;
+              white-space: nowrap;
+              .dark-mode & {
+                background: #1e2128;
+                color: rgba(255, 255, 255, 0.9);
+              }
+              &:hover {
+                background: #e8e8e8;
+                .dark-mode & {
+                  background: #252830;
+                }
+              }
+              &.active {
+                background: #181a20;
+                color: #ffffff;
+                .dark-mode & {
+                  background: #ffffff;
+                  color: #0f1114;
+                }
+              }
             }
+          }
+        }
+
+        // Main Content
+        .main-content {
+          width: 100%;
+          background: #ffffff;
+          border-radius: 0 0 12px 12px;
+          padding: 40px;
+          min-height: 500px;
+          transition: background-color 0.3s ease;
+          .dark-mode & {
+            background: #1e2128;
+          }
+          .list-config {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
           }
         }
       }

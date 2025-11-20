@@ -1,154 +1,306 @@
-import React, { useEffect } from 'react';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { NextPage } from 'next';
-import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import { Stack } from '@mui/material';
-import MemberMenu from '../../libs/components/member/MemberMenu';
-import MemberProperties from '../../libs/components/member/MemberProperties';
-import { useRouter } from 'next/router';
-import MemberFollowers from '../../libs/components/member/MemberFollowers';
-import MemberArticles from '../../libs/components/member/MemberArticles';
-import { useMutation, useReactiveVar } from '@apollo/client';
-import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
-import MemberFollowings from '../../libs/components/member/MemberFollowings';
-import { userVar } from '../../apollo/store';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Message } from '../../libs/enums/common.enum';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { userVar } from '../../apollo/store';
 import { LIKE_TARGET_MEMBER, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
+import { GET_MEMBER } from '../../apollo/user/query';
+import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
+import MemberArticles from '../../libs/components/member/MemberArticles';
+import MemberFollowers from '../../libs/components/member/MemberFollowers';
+import MemberFollowings from '../../libs/components/member/MemberFollowings';
+import MemberProperties from '../../libs/components/member/MemberProperties';
+import { REACT_APP_API_URL } from '../../libs/config';
+import { Message } from '../../libs/enums/common.enum';
+import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
+import {
+  sweetErrorHandling,
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from '../../libs/sweetAlert';
+import { T } from '../../libs/types/common';
+import { Member } from '../../libs/types/member/member';
 
 export const getStaticProps = async ({ locale }: any) => ({
-	props: {
-		...(await serverSideTranslations(locale, ['common'])),
-	},
+  props: {
+    ...(await serverSideTranslations(locale, ['common'])),
+  },
 });
 
 const MemberPage: NextPage = () => {
-	const device = useDeviceDetect();
-	const router = useRouter();
-	const category: any = router.query?.category;
-	const user = useReactiveVar(userVar);
+  const device = useDeviceDetect();
+  const router = useRouter();
+  const [category, setCategory] = useState<string>('properties');
+  const { memberId } = router.query;
+  const user = useReactiveVar(userVar);
+  const [member, setMember] = useState<Member | null>(null);
 
-	/** APOLLO REQUESTS **/
-	const [subscribe] = useMutation(SUBSCRIBE);
-	const [unsubscribe] = useMutation(UNSUBSCRIBE);
-	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
+  /** APOLLO REQUESTS **/
+  const [subscribe] = useMutation(SUBSCRIBE);
+  const [unsubscribe] = useMutation(UNSUBSCRIBE);
+  const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 
-	/** LIFECYCLES **/
-	useEffect(() => {
-		if (!router.isReady) return;
-		if (!category) {
-			router.replace(
-				{
-					pathname: router.pathname,
-					query: { ...router.query, category: 'properties' },
-				},
-				undefined,
-				{ shallow: true },
-			);
-		}
-	}, [category, router]);
+  const {
+    loading: getMemberLoading,
+    data: getMemberData,
+    error: getMemberError,
+    refetch: getMemberRefetch,
+  } = useQuery(GET_MEMBER, {
+    fetchPolicy: 'network-only',
+    variables: { input: memberId },
+    skip: !memberId,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setMember(data?.getMember);
+    },
+  });
 
-	/** HANDLERS **/
-	const subscribeHandler = async (id: string, refetch: any, query: any) => {
-		try {
-			if (!id) throw new Error(Message.CREATE_FAILED);
-			if (!user._id) throw new Error(Message.CREATE_FAILED);
+  /** LIFECYCLES **/
+  useEffect(() => {
+    if (!router.isReady) return;
+    const queryCategory = router.query?.category as string;
+    if (queryCategory) {
+      setCategory(queryCategory);
+    } else {
+      setCategory('properties');
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, category: 'properties' },
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  }, [router.isReady, router.query?.category]);
 
-			await subscribe({
-				variables: {
-					input: id,
-				},
-			});
-			await sweetTopSmallSuccessAlert('Subscribed!', 800);
-			await refetch({ input: query });
-		} catch (err: any) {
-			sweetErrorHandling(err).then();
-		}
-	};
+  /** HANDLERS **/
+  const subscribeHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      if (!id) throw new Error(Message.CREATE_FAILED);
+      if (!user._id) throw new Error(Message.CREATE_FAILED);
 
-	const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
-		try {
-			if (!id) throw new Error(Message.CREATE_FAILED);
-			if (!user._id) throw new Error(Message.CREATE_FAILED);
+      await subscribe({
+        variables: {
+          input: id,
+        },
+      });
+      await sweetTopSmallSuccessAlert('Subscribed!', 800);
+      await refetch({ input: query });
+      await getMemberRefetch();
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
+  };
 
-			await unsubscribe({
-				variables: {
-					input: id,
-				},
-			});
-			await sweetTopSmallSuccessAlert('Unsubscribed!', 800);
-			await refetch({ input: query });
-		} catch (err: any) {
-			sweetErrorHandling(err).then();
-		}
-	};
+  const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      if (!id) throw new Error(Message.CREATE_FAILED);
+      if (!user._id) throw new Error(Message.CREATE_FAILED);
 
-	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
-			try {
-				if (!id) return;
-				if (!user._id) throw new Error(Message.CREATE_FAILED);
+      await unsubscribe({
+        variables: {
+          input: id,
+        },
+      });
+      await sweetTopSmallSuccessAlert('Unsubscribed!', 800);
+      await refetch({ input: query });
+      await getMemberRefetch();
+    } catch (err: any) {
+      sweetErrorHandling(err).then();
+    }
+  };
 
-				await likeTargetMember({
-					variables: {
-						input: id,
-					},
-				});
-				await sweetTopSmallSuccessAlert('Success', 800);
-				await refetch({ input: query });
-			} catch (err: any) {
-				console.log('ERROR, likeMemberHandler:', err.message);
-				sweetMixinErrorAlert(err.message).then();
-			}
-		};
+  const likeMemberHandler = async (id: string, refetch: any, query: any) => {
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error(Message.CREATE_FAILED);
 
-	const redirectToMemberPageHandler = async (memberId: string) => {
-		try {
-			if (memberId === user?._id) await router.push(`/mypage?memberId=${memberId}`);
-			else await router.push(`/member?memberId=${memberId}`);
-		} catch (error) {
-			await sweetErrorHandling(error);
-		}
-	};
+      await likeTargetMember({
+        variables: {
+          input: id,
+        },
+      });
+      await sweetTopSmallSuccessAlert('Success', 800);
+      await refetch({ input: query });
+    } catch (err: any) {
+      console.log('ERROR, likeMemberHandler:', err.message);
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
 
-	if (device === 'mobile') {
-		return <>MEMBER PAGE MOBILE</>;
-	} else {
-		return (
-			<div id="member-page" style={{ position: 'relative' }}>
-				<div className="container">
-					<Stack className={'member-page'}>
-						<Stack className={'back-frame'}>
-							<Stack className="main-config" mb={'76px'}>
-								<Stack className={'list-config'}>
-									{category === 'properties' && <MemberProperties />}
-									{category === 'followers' && (
-										<MemberFollowers
-											subscribeHandler={subscribeHandler}
-											unsubscribeHandler={unsubscribeHandler}
-											likeMemberHandler={likeMemberHandler}
-											redirectToMemberPageHandler={redirectToMemberPageHandler}
-										/>
-									)}
-									{category === 'followings' && (
-										<MemberFollowings
-											subscribeHandler={subscribeHandler}
-											unsubscribeHandler={unsubscribeHandler}
-											likeMemberHandler={likeMemberHandler}
-											redirectToMemberPageHandler={redirectToMemberPageHandler}
-										/>
-									)}
-									{category === 'articles' && <MemberArticles />}
-								</Stack>
-							</Stack>
-							<Stack className={'right-config'}>
-								<MemberMenu subscribeHandler={subscribeHandler} unsubscribeHandler={unsubscribeHandler} />
-							</Stack>
-						</Stack>
-					</Stack>
-				</div>
-			</div>
-		);
-	}
+  const redirectToMemberPageHandler = async (memberId: string) => {
+    try {
+      if (memberId === user?._id) await router.push(`/mypage?memberId=${memberId}`);
+      else await router.push(`/member?memberId=${memberId}`);
+    } catch (error) {
+      await sweetErrorHandling(error);
+    }
+  };
+
+  if (device === 'mobile') {
+    return <>MEMBER PAGE MOBILE</>;
+  } else {
+    return (
+      <div id="member-page">
+        <div className="container">
+          <Stack className={'member-page'}>
+            {/* Top Profile Header */}
+            <Stack className={'profile-header'}>
+              <Stack className={'profile-header-content'}>
+                <Stack className={'profile-info'}>
+                  <Box className={'profile-img-wrapper'}>
+                    <img
+                      src={
+                        member?.memberImage
+                          ? `${REACT_APP_API_URL}/${member?.memberImage}`
+                          : '/img/profile/defaultUser.svg'
+                      }
+                      alt="profile"
+                      className={'profile-img'}
+                    />
+                  </Box>
+                  <Stack className={'profile-details'}>
+                    <Typography className={'profile-name'}>
+                      {member?.memberNick || member?.memberFullName || 'Member'}
+                    </Typography>
+                    <Typography className={'profile-phone'}>
+                      {member?.memberPhone
+                        ? member.memberPhone.length >= 10
+                          ? `(${member.memberPhone.slice(0, 3)}) ${member.memberPhone.slice(
+                              3,
+                              6,
+                            )}-${member.memberPhone.slice(6)}`
+                          : member.memberPhone
+                        : 'No phone'}
+                    </Typography>
+                    <Typography className={'profile-type'}>{member?.memberType || ''}</Typography>
+                  </Stack>
+                </Stack>
+                {member && member?._id !== user?._id && (
+                  <Stack className={'follow-button-wrapper'}>
+                    {member?.meFollowed && member?.meFollowed[0]?.myFollowing ? (
+                      <Button
+                        className="follow-button"
+                        variant="outlined"
+                        onClick={() => unsubscribeHandler(member?._id, getMemberRefetch, memberId)}
+                      >
+                        Unfollow
+                      </Button>
+                    ) : (
+                      <Button
+                        className="follow-button"
+                        variant="contained"
+                        onClick={() => subscribeHandler(member?._id, getMemberRefetch, memberId)}
+                      >
+                        Follow
+                      </Button>
+                    )}
+                  </Stack>
+                )}
+              </Stack>
+            </Stack>
+
+            {/* Navigation Tabs */}
+            <Stack className={'nav-tabs-container'}>
+              <Stack className={'nav-tabs'}>
+                {member?.memberType === 'AGENT' && (
+                  <Typography
+                    className={`nav-tab ${category === 'properties' ? 'active' : ''}`}
+                    onClick={() => {
+                      setCategory('properties');
+                      router.push(
+                        {
+                          pathname: '/member',
+                          query: { ...router.query, category: 'properties' },
+                        },
+                        undefined,
+                        { scroll: false },
+                      );
+                    }}
+                  >
+                    Properties
+                  </Typography>
+                )}
+                <Typography
+                  className={`nav-tab ${category === 'followers' ? 'active' : ''}`}
+                  onClick={() => {
+                    setCategory('followers');
+                    router.push(
+                      {
+                        pathname: '/member',
+                        query: { ...router.query, category: 'followers' },
+                      },
+                      undefined,
+                      { scroll: false },
+                    );
+                  }}
+                >
+                  Followers
+                </Typography>
+                <Typography
+                  className={`nav-tab ${category === 'followings' ? 'active' : ''}`}
+                  onClick={() => {
+                    setCategory('followings');
+                    router.push(
+                      {
+                        pathname: '/member',
+                        query: { ...router.query, category: 'followings' },
+                      },
+                      undefined,
+                      { scroll: false },
+                    );
+                  }}
+                >
+                  Followings
+                </Typography>
+                <Typography
+                  className={`nav-tab ${category === 'articles' ? 'active' : ''}`}
+                  onClick={() => {
+                    setCategory('articles');
+                    router.push(
+                      {
+                        pathname: '/member',
+                        query: { ...router.query, category: 'articles' },
+                      },
+                      undefined,
+                      { scroll: false },
+                    );
+                  }}
+                >
+                  Articles
+                </Typography>
+              </Stack>
+            </Stack>
+
+            {/* Main Content */}
+            <Stack className={'main-content'}>
+              {category === 'properties' && <MemberProperties />}
+              {category === 'followers' && (
+                <MemberFollowers
+                  subscribeHandler={subscribeHandler}
+                  unsubscribeHandler={unsubscribeHandler}
+                  likeMemberHandler={likeMemberHandler}
+                  redirectToMemberPageHandler={redirectToMemberPageHandler}
+                />
+              )}
+              {category === 'followings' && (
+                <MemberFollowings
+                  subscribeHandler={subscribeHandler}
+                  unsubscribeHandler={unsubscribeHandler}
+                  likeMemberHandler={likeMemberHandler}
+                  redirectToMemberPageHandler={redirectToMemberPageHandler}
+                />
+              )}
+              {category === 'articles' && <MemberArticles />}
+            </Stack>
+          </Stack>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default withLayoutBasic(MemberPage);

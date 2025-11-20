@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { NextPage } from 'next';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../property/PropertyCard';
-import { Property } from '../../types/property/property';
-import { T } from '../../types/common';
 import { GET_VISITED } from '@/apollo/user/query';
 import { useQuery } from '@apollo/client';
+import { Pagination, Stack, Typography } from '@mui/material';
+import { NextPage } from 'next';
+import { useState } from 'react';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { T } from '../../types/common';
+import { Property } from '../../types/property/property';
+import PropertyCard from '../property/PropertyCard';
 
 const RecentlyVisited: NextPage = () => {
   const device = useDeviceDetect();
@@ -64,8 +64,16 @@ const RecentlyVisited: NextPage = () => {
                 count={Math.ceil(total / searchVisited.limit)}
                 page={searchVisited.page}
                 shape="circular"
-                color="primary"
                 onChange={paginationHandler}
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    color: '#181a20',
+                    '&.Mui-selected': {
+                      backgroundColor: '#181a20',
+                      color: '#ffffff',
+                    },
+                  },
+                }}
               />
             </Stack>
             <Stack className="total-result">

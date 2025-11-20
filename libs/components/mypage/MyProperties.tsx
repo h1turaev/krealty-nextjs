@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import { NextPage } from 'next';
-import { Pagination, Stack, Typography } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyCard } from './PropertyCard';
-import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { Property } from '../../types/property/property';
-import { AgentPropertiesInquiry } from '../../types/property/property.input';
-import { T } from '../../types/common';
-import { PropertyStatus } from '../../enums/property.enum';
-import { userVar } from '../../../apollo/store';
-import { useRouter } from 'next/router';
 import { UPDATE_PROPERTY } from '@/apollo/user/mutation';
 import { GET_AGENT_PROPERTIES } from '@/apollo/user/query';
-import { error } from 'console';
 import { sweetConfirmAlert, sweetErrorHandling } from '@/libs/sweetAlert';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { Pagination, Stack, Typography } from '@mui/material';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { userVar } from '../../../apollo/store';
+import { PropertyStatus } from '../../enums/property.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { T } from '../../types/common';
+import { Property } from '../../types/property/property';
+import { AgentPropertiesInquiry } from '../../types/property/property.input';
+import { PropertyCard } from './PropertyCard';
 
 const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
   const device = useDeviceDetect();
@@ -50,7 +49,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
     setSearchFilter({ ...searchFilter, search: { propertyStatus: value } });
   };
 
- const deletePropertyHandler = async (id: string) => {
+  const deletePropertyHandler = async (id: string) => {
     try {
       if (await sweetConfirmAlert('Are you sure to delete this property?')) {
         await updateProperty({
@@ -107,7 +106,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
           <Stack className="tab-name-box">
             <Typography
               onClick={() => changeStatusHandler(PropertyStatus.ACTIVE)}
-                className={
+              className={
                 searchFilter.search.propertyStatus === 'ACTIVE' ? 'active-tab-name' : 'tab-name'
               }
             >
@@ -131,7 +130,6 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
               {searchFilter.search.propertyStatus === 'ACTIVE' && (
                 <Typography className="title-text">Action</Typography>
               )}
-
             </Stack>
 
             {agentProperties?.length === 0 ? (
@@ -158,8 +156,16 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
                     count={Math.ceil(total / searchFilter.limit)}
                     page={searchFilter.page}
                     shape="circular"
-                    color="primary"
                     onChange={paginationHandler}
+                    sx={{
+                      '& .MuiPaginationItem-root': {
+                        color: '#181a20',
+                        '&.Mui-selected': {
+                          backgroundColor: '#181a20',
+                          color: '#ffffff',
+                        },
+                      },
+                    }}
                   />
                 </Stack>
                 <Stack className="total-result">

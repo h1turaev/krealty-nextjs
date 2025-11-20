@@ -50,7 +50,7 @@ const TuiEditor = () => {
         'operations',
         JSON.stringify({
           query: `mutation ImageUploader($file: Upload!, $target: String!) {
-						imageUploader(file: $file, target: $target) 
+						imageUploader(file: $file, target: $target)
 				  }`,
           variables: {
             file: null,
@@ -141,11 +141,11 @@ const TuiEditor = () => {
               inputProps={{ 'aria-label': 'Without label' }}
             >
               <MenuItem value={BoardArticleCategory.FREE}>
-                <span>Free</span>
+                <span>Community</span>
               </MenuItem>
-              <MenuItem value={BoardArticleCategory.HUMOR}>Humor</MenuItem>
-              <MenuItem value={BoardArticleCategory.NEWS}>News</MenuItem>
-              <MenuItem value={BoardArticleCategory.RECOMMEND}>Recommendation</MenuItem>
+              <MenuItem value={BoardArticleCategory.HUMOR}>Neighborhood</MenuItem>
+              <MenuItem value={BoardArticleCategory.NEWS}>Trends</MenuItem>
+              <MenuItem value={BoardArticleCategory.RECOMMEND}>Living Tips</MenuItem>
             </Select>
           </FormControl>
         </Box>

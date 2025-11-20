@@ -5,17 +5,19 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      gap: 0;
       .main-title-box {
         width: 100%;
         height: auto;
         flex-direction: row;
         justify-content: flex-start;
+        margin-bottom: 30px;
         .right-box {
-          width: 315px;
+          width: auto;
           .main-title {
             color: #181a20;
             font-family: $font;
-            font-size: 30px;
+            font-size: 24px;
             font-style: normal;
             font-weight: 600;
             line-height: normal;
@@ -29,19 +31,27 @@
         }
       }
       .properties-list-box {
-        margin-top: 85px;
+        width: 100%;
+        margin-top: 0;
         .list-box {
+          width: 100%;
+          padding: 0;
+          border: none;
+          background: transparent;
+          box-shadow: none;
+          min-height: auto;
           .listing-title-box {
             width: 100%;
             height: auto;
             flex-direction: row;
-            gap: 110px;
+            gap: 90px;
             padding: 18px 15px 18px 33px;
             border-radius: 12px;
             background: #f6f6f6;
+            margin-bottom: 20px;
             transition: background-color 0.3s ease;
             .dark-mode & {
-              background: #2a2d35;
+              background: rgba(255, 255, 255, 0.05);
             }
             .title-text {
               color: #181a20;
