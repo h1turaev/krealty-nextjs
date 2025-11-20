@@ -2366,4 +2366,76 @@
       }
     }
   }
+
+  // Amenities page CTA Section dark mode compatibility
+  #amenities-page {
+    .community-cta-section {
+      margin-top: 80px;
+      margin-bottom: 80px;
+      .cta-content {
+        .dark-mode & {
+          background: #0f1115;
+        }
+        .cta-headline {
+          .dark-mode & {
+            color: rgba(245, 245, 240, 0.9);
+          }
+        }
+        .cta-title {
+          .dark-mode & {
+            color: rgba(255, 255, 255, 0.95);
+          }
+        }
+        .cta-subtitle {
+          .dark-mode & {
+            color: rgba(245, 245, 240, 0.8);
+          }
+        }
+        .cta-browse-button {
+          .dark-mode & {
+            background: rgba(255, 255, 255, 0.95);
+            color: #181a20;
+            &:hover {
+              background: #ffffff;
+            }
+          }
+        }
+        .cta-agent-card {
+          .dark-mode & {
+            background: rgba(255, 255, 255, 0.95);
+            &:hover {
+              background: #ffffff;
+            }
+          }
+          .cta-agent-text {
+            .dark-mode & {
+              color: #181a20;
+            }
+          }
+          .cta-agent-arrow {
+            .dark-mode & {
+              background: rgba(24, 26, 32, 0.15);
+              svg {
+                color: #181a20;
+              }
+            }
+          }
+          &:hover {
+            .cta-agent-arrow {
+              .dark-mode & {
+                background: rgba(24, 26, 32, 0.2);
+              }
+            }
+          }
+        }
+      }
+      .cta-image {
+        .dark-mode & {
+          img {
+            filter: brightness(0.9);
+          }
+        }
+      }
+    }
+  }
 }

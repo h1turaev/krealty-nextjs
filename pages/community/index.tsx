@@ -1,12 +1,12 @@
 import { useQuery } from '@apollo/client';
-import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
+import { Pagination, Stack, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { GET_BOARD_ARTICLES } from '../../apollo/user/query';
 import CommunityCard from '../../libs/components/homepage/CommunityCard';
+import CTASection from '../../libs/components/homepage/CTASection';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { BoardArticleCategory } from '../../libs/enums/board-article.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -210,49 +210,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
             )}
           </Stack>
 
-          {/* New CTA Section */}
-          <Stack className="community-cta-section">
-            <Stack className="cta-content">
-              <Typography className="cta-headline">[START YOUR LIVING JOURNEY]</Typography>
-              <Typography className="cta-title">Let's Find Your Ideal Space</Typography>
-              <Typography className="cta-subtitle">
-                Premium properties for rent or sale — managed with professionalism and care
-              </Typography>
-              <Link href="/property" passHref style={{ textDecoration: 'none' }}>
-                <Button className="cta-browse-button" component="div">
-                  Browse Properties
-                </Button>
-              </Link>
-              <Link href="/agent" passHref style={{ textDecoration: 'none' }}>
-                <Stack className="cta-agent-card" component="div">
-                  <Box className="cta-agent-avatar">
-                    <img src="/img/profile/agent-sofy.avif" alt="Agent" />
-                  </Box>
-                  <Typography className="cta-agent-text">Talk to an Agent</Typography>
-                  <Box className="cta-agent-arrow">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6 12L10 8L6 4"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </Box>
-                </Stack>
-              </Link>
-            </Stack>
-            <Box className="cta-image">
-              <img src="/img/banner/basicbanner-2.webp" alt="Modern Building" />
-            </Box>
-          </Stack>
+          <CTASection />
         </div>
       </div>
     );

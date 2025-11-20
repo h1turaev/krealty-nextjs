@@ -8,6 +8,7 @@ import Advertisement from '../libs/components/homepage/Advertisement';
 import Amenities from '../libs/components/homepage/Amenities';
 import CommitmentSection from '../libs/components/homepage/CommitmentSection';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
+import CTASection from '../libs/components/homepage/CTASection';
 import PopularProperties from '../libs/components/homepage/PopularProperties';
 import TopAgents from '../libs/components/homepage/TopAgents';
 import TrendProperties from '../libs/components/homepage/TrendProperties';
@@ -80,6 +81,9 @@ const Home: NextPage = ({ initialInput }: any) => {
         <ScrollAnimation animationType="fadeIn" delay={0.1}>
           <TopAgents />
         </ScrollAnimation>
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <CTASection />
+        </ScrollAnimation>
       </Stack>
     );
   } else {
@@ -105,6 +109,9 @@ const Home: NextPage = ({ initialInput }: any) => {
         </ScrollAnimation>
         <ScrollAnimation animationType="slideRight" delay={0.2}>
           <CommunityBoards />
+        </ScrollAnimation>
+        <ScrollAnimation animationType="fadeIn" delay={0.1}>
+          <CTASection />
         </ScrollAnimation>
       </Stack>
     );
