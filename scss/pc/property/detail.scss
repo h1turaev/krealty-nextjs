@@ -1238,76 +1238,69 @@
       .similar-properties-config {
         width: 100%;
         margin-top: 45px;
-        gap: 66px;
-        .title-pagination-box {
+        gap: 40px;
+        display: flex;
+        flex-direction: column;
+        .title-box {
           width: 100%;
-          height: auto;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: flex-end;
-          .title-box {
-            width: 30%;
-            .section-header {
-              display: flex;
-              flex-direction: column;
-              gap: 8px;
-              margin-bottom: 8px;
-            }
-            .section-label {
-              color: #181a20;
-              font-family: $font;
-              font-size: 12px;
-              font-style: normal;
-              font-weight: 600;
-              line-height: normal;
-              text-transform: uppercase;
-              letter-spacing: 1px;
-              transition: color 0.3s ease;
-              .dark-mode & {
-                color: rgba(255, 255, 255, 0.7);
-              }
-            }
-            .main-title {
-              color: #181a20;
-              font-family: $font;
-              font-size: 34px;
-              font-style: normal;
-              font-weight: 500;
-              line-height: 150%;
-              letter-spacing: -0.646px;
-              text-transform: capitalize;
-              margin: 0;
-              transition: color 0.3s ease;
-              .dark-mode & {
-                color: rgba(255, 255, 255, 0.9);
-              }
-            }
-            .sub-title {
-              color: #181a20;
-              font-family: $font;
-              font-size: 14px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: 26px;
-              transition: color 0.3s ease;
-              .dark-mode & {
-                color: rgba(255, 255, 255, 0.7);
-              }
+          .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 8px;
+          }
+          .section-label {
+            color: #181a20;
+            font-family: $font;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
             }
           }
-          .pagination-box {
-            flex-direction: row;
-            align-items: center;
-            gap: 22px;
+          .main-title {
+            color: #181a20;
+            font-family: $font;
+            font-size: 34px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 150%;
+            letter-spacing: -0.646px;
+            text-transform: capitalize;
+            margin: 0;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
+          }
+          .sub-title {
+            color: #181a20;
+            font-family: $font;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
           }
         }
         .cards-box {
           width: 100%;
           padding-bottom: 10px;
+          overflow: hidden;
           .similar-homes-swiper {
             width: 100%;
+            padding: 0;
             .similar-homes-slide {
-              width: 411px;
+              width: 410px;
+              height: auto;
             }
           }
         }

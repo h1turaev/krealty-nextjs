@@ -87,7 +87,7 @@ const MemberPage: NextPage = () => {
 			try {
 				if (!id) return;
 				if (!user._id) throw new Error(Message.CREATE_FAILED);
-	
+
 				await likeTargetMember({
 					variables: {
 						input: id,
@@ -118,9 +118,6 @@ const MemberPage: NextPage = () => {
 				<div className="container">
 					<Stack className={'member-page'}>
 						<Stack className={'back-frame'}>
-							<Stack className={'left-config'}>
-								<MemberMenu subscribeHandler={subscribeHandler} unsubscribeHandler={unsubscribeHandler} />
-							</Stack>
 							<Stack className="main-config" mb={'76px'}>
 								<Stack className={'list-config'}>
 									{category === 'properties' && <MemberProperties />}
@@ -142,6 +139,9 @@ const MemberPage: NextPage = () => {
 									)}
 									{category === 'articles' && <MemberArticles />}
 								</Stack>
+							</Stack>
+							<Stack className={'right-config'}>
+								<MemberMenu subscribeHandler={subscribeHandler} unsubscribeHandler={unsubscribeHandler} />
 							</Stack>
 						</Stack>
 					</Stack>

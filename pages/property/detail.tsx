@@ -1,9 +1,7 @@
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import EastIcon from '@mui/icons-material/East';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import WestIcon from '@mui/icons-material/West';
 import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
 import moment from 'moment';
 import { NextPage } from 'next';
@@ -11,9 +9,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Navigation, Pagination } from 'swiper';
+import { Autoplay } from 'swiper';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { userVar } from '../../apollo/store';
 import { CREATE_COMMENT, LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
@@ -500,7 +497,9 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
                           {property?.memberData?.memberPhone}
                         </Typography>
                       </Stack>
-                      <Link href={`/agent/detail?agentId=${property?.memberData?._id}`}>
+                      <Link
+                        href={`/member?memberId=${property?.memberData?._id}&category=properties`}
+                      >
                         <Typography className={'listings'}>Agent Properties</Typography>
                       </Link>
                     </Stack>
@@ -533,33 +532,25 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
             </Stack>
             {destinationProperties.length !== 0 && (
               <Stack className={'similar-properties-config'}>
-                <Stack className={'title-pagination-box'}>
-                  <Stack className={'title-box'}>
-                    <Stack className={'section-header'}>
-                      <Typography className={'section-label'}>[DESTINATION PROPERTY]</Typography>
-                      <Typography className={'main-title'}>Destination Property</Typography>
-                    </Stack>
-                    <Typography className={'sub-title'}>Similar Properties</Typography>
-                  </Stack>
-                  <Stack className={'pagination-box'}>
-                    <WestIcon className={'swiper-similar-prev'} />
-                    <div className={'swiper-similar-pagination'}></div>
-                    <EastIcon className={'swiper-similar-next'} />
+                <Stack className={'title-box'}>
+                  <Stack className={'section-header'}>
+                    <Typography className={'section-label'}>[DESTINATION PROPERTY]</Typography>
+                    <Typography className={'main-title'}>One Destination</Typography>
                   </Stack>
                 </Stack>
                 <Stack className={'cards-box'}>
                   <Swiper
                     className={'similar-homes-swiper'}
                     slidesPerView={'auto'}
-                    spaceBetween={35}
-                    modules={[Navigation, Pagination]}
-                    navigation={{
-                      nextEl: '.swiper-similar-next',
-                      prevEl: '.swiper-similar-prev',
+                    spaceBetween={24}
+                    modules={[Autoplay]}
+                    autoplay={{
+                      delay: 3000,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
                     }}
-                    pagination={{
-                      el: '.swiper-similar-pagination',
-                    }}
+                    loop={true}
+                    grabCursor={true}
                   >
                     {destinationProperties.map((property: Property) => {
                       return (

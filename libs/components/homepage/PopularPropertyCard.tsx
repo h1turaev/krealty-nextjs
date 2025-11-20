@@ -53,7 +53,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
                 <p className={'price-label'}>Starting Price</p>
                 <p className={'price'}>
                   ${property.propertyPrice}
-                  {property?.propertyRent ? '/mo' : ''}
+                  {property?.propertyRent ? '' : ''}
                 </p>
               </div>
             </div>
@@ -111,7 +111,7 @@ const PopularPropertyCard = (props: PopularPropertyCardProps) => {
                 <p className={'price-label'}>Starting Price</p>
                 <p className={'price'}>
                   ${property.propertyPrice}
-                  {property?.propertyRent ? '/mo' : ''}
+                  {property?.propertyRent ? '' : ''}
                 </p>
               </div>
             </div>

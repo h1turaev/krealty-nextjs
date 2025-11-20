@@ -4,31 +4,33 @@
   margin-left: 8px;
   margin-bottom: 35px;
   width: 410px;
-  height: 455px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   .card-img {
     position: relative;
     width: 100%;
-    height: 264px;
+    height: 300px;
     background-size: cover;
-    border-radius: 12px 12px 0px 0px;
-    cursor: pointer;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
     div.status {
       position: absolute;
-      padding: 6px 34px;
+      padding: 6px 16px;
       left: 20px;
       top: 20px;
       display: flex;
       align-items: center;
+      gap: 6px;
       border-radius: 6px;
       background: #eb6753;
+      z-index: 3;
       img {
         width: 14px;
         height: 14px;
       }
       span {
-        margin-left: 5px;
         color: #fff;
         font-family: $font;
         font-size: 12px;
@@ -38,193 +40,187 @@
         text-transform: uppercase;
       }
     }
-    div.price {
-      position: absolute;
-      padding: 8px 12px;
-      left: 20px;
-      bottom: 20px;
-      border-radius: 6px;
-      background: #fff;
-      color: #181a20;
-      font-family: $font;
-      font-size: 15px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-    }
   }
-  .info {
-    padding: 20px 22px 17px;
-    display: flex;
-    flex-direction: column;
+  .image-overlay {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 20px 24px;
+    border-radius: 12px;
     box-sizing: border-box;
-    border-radius: 0px 0px 12px 12px;
-    border: 1px solid #ddd;
-    border-top: none;
-    background: #fff;
-    .title {
-      overflow: hidden;
-      color: #181a20;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-family: $font;
-      font-size: 15px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-      text-transform: capitalize;
-      cursor: pointer;
-    }
-    .desc {
-      margin-top: 5px;
-      overflow: hidden;
-      color: #717171;
-      font-family: $font;
-      font-size: 13px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .options {
-      margin-top: 15px;
+    .overlay-content {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-      div {
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      box-sizing: border-box;
+      .overlay-left {
         display: flex;
-        flex-direction: row;
-        img {
-          margin-right: 5px;
-          width: 17px;
-          height: 17px;
-        }
-        span {
-          color: #181a20;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+        min-width: 0;
+        max-width: 100%;
+        .overlay-title {
+          color: #ffffff;
           font-family: $font;
-          font-size: 13px;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 1.4;
+          margin: 0;
+          text-align: left;
+          letter-spacing: -0.2px;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .overlay-location {
+          color: rgba(255, 255, 255, 0.75);
+          font-family: $font;
+          font-size: 11px;
           font-style: normal;
           font-weight: 400;
-          line-height: normal;
+          line-height: 1.5;
+          margin: 0;
+          letter-spacing: 0.8px;
+          text-align: left;
+          text-transform: uppercase;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
-    }
-    .bott {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      div {
-        width: 65px;
+      .overlay-right {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-      p {
-        color: #181a20;
-        font-family: $font;
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        text-transform: capitalize;
-      }
-      span {
-        margin-left: 6px;
-        color: rgba(143, 143, 143, 0.54);
-        font-family: $font;
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        text-transform: capitalize;
-      }
-      button {
-        margin-left: 15px;
-        width: 16px;
-        height: 16px;
-        box-sizing: border-box;
-      }
-      .buttons-box {
-        width: auto;
-        height: auto;
-        display: flex;
-        flex-direction: row;
-        gap: 7px;
+        flex-direction: column;
+        gap: 2px;
+        align-items: flex-end;
+        flex-shrink: 0;
+        .overlay-price-label {
+          color: rgba(255, 255, 255, 0.75);
+          font-family: $font;
+          font-size: 11px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 1.5;
+          margin: 0;
+          text-align: right;
+          letter-spacing: 0.3px;
+          white-space: nowrap;
+        }
+        .overlay-price-value {
+          color: #ffffff;
+          font-family: $font;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 1.4;
+          margin: 0;
+          text-align: right;
+          letter-spacing: -0.2px;
+          white-space: nowrap;
+        }
       }
     }
   }
 }
 .agent-general-card {
   position: relative;
-  margin-right: 27px;
-  margin-bottom: 34px;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
+  width: 350px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  padding: 0;
+  transition: all 0.3s ease;
+  .dark-mode & {
+    background: #1e2128;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
   .agent-img {
-    border-radius: 12px;
-    width: 233px;
-    height: 273px;
-    background-size: 100% 100%;
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-    div {
-      position: absolute;
-      padding: 12px;
-      top: 12px;
-      left: 12px;
-      border-radius: 6px;
-      background: #eb6753;
-      color: #fff;
-      font-family: $font;
-      font-size: 12px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
+    background-color: #e8e9eb;
+    .dark-mode & {
+      background-color: #2a2d35;
     }
   }
-  .agent-desc {
-    margin-top: 23px;
+  .agent-content {
+    padding: 24px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    flex: 1;
+    min-height: 180px;
     .agent-info {
       display: flex;
       flex-direction: column;
-      strong {
+      gap: 4px;
+      margin-bottom: auto;
+      .agent-name {
         color: #181a20;
         font-family: $font;
-        font-size: 15px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 600;
-        line-height: normal;
+        line-height: 1.4;
+        margin: 0;
         cursor: pointer;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        &:hover {
+          text-decoration: underline;
+        }
+        .dark-mode & {
+          color: rgba(255, 255, 255, 0.9);
+        }
       }
-      span {
-        color: #181a20;
+      .agent-title {
+        color: #717171;
         font-family: $font;
-        font-size: 15px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 400;
-        line-height: 28px;
+        line-height: 1.5;
+        margin: 0;
+        transition: color 0.3s ease;
+        .dark-mode & {
+          color: rgba(255, 255, 255, 0.6);
+        }
       }
     }
-    .buttons {
-      width: auto;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      svg {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-      }
-      .view-cnt {
-        font-size: 13px;
+    .agent-quote {
+      color: #181a20;
+      font-family: $font;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.6;
+      margin: 0;
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      transition: color 0.3s ease, border-color 0.3s ease;
+      .dark-mode & {
+        color: rgba(255, 255, 255, 0.8);
+        border-top-color: rgba(255, 255, 255, 0.1);
       }
     }
   }
@@ -232,85 +228,205 @@
 .community-general-card-config {
   position: relative;
   height: auto;
-  gap: 20px;
   border-radius: 12px;
   cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+    .dark-mode & {
+      box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
+    }
+  }
   .image-box {
+    position: relative;
     width: 100%;
     height: 283px;
+    overflow: hidden;
+    border-radius: 12px;
     .card-img {
       width: 100%;
       height: 100%;
+      object-fit: cover;
       border-radius: 12px;
+      transition: transform 0.3s ease;
     }
-  }
-  .desc-box {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 80px;
-    .title {
-      color: #717171;
-      font-family: $font;
-      font-size: 13px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
+    &:hover .card-img {
+      transform: scale(1.05);
     }
-    .desc {
-      color: #181a20;
-      font-family: $font;
-      font-size: 15px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 26px;
-      text-transform: capitalize;
-    }
-    .buttons {
-      width: auto;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      svg {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
+    .overlay-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 60%, transparent 100%);
+      padding: 20px 16px 16px 16px;
+      border-radius: 0 0 12px 12px;
+      transition: background 0.3s ease;
+      .dark-mode & {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 60%, transparent 100%);
       }
-      .view-cnt {
-        font-size: 13px;
+      .overlay-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        margin-bottom: 12px;
+        .left-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          .article-title {
+            color: #ffffff;
+            font-family: $font;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 6px;
+            text-align: left;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: #ffffff;
+            }
+          }
+          .article-location {
+            color: rgba(255, 255, 255, 0.7);
+            font-family: $font;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.4;
+            text-align: left;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.8);
+            }
+          }
+        }
+        .right-content {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          .price-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-family: $font;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            text-align: right;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.8);
+            }
+          }
+          .article-price {
+            color: #ffffff;
+            font-family: $font;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.3;
+            text-align: right;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: #ffffff;
+            }
+          }
+        }
       }
-    }
-  }
-  .date-box {
-    position: absolute;
-    width: 70px;
-    height: 69.014px;
-    align-items: center;
-    justify-content: center;
-    top: 235px;
-    right: 20px;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
-    .month {
-      color: #181a20;
-      text-align: center;
-      font-family: $font;
-      font-size: 13px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-    }
-    .day {
-      color: #181a20;
-      font-family: $font;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
+      .overlay-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        .dark-mode & {
+          border-top-color: rgba(255, 255, 255, 0.2);
+        }
+        .action-btn {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 6px;
+          padding: 4px 8px;
+          border-radius: 6px;
+          background: transparent;
+          cursor: pointer;
+          transition: background 0.2s ease;
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            .dark-mode & {
+              background: rgba(255, 255, 255, 0.15);
+            }
+          }
+          svg {
+            width: 18px;
+            height: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.2s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.95);
+            }
+          }
+          .MuiSvgIcon-root {
+            width: 18px;
+            height: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.2s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.95);
+            }
+            &.MuiSvgIcon-colorPrimary {
+              color: #f54d56 !important;
+              .dark-mode & {
+                color: #f54d56 !important;
+              }
+            }
+          }
+          .favorite-icon {
+            width: 18px;
+            height: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.2s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.95);
+            }
+            &.liked {
+              color: #f54d56 !important;
+              .dark-mode & {
+                color: #f54d56 !important;
+              }
+            }
+            &.MuiSvgIcon-colorPrimary {
+              color: #f54d56 !important;
+              .dark-mode & {
+                color: #f54d56 !important;
+              }
+            }
+          }
+          .action-count {
+            color: rgba(255, 255, 255, 0.9);
+            font-family: $font;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 1;
+            transition: color 0.2s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.95);
+            }
+          }
+        }
+      }
     }
   }
 }

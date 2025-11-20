@@ -43,53 +43,22 @@ const PropertyBigCard = (props: PropertyBigCardProps) => {
               <span>top</span>
             </div>
           )}
-
-          <div className={'price'}>${formatterStr(property?.propertyPrice)}</div>
-        </Box>
-        <Box component={'div'} className={'info'}>
-          <strong className={'title'}>{property?.propertyTitle}</strong>
-          <p className={'desc'}>{property?.propertyAddress}</p>
-          <div className={'options'}>
-            <div>
-              <img src="/img/icons/bed.svg" alt="" />
-              <span>{property?.propertyBeds} bed</span>
-            </div>
-            <div>
-              <img src="/img/icons/room.svg" alt="" />
-              <span>{property?.propertyRooms} rooms</span>
-            </div>
-            <div>
-              <img src="/img/icons/expand.svg" alt="" />
-              <span>{property?.propertySquare} m2</span>
-            </div>
-          </div>
-          <Divider sx={{ mt: '15px', mb: '17px' }} />
-          <div className={'bott'}>
-            <div>
-              {property?.propertyRent ? <p>Rent</p> : <span>Rent</span>}
-              {property?.propertyBarter ? <p>Barter</p> : <span>Barter</span>}
-            </div>
-            <div className="buttons-box">
-              <IconButton color={'default'}>
-                <RemoveRedEyeIcon />
-              </IconButton>
-              <Typography className="view-cnt">{property?.propertyViews}</Typography>
-              <IconButton
-                color={'default'}
-                onClick={(e: React.MouseEvent<HTMLElement>) => {
-                  e.stopPropagation();
-                  likePropertyHandler(user, property?._id)
-                }}
-              >
-                {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-                  <FavoriteIcon style={{ color: 'red' }} />
-                ) : (
-                  <FavoriteIcon />
-                )}
-              </IconButton>
-              <Typography className="view-cnt">{property?.propertyLikes}</Typography>
-            </div>
-          </div>
+          <Box component={'div'} className={'image-overlay'}>
+            <Stack className={'overlay-content'}>
+              <Stack className={'overlay-left'}>
+                <Typography className={'overlay-title'}>{property?.propertyTitle}</Typography>
+                <Typography className={'overlay-location'}>
+                  {property?.propertyLocation?.toUpperCase()}
+                </Typography>
+              </Stack>
+              <Stack className={'overlay-right'}>
+                <Typography className={'overlay-price-label'}>Starting Price</Typography>
+                <Typography className={'overlay-price-value'}>
+                  ${formatterStr(property?.propertyPrice)}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Box>
         </Box>
       </Stack>
     );

@@ -256,7 +256,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
                   </Stack>
                   <Stack className="total-result">
                     <Typography>
-                      [ Total propert{total > 1 ? 'ies' : 'y'}: {total}  ]
+                      [ Total propert{total > 1 ? 'ies' : 'y'}: {total} ]
                     </Typography>
                   </Stack>
                 </Stack>

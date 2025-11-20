@@ -45,6 +45,27 @@ body::-webkit-scrollbar {
 }
 
 #pc-wrap {
+  position: relative;
+  &::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 80px;
+    background: transparent;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: none;
+    pointer-events: none;
+    z-index: 30;
+    .dark-mode & {
+      background: transparent;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+  }
   #top {
     .navbar {
       .navbar-main {
@@ -870,6 +891,11 @@ body::-webkit-scrollbar {
     &.auth {
       height: 300px;
       padding: 0 120px 40px;
+    }
+    &.blog-banner {
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
     .container {
       display: flex;

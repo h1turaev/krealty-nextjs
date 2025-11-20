@@ -3,12 +3,6 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Stack, Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import { REACT_APP_API_URL } from '../../config';
-import IconButton from '@mui/material/IconButton';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
 
 interface AgentCardProps {
   agent: any;
@@ -16,9 +10,8 @@ interface AgentCardProps {
 }
 
 const AgentCard = (props: AgentCardProps) => {
-  const { agent, likeMemberHandler } = props;
+  const { agent } = props;
   const device = useDeviceDetect();
-  const user = useReactiveVar(userVar);
   const imagePath: string = agent?.memberImage
     ? `${REACT_APP_API_URL}/${agent?.memberImage}`
     : '/img/profile/defaultUser.svg';
@@ -30,8 +23,8 @@ const AgentCard = (props: AgentCardProps) => {
       <Stack className="agent-general-card">
         <Link
           href={{
-            pathname: '/agent/detail',
-            query: { agentId: agent?._id },
+            pathname: '/member',
+            query: { memberId: agent?._id, category: 'properties' },
           }}
         >
           <Box
@@ -43,38 +36,28 @@ const AgentCard = (props: AgentCardProps) => {
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
             }}
-          >
-            <div>{agent?.memberProperties} properties</div>
-          </Box>
+          />
         </Link>
 
-        <Stack className={'agent-desc'}>
+        <Stack className={'agent-content'}>
           <Box component={'div'} className={'agent-info'}>
             <Link
               href={{
-                pathname: '/agent/detail',
-                query: { agentId: 'id' },
+                pathname: '/member',
+                query: { memberId: agent?._id, category: 'properties' },
               }}
             >
-              <strong>{agent?.memberFullName ?? agent?.memberNick}</strong>
+              <Typography className={'agent-name'}>
+                {agent?.memberFullName ?? agent?.memberNick}
+              </Typography>
             </Link>
-            <span>Agent</span>
+            <Typography className={'agent-title'}>
+              Real Estate Agent
+            </Typography>
           </Box>
-          <Box component={'div'} className={'buttons'}>
-            <IconButton color={'default'}>
-              <RemoveRedEyeIcon />
-            </IconButton>
-            <Typography className="view-cnt">{agent?.memberViews}</Typography>
-            {/* Like Button */}
-            <IconButton color={'default'} onClick={() => likeMemberHandler(user, agent?._id)}>
-              {agent?.meLiked && agent?.meLiked[0]?.myFavorite ? (
-                <FavoriteIcon color={'primary'} />
-              ) : (
-                <FavoriteBorderIcon />
-              )}
-            </IconButton>
-            <Typography className="view-cnt">{agent?.memberLikes}</Typography>
-          </Box>
+          <Typography className={'agent-quote'}>
+            {agent?.memberDesc || `With ${agent?.memberProperties || 0} properties and years of experience, I help clients find their perfect home.`}
+          </Typography>
         </Stack>
       </Stack>
     );

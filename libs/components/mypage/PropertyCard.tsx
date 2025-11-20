@@ -62,22 +62,32 @@ export const PropertyCard = (props: PropertyCardProps) => {
           <Typography className="name">{property.propertyTitle}</Typography>
           <Typography className="address">{property.propertyAddress}</Typography>
           <Typography className="price">
-            <strong>${formatterStr(property?.propertyPrice)}</strong>
+            <strong>₩{formatterStr(property?.propertyPrice)}</strong>
           </Typography>
         </Stack>
         <Stack className="date-box">
           <Typography className="date">
-            <Moment format="DD MMMM, YYYY">{property.createdAt}</Moment>
+            <Moment format="MMM DD, YYYY">{property.createdAt}</Moment>
           </Typography>
         </Stack>
         <Stack className="status-box">
-          <Stack className="coloured-box" sx={{ background: '#E5F0FD' }} onClick={handleClick}>
-            <Typography className="status" sx={{ color: '#3554d1' }}>
+          <Stack
+            className="coloured-box"
+            sx={memberPage ? {
+              background: '#0071e3',
+              cursor: updatePropertyHandler ? 'pointer' : 'default'
+            } : {
+              background: '#E5F0FD',
+              cursor: 'pointer'
+            }}
+            onClick={updatePropertyHandler && property.propertyStatus !== 'SOLD' ? handleClick : undefined}
+          >
+            <Typography className="status" sx={memberPage ? { color: '#ffffff' } : { color: '#3554d1' }}>
               {property.propertyStatus}
             </Typography>
           </Stack>
         </Stack>
-        {!memberPage && property.propertyStatus !== 'SOLD' && (
+        {updatePropertyHandler && property.propertyStatus !== 'SOLD' && (
           <Menu
             anchorEl={anchorEl}
             open={open}
@@ -115,7 +125,9 @@ export const PropertyCard = (props: PropertyCardProps) => {
         )}
 
         <Stack className="views-box">
-          <Typography className="views">{property.propertyViews.toLocaleString()}</Typography>
+          <Typography className="views">
+            {property.propertyViews.toLocaleString()} views
+          </Typography>
         </Stack>
         {!memberPage && property.propertyStatus === PropertyStatus.ACTIVE && (
           <Stack className="action-box">

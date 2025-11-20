@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
 import { BoardArticle } from '../../types/board-article/board-article';
 import Moment from 'react-moment';
 import { REACT_APP_API_URL } from '../../config';
@@ -55,45 +55,49 @@ const CommunityCard = (props: CommunityCardProps) => {
       >
         <Stack className="image-box">
           <img src={imagePath} alt="" className="card-img" />
-        </Stack>
-        <Stack className="desc-box" sx={{ marginTop: '-20px' }}>
-          <Stack>
-            <Typography
-              className="desc"
-              onClick={(e: React.MouseEvent<HTMLElement>) => {
-                e.stopPropagation();
-                goMemberPage(boardArticle?.memberData?._id as string);
-              }}
-            >
-              {boardArticle?.memberData?.memberNick}
-            </Typography>
-            <Typography className="title">{boardArticle?.articleTitle}</Typography>
+          <Stack className="overlay-box">
+            <Stack className="overlay-content">
+              <Stack className="left-content">
+                <Typography className="article-title">{boardArticle?.articleTitle}</Typography>
+                <Typography className="article-location">
+                  {boardArticle?.memberData?.memberNick?.toUpperCase() || 'LOCATION'}
+                </Typography>
+              </Stack>
+              <Stack className="right-content">
+                <Typography className="price-label">Starting Price</Typography>
+                <Typography className="article-price">
+                  {boardArticle?.articleViews || 0} views
+                </Typography>
+              </Stack>
+            </Stack>
+            <Stack className="overlay-actions">
+              <Box
+                component="div"
+                className="action-btn"
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                }}
+              >
+                <RemoveRedEyeIcon />
+                <Typography className="action-count">{boardArticle?.articleViews || 0}</Typography>
+              </Box>
+              <Box
+                component="div"
+                className="action-btn"
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  likeArticleHandler(e, user, boardArticle?._id);
+                }}
+              >
+                {boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
+                  <FavoriteIcon className="favorite-icon liked" />
+                ) : (
+                  <FavoriteBorderIcon className="favorite-icon" />
+                )}
+                <Typography className="action-count">{boardArticle?.articleLikes || 0}</Typography>
+              </Box>
+            </Stack>
           </Stack>
-          <Stack className={'buttons'}>
-            <IconButton color={'default'}>
-              <RemoveRedEyeIcon />
-            </IconButton>
-            <Typography className="view-cnt">{boardArticle?.articleViews}</Typography>
-            <IconButton
-              color={'default'}
-              onClick={(e: any) => likeArticleHandler(e, user, boardArticle?._id)}
-            >
-              {boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
-                <FavoriteIcon color={'primary'} />
-              ) : (
-                <FavoriteBorderIcon />
-              )}
-            </IconButton>
-            <Typography className="view-cnt">{boardArticle?.articleLikes}</Typography>
-          </Stack>
-        </Stack>
-        <Stack className="date-box">
-          <Moment className="month" format={'MMMM'}>
-            {boardArticle?.createdAt}
-          </Moment>
-          <Typography className="day">
-            <Moment format={'DD'}>{boardArticle?.createdAt}</Moment>
-          </Typography>
         </Stack>
       </Stack>
     );

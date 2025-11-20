@@ -52,6 +52,12 @@ const CommunityCard = (props: CommunityCardProps) => {
   // Get plain text content
   const plainTextContent = article?.articleContent ? stripHtml(article.articleContent) : '';
 
+  // Truncate text to a reasonable length for card display
+  const maxDescriptionLength = 150;
+  const truncatedText = plainTextContent.length > maxDescriptionLength
+    ? plainTextContent.substring(0, maxDescriptionLength) + '...'
+    : plainTextContent;
+
   if (device === 'mobile') {
     return <div>COMMUNITY CARD (MOBILE)</div>;
   } else {
@@ -80,7 +86,7 @@ const CommunityCard = (props: CommunityCardProps) => {
               </Typography>
             </Box>
             <Typography className={'article-title'}>{article?.articleTitle}</Typography>
-            <Typography className={'article-description'}>{plainTextContent}</Typography>
+            <Typography className={'article-description'}>{truncatedText}</Typography>
             <Box className={'read-more'}>
               <span>Read More</span>
               <svg

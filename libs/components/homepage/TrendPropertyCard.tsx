@@ -203,7 +203,7 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
                 <Box className={'price-info'}>
                   <Typography className={'price-label'}>Starting Price</Typography>
                   <Typography className={'price-value'}>
-                    ${formatPrice(property.propertyPrice)}/mo
+                    ${formatPrice(property.propertyPrice)}
                   </Typography>
                 </Box>
               </Box>

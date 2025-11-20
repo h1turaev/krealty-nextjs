@@ -1,10 +1,9 @@
-import { Stack } from '@mui/material';
 import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Amenities from '../../libs/components/homepage/Amenities';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 
-export const getStaticProps = async ({ locale }: any) => ({
+export const getServerSideProps = async ({ locale }: any) => ({
   props: {
     ...(await serverSideTranslations(locale, ['common'])),
   },

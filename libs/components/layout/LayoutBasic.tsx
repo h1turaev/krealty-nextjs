@@ -60,10 +60,10 @@ const withLayoutBasic = (Component: any) => {
           bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         case '/community/detail':
-          title = 'Community';
-          titleHighlight = 'Detail';
-          desc = 'COMMUNITY';
-          bgImage = '/img/banner/basiclaybanner.jpg';
+          title = 'Blog';
+          titleHighlight = 'Posts';
+          desc = 'BLOG';
+          bgImage = '/img/banner/blogbanner.jpg';
           break;
         case '/cs':
           title = 'Customer';
@@ -79,15 +79,21 @@ const withLayoutBasic = (Component: any) => {
           setAuthHeader(true);
           break;
         case '/member':
-          title = 'Member';
+          title = 'Profile';
           titleHighlight = 'Page';
           desc = 'MEMBER';
-          bgImage = '/img/banner/basiclaybanner.jpg';
+          bgImage = '/img/banner/basicbanner-2.webp';
           break;
         case '/about':
           title = 'About';
           titleHighlight = 'Us';
           desc = 'ABOUT';
+          bgImage = '/img/banner/basiclaybanner.jpg';
+          break;
+        case '/amenities':
+          title = 'Interior';
+          titleHighlight = 'Design';
+          desc = 'AMENITIES';
           bgImage = '/img/banner/basiclaybanner.jpg';
           break;
         default:
@@ -140,10 +146,14 @@ const withLayoutBasic = (Component: any) => {
             </Stack>
 
             <Stack
-              className={`header-basic ${authHeader && 'auth'}`}
+              className={`header-basic ${authHeader && 'auth'} ${
+                router.pathname === '/community/detail' ? 'blog-banner' : ''
+              }`}
               style={{
                 backgroundImage: `url(${memoizedValues.bgImage})`,
                 backgroundSize: 'cover',
+                backgroundPosition:
+                  router.pathname === '/community/detail' ? 'center center' : 'center center',
                 boxShadow: 'inset 10px 40px 150px 40px rgb(24 22 36)',
               }}
             >
