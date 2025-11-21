@@ -14,7 +14,7 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { MembersInquiry } from '../../../libs/types/member/member.input';
 import { Member } from '../../../libs/types/member/member';
 import { MemberStatus, MemberType } from '../../../libs/enums/member.enum';
-import { sweetErrorHandling } from '../../../libs/sweetAlert';
+import { showError } from '../../../libs/toast';
 import { MemberUpdate } from '../../../libs/types/member/member.update';
 import { UPDATE_MEMBER_BY_ADMIN } from '@/apollo/admin/mutation';
 import { GET_ALL_MEMBERS_BY_ADMIN } from '@/apollo/admin/query';
@@ -111,7 +111,7 @@ const {
       menuIconCloseHandler();
       await getAllMembersRefetch({ input: membersInquiry });
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError((err as any)?.message || "An error occurred");
     }
   };
 

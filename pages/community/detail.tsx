@@ -4,7 +4,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Backdrop, Button, IconButton, Pagination, Stack, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
@@ -21,19 +20,16 @@ import { BoardArticleCategory } from '../../libs/enums/board-article.enum';
 import { CommentGroup, CommentStatus } from '../../libs/enums/comment.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import {
-  sweetConfirmAlert,
-  sweetMixinErrorAlert,
-  sweetMixinSuccessAlert,
-  sweetTopSmallSuccessAlert,
-} from '../../libs/sweetAlert';
+  showConfirm,
+  showError,
+  showSuccess,
+  showSuccessTopRight,
+} from '../../libs/toast';
 import { BoardArticle } from '../../libs/types/board-article/board-article';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { CommentUpdate } from '../../libs/types/comment/comment.update';
 import { T } from '../../libs/types/common';
-const ToastViewerComponent = dynamic(() => import('../../libs/components/community/TViewer'), {
-  ssr: false,
-});
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -132,10 +128,10 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
       });
 
       await boardArticleRefetch({ input: articleId });
-      await sweetTopSmallSuccessAlert('Success!', 800);
+      await showSuccessTopRight('Success!', 800);
     } catch (err: any) {
       console.log('ERROR, likeBoArticleHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message);
     } finally {
       setLikeLoading(false);
     }
@@ -159,9 +155,9 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
       await boardArticleRefetch({ input: articleId });
       setComment('');
       setWordsCnt(0);
-      await sweetMixinSuccessAlert('Successfully commented!');
+      await showSuccess('Successfully commented!');
     } catch (error: any) {
-      await sweetMixinErrorAlert(error.message);
+      await showError(error.message);
     }
   };
 
@@ -185,13 +181,13 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
       }
 
       if (commentStatus) {
-        if (await sweetConfirmAlert('Do you want to delete the comment?')) {
+        if (await showConfirm('Do you want to delete the comment?')) {
           await updateComment({
             variables: {
               input: updateData,
             },
           });
-          await sweetMixinSuccessAlert('Successfully deleted!');
+          await showSuccess('Successfully deleted!');
         } else return;
       } else {
         await updateComment({
@@ -199,13 +195,13 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
             input: updateData,
           },
         });
-        await sweetMixinSuccessAlert('Successfully updated!');
+        await showSuccess('Successfully updated!');
       }
 
       await getCommentsRefetch({ input: searchFilter });
       await boardArticleRefetch({ input: articleId });
     } catch (error: any) {
-      await sweetMixinErrorAlert(error.message);
+      await showError(error.message);
     } finally {
       setOpenBackdrop(false);
       setUpdatedComment('');

@@ -234,8 +234,8 @@ const NotificationComponent = () => {
         }}
         PaperProps={{
           sx: {
-            width: device === 'mobile' ? '90vw' : 400,
-            maxHeight: 500,
+            width: device === 'mobile' ? '90vw' : 450,
+            maxHeight: 'none',
             mt: 1,
             backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
             color: isDarkMode ? '#ffffff' : '#000000',
@@ -275,7 +275,7 @@ const NotificationComponent = () => {
           )}
         </Box>
 
-        <Box sx={{ maxHeight: 400, overflowY: 'auto' }}>
+        <Box sx={{ overflow: 'visible' }}>
           {getNotificationsLoading ? (
             <Box sx={{ p: 3, textAlign: 'center' }}>
               <Typography>Loading notifications...</Typography>
@@ -310,6 +310,9 @@ const NotificationComponent = () => {
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     position: 'relative',
+                    whiteSpace: 'normal',
+                    overflow: 'visible',
+                    wordWrap: 'break-word',
                   }}
                 >
                   <Box sx={{ display: 'flex', width: '100%', alignItems: 'flex-start', gap: 1.5 }}>
@@ -328,6 +331,9 @@ const NotificationComponent = () => {
                           fontWeight: isUnread ? 600 : 400,
                           color: isDarkMode ? '#ffffff' : '#000000',
                           mb: 0.5,
+                          wordWrap: 'break-word',
+                          whiteSpace: 'normal',
+                          overflow: 'visible',
                         }}
                       >
                         {notification.notificationTitle}
@@ -338,6 +344,9 @@ const NotificationComponent = () => {
                           fontSize: 13,
                           color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
                           mb: 0.5,
+                          wordWrap: 'break-word',
+                          whiteSpace: 'normal',
+                          overflow: 'visible',
                         }}
                       >
                         {notification.notificationDesc || notification.notificationTitle}

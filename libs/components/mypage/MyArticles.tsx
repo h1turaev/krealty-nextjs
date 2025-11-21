@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { NextPage } from 'next';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Pagination, Stack, Typography } from '@mui/material';
-import CommunityCard from '../common/CommunityCard';
-import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
-import { T } from '../../types/common';
-import { BoardArticle } from '../../types/board-article/board-article';
-import { LIKE_TARGET_BOARD_ARTICLE } from '@/apollo/user/mutation';
+import { LIKE_TARGET_BOARD_ARTICLE, REMOVE_BOARD_ARTICLE } from '@/apollo/user/mutation';
 import { GET_BOARD_ARTICLES } from '@/apollo/user/query';
 import { Messages } from '@/libs/config';
-import { sweetTopSmallSuccessAlert, sweetMixinErrorAlert } from '@/libs/sweetAlert';
+import { showConfirm, showError, showSuccessTopRight } from '@/libs/toast';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { Pagination, Stack, Typography } from '@mui/material';
+import { NextPage } from 'next';
+import { useState } from 'react';
+import { userVar } from '../../../apollo/store';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { BoardArticle } from '../../types/board-article/board-article';
+import { T } from '../../types/common';
+import CommunityCard from '../common/CommunityCard';
 
 const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
   const device = useDeviceDetect();
@@ -24,6 +24,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 
   /** APOLLO REQUESTS **/
   const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
+  const [removeBoardArticle] = useMutation(REMOVE_BOARD_ARTICLE);
 
   const {
     loading: boardArticlesLoading,
@@ -56,10 +57,31 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
       });
 
       await boardArticlesRefetch({ input: searchCommunity });
-      await sweetTopSmallSuccessAlert('Success!', 750);
+      await showSuccessTopRight('Success!', 750);
     } catch (err: any) {
       console.log('ERROR_likeBoArticleHandler:', err.message);
-      await sweetMixinErrorAlert(err.message).then();
+      await showError(err.message || 'An error occurred');
+    }
+  };
+
+  const deleteArticleHandler = async (e: any, articleId: string) => {
+    try {
+      e.stopPropagation();
+      if (!articleId) return;
+      if (!user?._id) throw new Error(Messages.error2);
+
+      const confirmed = await showConfirm('Are you sure you want to delete this article?');
+      if (!confirmed) return;
+
+      await removeBoardArticle({
+        variables: { articleId: articleId },
+      });
+
+      await boardArticlesRefetch({ input: searchCommunity });
+      await showSuccessTopRight('Article deleted successfully!', 750);
+    } catch (err: any) {
+      console.log('ERROR_deleteArticleHandler:', err.message);
+      await showError(err.message || 'An error occurred');
     }
   };
 
@@ -77,12 +99,15 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
         <Stack className="article-list-box">
           {boardArticles?.length > 0 ? (
             boardArticles?.map((boardArticle: BoardArticle) => {
+              const isOwner = boardArticle?.memberId === user?._id;
               return (
                 <CommunityCard
                   boardArticle={boardArticle}
                   key={boardArticle?._id}
                   size={'small'}
                   likeArticleHandler={likeBoardArticleHandler}
+                  deleteArticleHandler={deleteArticleHandler}
+                  showDeleteButton={isOwner}
                 />
               );
             })

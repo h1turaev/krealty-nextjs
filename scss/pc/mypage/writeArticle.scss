@@ -2,6 +2,11 @@
   #write-article-page {
     width: 100%;
     height: auto;
+    background: #ffffff;
+    transition: background-color 0.3s ease;
+    .dark-mode & {
+      background: #181a20;
+    }
     .main-title-box {
       width: auto;
       height: auto;
@@ -51,6 +56,10 @@
         .btn-next {
           background: #87cdf9;
           color: #000000;
+          .dark-mode & {
+            background: #87cdf9;
+            color: #000000;
+          }
         }
       }
       .select {
@@ -64,6 +73,14 @@
         margin-top: 16px;
         border: 1px solid #eee;
         border-radius: 4px;
+        background: #ffffff;
+        color: #181a20;
+        transition: all 0.3s ease;
+        .dark-mode & {
+          background: #1e2128;
+          border-color: rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.9);
+        }
       }
       .btn-flex {
         margin-top: 40px;
@@ -74,13 +91,32 @@
       svg {
         fill: #000000;
       }
+      .dark-mode & {
+        background: #87cdf9;
+        svg {
+          fill: #000000;
+        }
+      }
     }
     .toastui-editor-popup-body {
       padding: 20px;
+      background: #ffffff;
+      .dark-mode & {
+        background: #1e2128;
+        color: rgba(255, 255, 255, 0.9);
+      }
     }
     .youtube-input {
       padding: 8px 16px;
       border: 1px solid #ddd;
+      background: #ffffff;
+      color: #181a20;
+      transition: all 0.3s ease;
+      .dark-mode & {
+        background: #1e2128;
+        border-color: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.9);
+      }
     }
     .youtube-div {
       display: flex;
@@ -88,6 +124,280 @@
     }
     .toastui-editor-defaultUI button {
       padding: 4px;
+    }
+
+    // TuiEditor styles
+    .form_row {
+      .MuiFormControl-root {
+        background: #ffffff;
+        transition: background-color 0.3s ease;
+        .dark-mode & {
+          background: #1e2128;
+        }
+        .MuiOutlinedInput-root {
+          color: #181a20;
+          transition: all 0.3s ease;
+          .dark-mode & {
+            color: rgba(255, 255, 255, 0.9);
+            .MuiOutlinedInput-notchedOutline {
+              border-color: rgba(255, 255, 255, 0.1);
+            }
+            &:hover .MuiOutlinedInput-notchedOutline {
+              border-color: rgba(255, 255, 255, 0.2);
+            }
+            &.Mui-focused .MuiOutlinedInput-notchedOutline {
+              border-color: rgba(255, 255, 255, 0.3);
+            }
+          }
+        }
+        .MuiInputLabel-root {
+          color: #181a20;
+          transition: color 0.3s ease;
+          .dark-mode & {
+            color: rgba(255, 255, 255, 0.7);
+          }
+        }
+      }
+    }
+
+    // Tiptap Editor styles
+    .tiptap-editor-wrapper {
+      background: #ffffff;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+
+      .dark-mode & {
+        background: #1e2128;
+      }
+
+      .tiptap-editor {
+        outline: none;
+        min-height: 600px;
+
+        // ProseMirror content styles
+        :global(.ProseMirror) {
+          outline: none;
+          min-height: 600px;
+          color: #181a20;
+          transition: color 0.3s ease;
+
+          p {
+            margin: 8px 0;
+            line-height: 1.6;
+            color: #181a20;
+            transition: color 0.3s ease;
+          }
+
+          h1, h2, h3, h4, h5, h6 {
+            margin: 16px 0 8px 0;
+            font-weight: bold;
+            color: #181a20;
+            transition: color 0.3s ease;
+          }
+
+          ul, ol {
+            padding-left: 24px;
+            margin: 8px 0;
+          }
+
+          li {
+            margin: 4px 0;
+            color: #181a20;
+            transition: color 0.3s ease;
+          }
+
+          a {
+            color: #1976d2;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+          }
+
+          img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 16px 0;
+          }
+
+          blockquote {
+            border-left: 4px solid #e0e0e0;
+            padding-left: 16px;
+            margin: 16px 0;
+            color: #666;
+            transition: all 0.3s ease;
+          }
+
+          code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #181a20;
+            transition: all 0.3s ease;
+          }
+
+          pre {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            transition: background 0.3s ease;
+
+            code {
+              background: transparent;
+              padding: 0;
+              color: #181a20;
+            }
+          }
+
+          strong {
+            font-weight: bold;
+            color: #181a20;
+            transition: color 0.3s ease;
+          }
+
+          em {
+            font-style: italic;
+            color: #181a20;
+            transition: color 0.3s ease;
+          }
+
+          u {
+            text-decoration: underline;
+          }
+
+          s {
+            text-decoration: line-through;
+          }
+        }
+
+        // Placeholder styles
+        :global(.is-empty) {
+          &::before {
+            content: attr(data-placeholder);
+            float: left;
+            color: #9e9e9e;
+            pointer-events: none;
+            height: 0;
+            transition: color 0.3s ease;
+          }
+        }
+      }
+
+      // Dark mode styles
+      &.dark-mode,
+      .dark-mode & {
+        background: #1e2128;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+
+        .tiptap-editor {
+          :global(.ProseMirror) {
+            color: rgba(255, 255, 255, 0.9);
+
+            p, h1, h2, h3, h4, h5, h6, li, td, th, span, div {
+              color: rgba(255, 255, 255, 0.9);
+            }
+
+            strong, em {
+              color: rgba(255, 255, 255, 0.9);
+            }
+
+            a {
+              color: #87cdf9;
+              &:hover {
+                color: #a8d9f5;
+              }
+            }
+
+            blockquote {
+              border-left-color: rgba(255, 255, 255, 0.2);
+              color: rgba(255, 255, 255, 0.7);
+            }
+
+            code {
+              background: rgba(255, 255, 255, 0.1);
+              color: rgba(255, 255, 255, 0.9);
+            }
+
+            pre {
+              background: rgba(255, 255, 255, 0.05);
+
+              code {
+                background: transparent;
+                color: rgba(255, 255, 255, 0.9);
+              }
+            }
+          }
+
+          :global(.is-empty) {
+            &::before {
+              color: rgba(255, 255, 255, 0.4);
+            }
+          }
+        }
+      }
+    }
+
+    // Tiptap Image styles
+    .tiptap-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    // Tiptap Link styles
+    .tiptap-link {
+      color: #1976d2;
+      text-decoration: underline;
+      transition: color 0.3s ease;
+
+      .dark-mode & {
+        color: #87cdf9;
+      }
+    }
+
+    // TextField dark mode
+    .MuiTextField-root {
+      .MuiOutlinedInput-root {
+        background: #ffffff;
+        color: #181a20;
+        transition: all 0.3s ease;
+        .dark-mode & {
+          background: #1e2128;
+          color: rgba(255, 255, 255, 0.9);
+          .MuiOutlinedInput-notchedOutline {
+            border-color: rgba(255, 255, 255, 0.1);
+          }
+          &:hover .MuiOutlinedInput-notchedOutline {
+            border-color: rgba(255, 255, 255, 0.2);
+          }
+          &.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: rgba(255, 255, 255, 0.3);
+          }
+        }
+      }
+      .MuiInputLabel-root {
+        color: #181a20;
+        transition: color 0.3s ease;
+        .dark-mode & {
+          color: rgba(255, 255, 255, 0.7);
+        }
+        &.Mui-focused {
+          .dark-mode & {
+            color: rgba(255, 255, 255, 0.9);
+          }
+        }
+      }
+    }
+
+    // Button dark mode
+    .MuiButton-root {
+      &.MuiButton-contained {
+        .dark-mode & {
+          background: #87cdf9;
+          color: #000000;
+        }
+      }
     }
   }
 }

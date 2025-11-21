@@ -1,7 +1,7 @@
 import { LIKE_TARGET_PROPERTY } from '@/apollo/user/mutation';
 import { GET_FAVORITES } from '@/apollo/user/query';
 import { Messages } from '@/libs/config';
-import { sweetMixinErrorAlert } from '@/libs/sweetAlert';
+import { showError } from '@/libs/toast';
 import { useMutation, useQuery } from '@apollo/client';
 import { Pagination, Stack, Typography } from '@mui/material';
 import { NextPage } from 'next';
@@ -52,7 +52,7 @@ const MyFavorites: NextPage = () => {
       await getFavoritesRefetch({ input: searchFavorites });
     } catch (err: any) {
       console.log('ERROR_likePropertyHandler:', err.message);
-      await sweetMixinErrorAlert(err.message).then();
+      await showError(err.message || 'An error occurred');
     }
   };
 

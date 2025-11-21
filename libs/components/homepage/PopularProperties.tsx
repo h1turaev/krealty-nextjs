@@ -9,7 +9,7 @@ import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { Message } from '../../enums/common.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { showError, showSuccessTopRight } from '../../toast';
 import { T } from '../../types/common';
 import { Property } from '../../types/property/property';
 import { PropertiesInquiry } from '../../types/property/property.input';
@@ -53,10 +53,10 @@ const PopularProperties = (props: PopularPropertiesProps) => {
       });
       await getPropertiesRefetch({ input: initialInput });
 
-      await sweetTopSmallSuccessAlert('success', 800);
+      await showSuccessTopRight('success', 800);
     } catch (err: any) {
       console.log('ERROR, likePropertyHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message || 'An error occurred');
     }
   };
 

@@ -23,10 +23,9 @@ import { CommentGroup } from '../../libs/enums/comment.enum';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import {
-  sweetErrorHandling,
-  sweetMixinErrorAlert,
-  sweetTopSmallSuccessAlert,
-} from '../../libs/sweetAlert';
+  showError,
+  showSuccessTopRight,
+} from '../../libs/toast';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { T } from '../../libs/types/common';
@@ -203,10 +202,10 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
         },
       });
 
-      await sweetTopSmallSuccessAlert('success', 800);
+      await showSuccessTopRight('success', 800);
     } catch (err: any) {
       console.log('ERROR, likePropertyHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message);
     }
   };
 
@@ -217,7 +216,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
       setInsertCommentData({ ...insertCommentData, commentContent: '' });
       await getCommentsRefetch({ input: commentInquiry });
     } catch (err: any) {
-      await sweetErrorHandling(err);
+      await showError((err as any)?.message || "An error occurred");
     }
   };
 

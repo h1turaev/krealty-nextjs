@@ -10,7 +10,7 @@ import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Property } from '../../libs/types/property/property';
 import { Member } from '../../libs/types/member/member';
-import { sweetErrorHandling, sweetTopSmallSuccessAlert, sweetMixinErrorAlert } from '../../libs/sweetAlert';
+import { showError, showSuccessTopRight } from '../../libs/toast';
 import { userVar } from '../../apollo/store';
 import { PropertiesInquiry } from '../../libs/types/property/property.input';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
@@ -135,7 +135,7 @@ const {
       if (memberId === user?._id) await router.push(`/mypage?memberId=${memberId}`);
       else await router.push(`/member?memberId=${memberId}`);
     } catch (error) {
-      await sweetErrorHandling(error);
+      await showError((error as any)?.message || "An error occurred");
     }
   };
 
@@ -163,7 +163,7 @@ const {
 
     await getCommentsRefetch({ input: commentInquiry });
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError((err as any)?.message || "An error occurred");
     }
   };
 
@@ -179,13 +179,13 @@ const {
       });
 
       await getPropertiesRefetch ({ input: searchFilter });
-      await sweetTopSmallSuccessAlert('success', 800);
+      await showSuccessTopRight('success', 800);
     } catch (err: any) {
       console.log('ERROR, likePropertyHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message);
     }
   };
-  
+
 
   if (device === 'mobile') {
     return <div>AGENT DETAIL PAGE MOBILE</div>;

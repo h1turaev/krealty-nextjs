@@ -11,7 +11,7 @@ import { Property } from '../../types/property/property';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { T } from '../../types/common';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { showError, showSuccessTopRight } from '../../toast';
 import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
 import { Message } from '../../enums/common.enum';
 
@@ -53,10 +53,10 @@ const TopProperties = (props: TopPropertiesProps) => {
       });
       await getPropertiesRefetch({ input: initialInput });
 
-      await sweetTopSmallSuccessAlert('success', 800);
+      await showSuccessTopRight('success', 800);
     } catch (err: any) {
       console.log('ERROR, likePropertyHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message || 'An error occurred');
     }
   };
 

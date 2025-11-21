@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { NextPage } from 'next';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { UPDATE_MEMBER } from '@/apollo/user/mutation';
+import { showError, showSuccess } from '@/libs/toast';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import { Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { Messages, REACT_APP_API_URL } from '../../config';
-import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
-import { useMutation, useReactiveVar } from '@apollo/client';
+import { NextPage } from 'next';
+import { useCallback, useEffect, useState } from 'react';
 import { userVar } from '../../../apollo/store';
+import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
+import { Messages, REACT_APP_API_URL } from '../../config';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { MemberUpdate } from '../../types/member/member.update';
-import { UPDATE_MEMBER } from '@/apollo/user/mutation';
-import { sweetMixinSuccessAlert, sweetErrorHandling } from '@/libs/sweetAlert';
 
 const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
   const device = useDeviceDetect();
@@ -78,27 +78,27 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
   };
 
   const updatePropertyHandler = useCallback(async () => {
-  try {
-    if (!user?._id) throw new Error(Messages.error2);
+    try {
+      if (!user?._id) throw new Error(Messages.error2);
 
-    updateData._id = user?._id;
+      updateData._id = user?._id;
 
-    const result = await updateMember({
-      variables: {
-        input: updateData,
-      },
-    });
+      const result = await updateMember({
+        variables: {
+          input: updateData,
+        },
+      });
 
-    // @ts-ignore
-    const jwtToken = result.data.updateMember?.accessToken;
-    await updateStorage({ jwtToken });
-    updateUserInfo(result.data.updateMember?.accessToken);
+      // @ts-ignore
+      const jwtToken = result.data.updateMember?.accessToken;
+      await updateStorage({ jwtToken });
+      updateUserInfo(result.data.updateMember?.accessToken);
 
-    await sweetMixinSuccessAlert('information updated successfully.');
-  } catch (err: any) {
-    await sweetErrorHandling(err).then();
-  }
-}, [updateData]);
+      await showSuccess('information updated successfully.');
+    } catch (err: any) {
+      await showError(err.message || 'An error occurred');
+    }
+  }, [updateData]);
 
   const doDisabledCheck = () => {
     if (

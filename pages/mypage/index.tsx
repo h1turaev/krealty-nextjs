@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { userVar } from '../../apollo/store';
 import { LIKE_TARGET_MEMBER, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
-import { getJwtToken, updateUserInfo } from '../../libs/auth';
+import { getJwtToken, logOut, updateUserInfo } from '../../libs/auth';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import MemberFollowers from '../../libs/components/member/MemberFollowers';
 import MemberFollowings from '../../libs/components/member/MemberFollowings';
@@ -19,10 +19,10 @@ import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import {
-  sweetErrorHandling,
-  sweetMixinErrorAlert,
-  sweetTopSmallSuccessAlert,
-} from '../../libs/sweetAlert';
+  showConfirm,
+  showError,
+  showSuccessTopRight,
+} from '../../libs/toast';
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {
@@ -88,10 +88,10 @@ const MyPage: NextPage = () => {
           input: id,
         },
       });
-      await sweetTopSmallSuccessAlert('Subscribed!', 800);
+      await showSuccessTopRight('Subscribed!', 800);
       await refetch({ input: query });
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -105,10 +105,10 @@ const MyPage: NextPage = () => {
           input: id,
         },
       });
-      await sweetTopSmallSuccessAlert('Unsubscribed!', 800);
+      await showSuccessTopRight('Unsubscribed!', 800);
       await refetch({ input: query });
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -122,11 +122,11 @@ const MyPage: NextPage = () => {
           input: id,
         },
       });
-      await sweetTopSmallSuccessAlert('Success', 800);
+      await showSuccessTopRight('Success', 800);
       await refetch({ input: query });
     } catch (err: any) {
       console.log('ERROR, likeMemberHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -135,7 +135,16 @@ const MyPage: NextPage = () => {
       if (memberId === user?._id) await router.push(`/mypage?memberId=${memberId}`);
       else await router.push(`/member?memberId=${memberId}`);
     } catch (error) {
-      await sweetErrorHandling(error);
+      await showError((error as any)?.message || 'An error occurred');
+    }
+  };
+
+  const logoutHandler = async () => {
+    try {
+      if (await showConfirm('Do you want to logout?')) logOut();
+    } catch (err: any) {
+      console.log('ERROR, logoutHandler:', err.message);
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -191,6 +200,12 @@ const MyPage: NextPage = () => {
                         : 'No phone'}
                     </Typography>
                   </Stack>
+                </Stack>
+                <Stack className={'logout-button-wrapper'}>
+                  <Box className={'logout-button'} onClick={logoutHandler}>
+                    <Typography className={'logout-text'}>Logout</Typography>
+                    <img src={'/img/icons/logout.svg'} alt={'logout'} className={'logout-icon'} />
+                  </Box>
                 </Stack>
               </Stack>
             </Stack>

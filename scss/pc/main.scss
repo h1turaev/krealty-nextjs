@@ -2593,3 +2593,134 @@ body::-webkit-scrollbar {
   border-radius: 2px;
   margin-right: 8px;
 }
+
+// Global ToastUI Editor dark mode styles
+.dark-mode {
+  :global(.toastui-editor) {
+    background: #1e2128 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+
+    .toastui-editor-toolbar {
+      background: #252830 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+
+      button {
+        color: rgba(255, 255, 255, 0.9) !important;
+        background: transparent !important;
+        &:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+        &.active {
+          background: rgba(255, 255, 255, 0.15) !important;
+        }
+        svg {
+          fill: rgba(255, 255, 255, 0.9) !important;
+        }
+      }
+    }
+
+    .toastui-editor-defaultUI-toolbar {
+      background: #252830 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .toastui-editor-contents {
+      background: #1e2128 !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+
+      p, h1, h2, h3, h4, h5, h6, li, td, th, span, div, strong, em, code, pre, blockquote {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+
+      a {
+        color: rgba(135, 205, 249, 0.9) !important;
+        &:hover {
+          color: rgba(135, 205, 249, 1) !important;
+        }
+      }
+    }
+
+    .toastui-editor-ww-container {
+      background: #1e2128 !important;
+    }
+
+    .toastui-editor-contents-placeholder {
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    .toastui-editor-defaultUI {
+      background: #1e2128 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .toastui-editor-ww-code-block-highlighting {
+      background: #252830 !important;
+    }
+
+    .toastui-editor-mode-switch {
+      background: #252830 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+
+      button {
+        color: rgba(255, 255, 255, 0.9) !important;
+        &.active {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+        &:hover {
+          background: rgba(255, 255, 255, 0.15) !important;
+        }
+      }
+    }
+
+    .toastui-editor-popup {
+      background: #1e2128 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+
+      input, textarea {
+        background: #252830 !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+    }
+
+    .toastui-editor-defaultUI-toolbar {
+      background: #252830 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .toastui-editor-ww-container {
+      background: #1e2128 !important;
+    }
+
+    .toastui-editor-contents-placeholder {
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+  }
+}
+
+// Global Tiptap Editor styles
+.tiptap-editor-wrapper {
+  .tiptap-editor {
+    :global(.ProseMirror) {
+      p.is-editor-empty:first-child::before {
+        content: attr(data-placeholder);
+        float: left;
+        color: #9e9e9e;
+        pointer-events: none;
+        height: 0;
+      }
+    }
+  }
+
+  .dark-mode & {
+    .tiptap-editor {
+      :global(.ProseMirror) {
+        p.is-editor-empty:first-child::before {
+          color: rgba(255, 255, 255, 0.4);
+        }
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@ import { PropertyPanelList } from '../../../libs/components/admin/properties/Pro
 import { AllPropertiesInquiry } from '../../../libs/types/property/property.input';
 import { Property } from '../../../libs/types/property/property';
 import { PropertyLocation, PropertyStatus } from '../../../libs/enums/property.enum';
-import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
+import { showConfirm, showError } from '../../../libs/toast';
 import { PropertyUpdate } from '../../../libs/types/property/property.update';
 import { UPDATE_PROPERTY_BY_ADMIN, REMOVE_PROPERTY_BY_ADMIN } from '@/apollo/admin/mutation';
 import { GET_ALL_PROPERTIES_BY_ADMIN } from '@/apollo/admin/query';
@@ -110,7 +110,7 @@ const {
 
   const removePropertyHandler = async (id: string) => {
     try {
-      if (await sweetConfirmAlert('Are you sure to remove?')) {
+      if (await showConfirm('Are you sure to remove?')) {
         await removePropertyByAdmin({
           variables: { input: id },
         });
@@ -119,7 +119,7 @@ const {
       }
       menuIconCloseHandler();
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError((err as any)?.message || "An error occurred");
     }
   };
 
@@ -152,12 +152,12 @@ const {
       await updatePropertyByAdmin({
         variables: { input: updateData },
       });
-      
+
       menuIconCloseHandler();
       await getAllPropertiesByAdminRefetch({ input: propertiesInquiry });
     } catch (err: any) {
       menuIconCloseHandler();
-      sweetErrorHandling(err).then();
+      showError((err as any)?.message || "An error occurred");
     }
   };
 

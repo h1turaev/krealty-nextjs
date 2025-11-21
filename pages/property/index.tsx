@@ -11,7 +11,7 @@ import PropertyCard from '../../libs/components/property/PropertyCard';
 import PropertySearchFilter from '../../libs/components/property/PropertySearchFilter';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { showError, showSuccessTopRight } from '../../libs/toast';
 import { T } from '../../libs/types/common';
 import { Property } from '../../libs/types/property/property';
 import { PropertiesInquiry } from '../../libs/types/property/property.input';
@@ -175,10 +175,10 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
       });
       await getPropertiesRefetch({ input: initialInput });
 
-      await sweetTopSmallSuccessAlert('success', 800);
+      await showSuccessTopRight('success', 800);
     } catch (err: any) {
       console.log('ERROR, likePropertyHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message);
     }
   };
 

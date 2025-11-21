@@ -7,7 +7,7 @@ import { userVar } from '../../../apollo/store';
 import { UPDATE_PROPERTY } from '../../../apollo/user/mutation';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetConfirmAlert, sweetErrorHandling } from '../../sweetAlert';
+import { showConfirm, showError } from '../../toast';
 import { T } from '../../types/common';
 import { Property } from '../../types/property/property';
 import { PropertiesInquiry } from '../../types/property/property.input';
@@ -61,7 +61,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 
   const updatePropertyHandler = async (status: string, id: string) => {
     try {
-      if (await sweetConfirmAlert(`Are you sure change to ${status} status?`)) {
+      if (await showConfirm(`Are you sure change to ${status} status?`)) {
         await updateProperty({
           variables: {
             input: {
@@ -74,7 +74,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
         await getPropertiesRefetch({ input: searchFilter });
       }
     } catch (err: any) {
-      await sweetErrorHandling(err);
+      await showError(err.message || 'An error occurred');
     }
   };
 

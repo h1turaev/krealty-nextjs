@@ -1,6 +1,6 @@
 import { UPDATE_PROPERTY } from '@/apollo/user/mutation';
 import { GET_AGENT_PROPERTIES } from '@/apollo/user/query';
-import { sweetConfirmAlert, sweetErrorHandling } from '@/libs/sweetAlert';
+import { showConfirm, showError } from '@/libs/toast';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Pagination, Stack, Typography } from '@mui/material';
 import { NextPage } from 'next';
@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { userVar } from '../../../apollo/store';
 import { PropertyStatus } from '../../enums/property.enum';
+import { useDarkMode } from '../../hooks/useDarkMode';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { T } from '../../types/common';
 import { Property } from '../../types/property/property';
@@ -16,6 +17,7 @@ import { PropertyCard } from './PropertyCard';
 
 const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
   const device = useDeviceDetect();
+  const { isDarkMode } = useDarkMode();
   const [searchFilter, setSearchFilter] = useState<AgentPropertiesInquiry>(initialInput);
   const [agentProperties, setAgentProperties] = useState<Property[]>([]);
   const [total, setTotal] = useState<number>(0);
@@ -51,7 +53,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 
   const deletePropertyHandler = async (id: string) => {
     try {
-      if (await sweetConfirmAlert('Are you sure to delete this property?')) {
+      if (await showConfirm('Are you sure to delete this property?')) {
         await updateProperty({
           variables: {
             input: {
@@ -64,13 +66,13 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
         await getAgentPropertiesRefetch({ input: searchFilter });
       }
     } catch (err: any) {
-      await sweetErrorHandling(err);
+      await showError(err.message || 'An error occurred');
     }
   };
 
   const updatePropertyHandler = async (status: string, id: string) => {
     try {
-      if (await sweetConfirmAlert(`Are you sure change to ${status} status?`)) {
+      if (await showConfirm(`Are you sure change to ${status} status?`)) {
         await updateProperty({
           variables: {
             input: {
@@ -83,7 +85,7 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
         await getAgentPropertiesRefetch({ input: searchFilter });
       }
     } catch (err: any) {
-      await sweetErrorHandling(err);
+      await showError(err.message || 'An error occurred');
     }
   };
 
@@ -159,10 +161,15 @@ const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
                     onChange={paginationHandler}
                     sx={{
                       '& .MuiPaginationItem-root': {
-                        color: '#181a20',
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
                         '&.Mui-selected': {
-                          backgroundColor: '#181a20',
-                          color: '#ffffff',
+                          backgroundColor: isDarkMode ? '#ffffff' : '#181a20',
+                          color: isDarkMode ? '#181a20' : '#ffffff',
+                        },
+                        '&:hover': {
+                          backgroundColor: isDarkMode
+                            ? 'rgba(255, 255, 255, 0.1)'
+                            : 'rgba(24, 26, 32, 0.1)',
                         },
                       },
                     }}

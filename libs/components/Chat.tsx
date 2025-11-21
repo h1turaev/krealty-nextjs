@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ScrollableFeed from 'react-scrollable-feed';
 import { Messages } from '../config';
 import { useDarkMode } from '../hooks/useDarkMode';
-import { sweetErrorAlert } from '../sweetAlert';
+import { showError } from '../toast';
 
 interface AIMessage {
   role: 'user' | 'assistant';
@@ -50,7 +50,7 @@ const Chat = () => {
 
   const sendMessage = async () => {
     if (!messageInput.trim()) {
-      sweetErrorAlert(Messages.error4);
+      showError(Messages.error4);
       return;
     }
 
@@ -97,7 +97,7 @@ const Chat = () => {
 
         // Also show alert for important errors
         if (response.status === 429 || response.status === 401) {
-          sweetErrorAlert(errorMessage);
+          showError(errorMessage);
         }
         return;
       }
@@ -119,7 +119,7 @@ const Chat = () => {
       };
       setAiMessages((prev) => [...prev, errorAiMessage]);
 
-      sweetErrorAlert(errorMessage);
+      showError(errorMessage);
     } finally {
       setIsAiLoading(false);
     }

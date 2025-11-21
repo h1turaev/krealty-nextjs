@@ -9,7 +9,7 @@ import PortraitIcon from '@mui/icons-material/Portrait';
 import IconButton from '@mui/material/IconButton';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
-import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
+import { showConfirm, showError } from '../../toast';
 
 const MyMenu = () => {
   const device = useDeviceDetect();
@@ -21,7 +21,7 @@ const MyMenu = () => {
   /** HANDLERS **/
   const logoutHandler = async () => {
     try {
-      if (await sweetConfirmAlert('Do you want to logout?')) logOut();
+      if (await showConfirm('Do you want to logout?')) logOut();
     } catch (err: any) {
       console.log('ERROR, logoutHandler:', err.message);
     }

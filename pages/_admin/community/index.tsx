@@ -12,7 +12,7 @@ import CommunityArticleList from '../../../libs/components/admin/community/Commu
 import { AllBoardArticlesInquiry } from '../../../libs/types/board-article/board-article.input';
 import { BoardArticle } from '../../../libs/types/board-article/board-article';
 import { BoardArticleCategory, BoardArticleStatus } from '../../../libs/enums/board-article.enum';
-import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
+import { showConfirm, showError } from '../../../libs/toast';
 import { BoardArticleUpdate } from '../../../libs/types/board-article/board-article.update';
 import { UPDATE_BOARD_ARTICLE_BY_ADMIN, REMOVE_BOARD_ARTICLE_BY_ADMIN } from '@/apollo/admin/mutation';
 import { GET_ALL_BOARD_ARTICLES_BY_ADMIN } from '@/apollo/admin/query';
@@ -136,22 +136,22 @@ const {
       await getAllBoardArticlesByAdminRefetch({ input: communityInquiry });
     } catch (err: any) {
       menuIconCloseHandler();
-      sweetErrorHandling(err).then();
+      showError((err as any)?.message || "An error occurred");
     }
   };
 
   const removeArticleHandler = async (id: string) => {
     try {
-      if (await sweetConfirmAlert('Are you sure to remove?')) {
+      if (await showConfirm('Are you sure to remove?')) {
         await removeBoardArticleByAdmin({
           variables: { input: id },
         });
-        
+
         menuIconCloseHandler();
         await getAllBoardArticlesByAdminRefetch({ input: communityInquiry });
       }
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError((err as any)?.message || "An error occurred");
     }
   };
 

@@ -127,8 +127,8 @@ const MemberFollowers = (props: MemberFollowsProps) => {
                     {follower?.meLiked && follower?.meLiked[0]?.myFavorite ? (
                       <FavoriteIcon
                         sx={{
-                          color: '#181a20',
-                          '.dark-mode &': { color: 'rgba(255, 255, 255, 0.9)' },
+                          color: '#e92C28',
+                          cursor: 'pointer',
                         }}
                         onClick={() =>
                           likeMemberHandler(
@@ -143,6 +143,7 @@ const MemberFollowers = (props: MemberFollowsProps) => {
                         sx={{
                           color: '#181a20',
                           '.dark-mode &': { color: 'rgba(255, 255, 255, 0.9)' },
+                          cursor: 'pointer',
                         }}
                         onClick={() =>
                           likeMemberHandler(

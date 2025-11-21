@@ -1,4 +1,4 @@
-import { sweetErrorAlert } from '@/libs/sweetAlert';
+import { showError } from '@/libs/toast';
 import {
   ApolloClient,
   ApolloLink,
@@ -122,7 +122,7 @@ function createIsomorphicLink() {
       graphQLErrors.map(({ message, locations, path, extensions }) => {
         console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
         if (typeof window !== 'undefined' && !message.includes('input')) {
-          sweetErrorAlert(message);
+          showError(message);
         }
       });
     }

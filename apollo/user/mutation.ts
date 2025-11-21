@@ -267,6 +267,24 @@ export const LIKE_TARGET_BOARD_ARTICLE = gql`
   }
 `;
 
+export const REMOVE_BOARD_ARTICLE = gql`
+  mutation RemoveBoardArticle($articleId: String!) {
+    removeBoardArticle(articleId: $articleId) {
+      _id
+      articleCategory
+      articleStatus
+      articleTitle
+      articleContent
+      articleImage
+      articleViews
+      articleLikes
+      memberId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 /**************************
  *         COMMENT        *
  *************************/

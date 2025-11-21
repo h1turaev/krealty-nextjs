@@ -1,5 +1,5 @@
 import numeral from 'numeral';
-import { sweetMixinErrorAlert } from './sweetAlert';
+import { showError } from './toast';
 
 export const formatterStr = (value: number | undefined): string => {
   return numeral(value).format('0,0') != '0' ? numeral(value).format('0,0') : '';
@@ -14,7 +14,7 @@ export const likeTargetPropertyHandler = async (likeTargetProperty: any, id: str
     });
   } catch (err: any) {
     console.log('ERROR, likeTargetPropertyHandler:', err.message);
-    sweetMixinErrorAlert(err.message).then();
+    showError(err.message || 'An error occurred');
   }
 };
 
@@ -27,7 +27,7 @@ export const likeTargetBoardArticleHandler = async (likeTargetBoardArticle: any,
     });
   } catch (err: any) {
     console.log('ERROR, likeTargetBoardArticleHandler:', err.message);
-    sweetMixinErrorAlert(err.message).then();
+    showError(err.message || 'An error occurred');
   }
 };
 
@@ -40,6 +40,6 @@ export const likeTargetMemberHandler = async (likeTargetMember: any, id: string)
     });
   } catch (err: any) {
     console.log('ERROR, likeTargetMemberHandler:', err.message);
-    sweetMixinErrorAlert(err.message).then();
+    showError(err.message || 'An error occurred');
   }
 };

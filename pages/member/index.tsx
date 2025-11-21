@@ -16,10 +16,9 @@ import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import {
-  sweetErrorHandling,
-  sweetMixinErrorAlert,
-  sweetTopSmallSuccessAlert,
-} from '../../libs/sweetAlert';
+  showError,
+  showSuccessTopRight,
+} from '../../libs/toast';
 import { T } from '../../libs/types/common';
 import { Member } from '../../libs/types/member/member';
 
@@ -87,11 +86,11 @@ const MemberPage: NextPage = () => {
           input: id,
         },
       });
-      await sweetTopSmallSuccessAlert('Subscribed!', 800);
+      await showSuccessTopRight('Subscribed!', 800);
       await refetch({ input: query });
       await getMemberRefetch();
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -105,11 +104,11 @@ const MemberPage: NextPage = () => {
           input: id,
         },
       });
-      await sweetTopSmallSuccessAlert('Unsubscribed!', 800);
+      await showSuccessTopRight('Unsubscribed!', 800);
       await refetch({ input: query });
       await getMemberRefetch();
     } catch (err: any) {
-      sweetErrorHandling(err).then();
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -123,11 +122,11 @@ const MemberPage: NextPage = () => {
           input: id,
         },
       });
-      await sweetTopSmallSuccessAlert('Success', 800);
+      await showSuccessTopRight('Success', 800);
       await refetch({ input: query });
     } catch (err: any) {
       console.log('ERROR, likeMemberHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message || 'An error occurred');
     }
   };
 
@@ -136,7 +135,7 @@ const MemberPage: NextPage = () => {
       if (memberId === user?._id) await router.push(`/mypage?memberId=${memberId}`);
       else await router.push(`/member?memberId=${memberId}`);
     } catch (error) {
-      await sweetErrorHandling(error);
+      await showError((error as any)?.message || 'An error occurred');
     }
   };
 

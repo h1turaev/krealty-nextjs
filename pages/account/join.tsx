@@ -5,12 +5,12 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { logIn, signUp } from '../../libs/auth';
-import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
+import { showError } from '../../libs/toast';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export const getStaticProps = async ({ locale }: any) => ({
+export const getServerSideProps = async ({ locale }: any) => ({
   props: {
-    ...(await serverSideTranslations(locale, ['common'])),
+    ...(await serverSideTranslations(locale || 'en', ['common'])),
   },
 });
 
@@ -47,7 +47,7 @@ const Join: NextPage = () => {
       await logIn(input.nick, input.password);
       await router.push(`${router.query.referrer ?? '/'}`);
     } catch (err: any) {
-      await sweetMixinErrorAlert(err.message);
+      await showError(err.message);
     }
   }, [input]);
 
@@ -57,7 +57,7 @@ const Join: NextPage = () => {
       await signUp(input.nick, input.password, input.phone, input.type);
       await router.push(`${router.query.referrer ?? '/'}`);
     } catch (err: any) {
-      await sweetMixinErrorAlert(err.message);
+      await showError(err.message);
     }
   }, [input]);
 

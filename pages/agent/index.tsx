@@ -10,7 +10,7 @@ import AgentCard from '../../libs/components/common/AgentCard';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Messages } from '../../libs/config';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { showError, showSuccessTopRight } from '../../libs/toast';
 import { T } from '../../libs/types/common';
 import { Member } from '../../libs/types/member/member';
 
@@ -89,10 +89,10 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
       });
 
       await getAgentsRefetch({ input: searchFilter });
-      await sweetTopSmallSuccessAlert('success', 800);
+      await showSuccessTopRight('success', 800);
     } catch (err: any) {
       console.log('ERROR, likePropertyHandler:', err.message);
-      sweetMixinErrorAlert(err.message).then();
+      showError(err.message);
     }
   };
 

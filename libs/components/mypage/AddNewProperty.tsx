@@ -10,7 +10,7 @@ import { getJwtToken } from '../../auth';
 import { REACT_APP_API_URL, propertySquare } from '../../config';
 import { PropertyLocation, PropertyType } from '../../enums/property.enum';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert } from '../../sweetAlert';
+import { showError, showSuccess } from '../../toast';
 import { NotificationGroup, NotificationType } from '../../types/notification/notification';
 import { NotificationInput } from '../../types/notification/notification.input';
 import { PropertyInput } from '../../types/property/property.input';
@@ -138,7 +138,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
       setInsertPropertyData({ ...insertPropertyData, propertyImages: responseImages });
     } catch (err: any) {
-      await sweetMixinErrorAlert(err.message);
+      await showError(err.message || 'An error occurred');
     }
   }
 
@@ -219,13 +219,13 @@ const AddProperty = ({ initialValues, ...props }: any) => {
         }
       }
 
-      await sweetMixinSuccessAlert('This property has been created successfully.');
+      await showSuccess('This property has been created successfully.');
       await router.push({
         pathname: '/mypage',
         query: { category: 'myProperties' },
       });
     } catch (err: any) {
-      await sweetErrorHandling(err).then();
+      await showError(err.message || 'An error occurred');
     }
   }, [insertPropertyData, createProperty, createNotification, user, token, router]);
 
@@ -240,13 +240,13 @@ const AddProperty = ({ initialValues, ...props }: any) => {
         },
       });
 
-      await sweetMixinSuccessAlert('This property has been updated successfully.');
+      await showSuccess('This property has been updated successfully.');
       await router.push({
         pathname: '/mypage',
         query: { category: 'myProperties' },
       });
     } catch (err: any) {
-      await sweetErrorHandling(err).then();
+      await showError(err.message || 'An error occurred');
     }
   }, [insertPropertyData]);
 
