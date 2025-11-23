@@ -152,9 +152,16 @@
         }
         .MuiInputLabel-root {
           color: #181a20;
+          font-size: 12px !important;
           transition: color 0.3s ease;
           .dark-mode & {
             color: rgba(255, 255, 255, 0.7);
+            font-size: 12px !important;
+          }
+          &.Mui-focused {
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
           }
         }
       }
@@ -290,19 +297,27 @@
         border-color: rgba(255, 255, 255, 0.1) !important;
 
         .tiptap-editor {
-          :global(.ProseMirror) {
+          color: rgba(255, 255, 255, 0.9);
+          transition: color 0.3s ease;
+
+          :global(.ProseMirror),
+          :global(.ProseMirror.dark-mode) {
             color: rgba(255, 255, 255, 0.9);
+            transition: color 0.3s ease;
 
             p, h1, h2, h3, h4, h5, h6, li, td, th, span, div {
               color: rgba(255, 255, 255, 0.9);
+              transition: color 0.3s ease;
             }
 
             strong, em {
               color: rgba(255, 255, 255, 0.9);
+              transition: color 0.3s ease;
             }
 
             a {
               color: #87cdf9;
+              transition: color 0.3s ease;
               &:hover {
                 color: #a8d9f5;
               }
@@ -311,15 +326,18 @@
             blockquote {
               border-left-color: rgba(255, 255, 255, 0.2);
               color: rgba(255, 255, 255, 0.7);
+              transition: all 0.3s ease;
             }
 
             code {
               background: rgba(255, 255, 255, 0.1);
               color: rgba(255, 255, 255, 0.9);
+              transition: all 0.3s ease;
             }
 
             pre {
               background: rgba(255, 255, 255, 0.05);
+              transition: background 0.3s ease;
 
               code {
                 background: transparent;
@@ -328,11 +346,64 @@
             }
           }
 
-          :global(.is-empty) {
+          :global(.is-empty),
+          :global(.is-empty.dark-mode) {
             &::before {
-              color: rgba(255, 255, 255, 0.4);
+              color: rgba(255, 255, 255, 0.4) !important;
+              transition: color 0.3s ease;
             }
           }
+        }
+      }
+
+      // Also handle when ProseMirror itself has dark-mode class
+      :global(.ProseMirror.dark-mode) {
+        color: rgba(255, 255, 255, 0.9);
+        transition: color 0.3s ease;
+
+        p, h1, h2, h3, h4, h5, h6, li, td, th, span, div {
+          color: rgba(255, 255, 255, 0.9);
+          transition: color 0.3s ease;
+        }
+
+        strong, em {
+          color: rgba(255, 255, 255, 0.9);
+          transition: color 0.3s ease;
+        }
+
+        a {
+          color: #87cdf9;
+          transition: color 0.3s ease;
+          &:hover {
+            color: #a8d9f5;
+          }
+        }
+
+        blockquote {
+          border-left-color: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.7);
+          transition: all 0.3s ease;
+        }
+
+        code {
+          background: rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.9);
+          transition: all 0.3s ease;
+        }
+
+        pre {
+          background: rgba(255, 255, 255, 0.05);
+          transition: background 0.3s ease;
+
+          code {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+          }
+        }
+
+        &.is-empty::before {
+          color: rgba(255, 255, 255, 0.4) !important;
+          transition: color 0.3s ease;
         }
       }
     }
@@ -378,9 +449,11 @@
       }
       .MuiInputLabel-root {
         color: #181a20;
+        font-size: 12px !important;
         transition: color 0.3s ease;
         .dark-mode & {
           color: rgba(255, 255, 255, 0.7);
+          font-size: 12px !important;
         }
         &.Mui-focused {
           .dark-mode & {

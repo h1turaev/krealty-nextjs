@@ -11,33 +11,37 @@ const HighlandLogo = () => {
   }, []);
 
   useEffect(() => {
-    if (mounted) {
-      // Also check DOM classes as fallback
-      const checkDarkMode = () => {
-        const isDark =
-          isDarkMode ||
-          document.documentElement.classList.contains('dark-mode') ||
-          document.body.classList.contains('dark-mode');
-        setLogoColor(isDark ? '#ffffff' : '#000000');
-      };
+    if (!mounted) return;
 
-      checkDarkMode();
+    const checkDarkMode = () => {
+      // Always check DOM first, as it's the source of truth
+      const hasDarkClass =
+        document.documentElement.classList.contains('dark-mode') ||
+        document.body.classList.contains('dark-mode');
+      setLogoColor(hasDarkClass ? '#ffffff' : '#000000');
+    };
 
-      // Watch for dark mode class changes
-      const observer = new MutationObserver(checkDarkMode);
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class'],
-      });
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class'],
-      });
+    // Check immediately
+    checkDarkMode();
 
-      return () => {
-        observer.disconnect();
-      };
-    }
+    // Watch for dark mode class changes on document (real-time)
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    // Also listen to isDarkMode changes from hook
+    const timeoutId = setTimeout(checkDarkMode, 0);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
   }, [isDarkMode, mounted]);
 
   return (

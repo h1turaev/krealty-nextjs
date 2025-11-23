@@ -87,6 +87,45 @@ query GetMember($input: String!) {
     }
 }`);
 
+export const GET_ADMIN = gql`
+  query GetAdmin {
+    getAdmin {
+      _id
+      memberType
+      memberStatus
+      memberAuthType
+      memberPhone
+      memberNick
+      memberFullName
+      memberImage
+      memberAddress
+      memberDesc
+      memberProperties
+      memberArticles
+      memberFollowers
+      memberFollowings
+      memberPoints
+      memberLikes
+      memberViews
+      memberComments
+      memberRank
+      memberWarnings
+      memberBlocks
+      deletedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**************************
+ *      CONVERSATION      *
+ *************************/
+
+/**************************
+ *      CONVERSATION      *
+ *************************/
+
 /**************************
  *        PROPERTY        *
  *************************/

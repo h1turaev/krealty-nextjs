@@ -33,6 +33,8 @@ const TuiEditor = () => {
   const token = getJwtToken();
   const router = useRouter();
   const { isDarkMode } = useDarkMode();
+  const [isMounted, setIsMounted] = useState(false);
+  const [shouldUseDarkMode, setShouldUseDarkMode] = useState(false);
   const [articleCategory, setArticleCategory] = useState<BoardArticleCategory>(
     BoardArticleCategory.FREE,
   );
@@ -150,7 +152,7 @@ const TuiEditor = () => {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: isDarkMode ? 'tiptap-editor dark-mode' : 'tiptap-editor',
+        class: shouldUseDarkMode ? 'tiptap-editor dark-mode' : 'tiptap-editor',
       },
     },
     onUpdate: ({ editor }) => {
@@ -158,16 +160,20 @@ const TuiEditor = () => {
     },
   });
 
-  // Update editor props when dark mode changes
+  // Update editor props when dark mode changes - this is handled in updateEditorDarkMode
+  // Keeping this for immediate updates
   useEffect(() => {
     if (editor) {
+      const hasDarkClass =
+        document.documentElement.classList.contains('dark-mode') ||
+        document.body.classList.contains('dark-mode');
       const currentClass = editor.view.dom.className;
-      const newClass = isDarkMode ? 'tiptap-editor dark-mode' : 'tiptap-editor';
+      const newClass = hasDarkClass ? 'tiptap-editor dark-mode' : 'tiptap-editor';
       if (currentClass !== newClass) {
         editor.view.dom.className = newClass;
       }
     }
-  }, [isDarkMode, editor]);
+  }, [shouldUseDarkMode, editor]);
 
   // Handle image upload
   useEffect(() => {
@@ -226,7 +232,46 @@ const TuiEditor = () => {
     return () => {
       // Cleanup
     };
-  }, [editor, isDarkMode]);
+  }, [editor, shouldUseDarkMode]);
+
+  // Real-time dark mode tracking for labels and form controls
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const checkDarkMode = () => {
+      // Always check DOM first, as it's the source of truth
+      const hasDarkClass =
+        document.documentElement.classList.contains('dark-mode') ||
+        document.body.classList.contains('dark-mode');
+      setShouldUseDarkMode(hasDarkClass);
+    };
+
+    // Check immediately
+    checkDarkMode();
+
+    // Watch for dark mode class changes on document (real-time)
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    // Also listen to isDarkMode changes from hook
+    const timeoutId = setTimeout(checkDarkMode, 0);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, [isDarkMode, isMounted]);
 
   // Update editor dark mode - real-time tracking
   useEffect(() => {
@@ -240,28 +285,37 @@ const TuiEditor = () => {
 
         if (!editorElement) return;
 
-        // Check current dark mode state from multiple sources
-        const isDark =
-          isDarkMode ||
+        // Always check DOM first, as it's the source of truth
+        const hasDarkClass =
           document.documentElement.classList.contains('dark-mode') ||
           document.body.classList.contains('dark-mode');
 
-        // Update classes
-        if (isDark) {
+        // Update classes on wrapper
+        if (hasDarkClass) {
           editorElement.classList.add('dark-mode');
-          if (proseMirrorElement) {
-            proseMirrorElement.classList.add('dark-mode');
-          }
         } else {
           editorElement.classList.remove('dark-mode');
-          if (proseMirrorElement) {
+        }
+
+        // Update classes on ProseMirror element
+        if (proseMirrorElement) {
+          if (hasDarkClass) {
+            proseMirrorElement.classList.add('dark-mode');
+          } else {
             proseMirrorElement.classList.remove('dark-mode');
           }
+        }
+
+        // Also update editor's internal class attribute
+        const currentClass = editor.view.dom.className;
+        const newClass = hasDarkClass ? 'tiptap-editor dark-mode' : 'tiptap-editor';
+        if (currentClass !== newClass) {
+          editor.view.dom.className = newClass;
         }
       }, 0);
     };
 
-    // Update immediately when isDarkMode changes
+    // Update immediately
     updateEditorDarkMode();
 
     // Watch for dark-mode class changes on document (real-time)
@@ -291,20 +345,21 @@ const TuiEditor = () => {
     return () => {
       observer.disconnect();
     };
-  }, [isDarkMode, editor]);
+  }, [shouldUseDarkMode, isDarkMode, editor]);
 
   if (!editor) {
     return null;
   }
 
   return (
-    <Stack className={isDarkMode ? 'dark-mode' : ''}>
+    <Stack className={shouldUseDarkMode ? 'dark-mode' : ''}>
       <Stack direction="row" style={{ margin: '40px' }} justifyContent="space-evenly">
         <Box component={'div'} className={'form_row'} style={{ width: '300px' }}>
           <Typography
             style={{
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#7f838d',
+              color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#7f838d',
               margin: '10px',
+              transition: 'color 0.3s ease',
             }}
             variant="h3"
           >
@@ -313,7 +368,8 @@ const TuiEditor = () => {
           <FormControl
             sx={{
               width: '100%',
-              background: isDarkMode ? '#1e2128' : 'white',
+              background: shouldUseDarkMode ? '#1e2128' : 'white',
+              transition: 'background-color 0.3s ease',
             }}
           >
             <Select
@@ -322,36 +378,41 @@ const TuiEditor = () => {
               displayEmpty
               inputProps={{ 'aria-label': 'Without label' }}
               sx={{
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-                backgroundColor: isDarkMode ? '#1e2128' : 'white',
+                color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                backgroundColor: shouldUseDarkMode ? '#1e2128' : 'white',
+                transition: 'color 0.3s ease, background-color 0.3s ease',
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+                  borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+                  transition: 'border-color 0.3s ease',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+                  borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : '#1976d2',
+                  borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.3)' : '#1976d2',
                 },
                 '& .MuiSvgIcon-root': {
-                  color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                  color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                  transition: 'color 0.3s ease',
                 },
               }}
               MenuProps={{
                 PaperProps: {
                   sx: {
-                    backgroundColor: isDarkMode ? '#1e2128' : 'white',
+                    backgroundColor: shouldUseDarkMode ? '#1e2128' : 'white',
+                    transition: 'background-color 0.3s ease',
                     '& .MuiMenuItem-root': {
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-                      backgroundColor: isDarkMode ? '#1e2128' : 'white',
+                      color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                      backgroundColor: shouldUseDarkMode ? '#1e2128' : 'white',
+                      transition: 'color 0.3s ease, background-color 0.3s ease',
                       '&:hover': {
-                        backgroundColor: isDarkMode ? '#252830' : '#f5f5f5',
+                        backgroundColor: shouldUseDarkMode ? '#252830' : '#f5f5f5',
                       },
                       '&.Mui-selected': {
-                        backgroundColor: isDarkMode ? '#252830' : '#e3f2fd',
-                        color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#1976d2',
+                        backgroundColor: shouldUseDarkMode ? '#252830' : '#e3f2fd',
+                        color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#1976d2',
                         '&:hover': {
-                          backgroundColor: isDarkMode ? '#252830' : '#e3f2fd',
+                          backgroundColor: shouldUseDarkMode ? '#252830' : '#e3f2fd',
                         },
                       },
                     },
@@ -371,8 +432,9 @@ const TuiEditor = () => {
         <Box component={'div'} style={{ width: '300px', flexDirection: 'column' }}>
           <Typography
             style={{
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#7f838d',
+              color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#7f838d',
               margin: '10px',
+              transition: 'color 0.3s ease',
             }}
             variant="h3"
           >
@@ -384,23 +446,27 @@ const TuiEditor = () => {
             label="Type Title"
             sx={{
               width: '300px',
-              background: isDarkMode ? '#1e2128' : 'white',
+              background: shouldUseDarkMode ? '#1e2128' : 'white',
+              transition: 'background-color 0.3s ease',
               '& .MuiOutlinedInput-root': {
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                transition: 'color 0.3s ease',
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+                  borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+                  transition: 'border-color 0.3s ease',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+                  borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : '#1976d2',
+                  borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.3)' : '#1976d2',
                 },
               },
               '& .MuiInputLabel-root': {
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#181a20',
+                color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#181a20',
+                transition: 'color 0.3s ease',
                 '&.Mui-focused': {
-                  color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#1976d2',
+                  color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#1976d2',
                 },
               },
             }}
@@ -413,13 +479,14 @@ const TuiEditor = () => {
         sx={{
           margin: '0 40px',
           padding: '12px 16px',
-          backgroundColor: isDarkMode ? '#252830' : '#f5f5f5',
-          border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0'}`,
+          backgroundColor: shouldUseDarkMode ? '#252830' : '#f5f5f5',
+          border: `1px solid ${shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0'}`,
           borderBottom: 'none',
           borderRadius: '8px 8px 0 0',
           display: 'flex',
           gap: '8px',
           flexWrap: 'wrap',
+          transition: 'background-color 0.3s ease, border-color 0.3s ease',
         }}
       >
         <Button
@@ -429,11 +496,12 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('bold') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: editor.isActive('bold') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -446,12 +514,13 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('italic') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: editor.isActive('italic') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
             fontStyle: 'italic',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -464,12 +533,14 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('underline') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor:
+              editor.isActive('underline') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
             textDecoration: 'underline',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -482,12 +553,13 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('strike') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: editor.isActive('strike') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
             textDecoration: 'line-through',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -496,7 +568,8 @@ const TuiEditor = () => {
         <Box
           sx={{
             width: '1px',
-            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'background-color 0.3s ease',
             margin: '0 4px',
           }}
         />
@@ -508,13 +581,14 @@ const TuiEditor = () => {
             minWidth: 'auto',
             padding: '4px 12px',
             backgroundColor:
-              editor.isActive('heading', { level: 1 }) && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+              editor.isActive('heading', { level: 1 }) && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
             fontSize: '18px',
             fontWeight: 'bold',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -528,13 +602,14 @@ const TuiEditor = () => {
             minWidth: 'auto',
             padding: '4px 12px',
             backgroundColor:
-              editor.isActive('heading', { level: 2 }) && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+              editor.isActive('heading', { level: 2 }) && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
             fontSize: '16px',
             fontWeight: 'bold',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -548,13 +623,14 @@ const TuiEditor = () => {
             minWidth: 'auto',
             padding: '4px 12px',
             backgroundColor:
-              editor.isActive('heading', { level: 3 }) && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+              editor.isActive('heading', { level: 3 }) && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
             fontSize: '14px',
             fontWeight: 'bold',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -563,7 +639,8 @@ const TuiEditor = () => {
         <Box
           sx={{
             width: '1px',
-            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'background-color 0.3s ease',
             margin: '0 4px',
           }}
         />
@@ -574,11 +651,13 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('bulletList') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor:
+              editor.isActive('bulletList') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -591,11 +670,13 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('orderedList') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor:
+              editor.isActive('orderedList') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -604,7 +685,8 @@ const TuiEditor = () => {
         <Box
           sx={{
             width: '1px',
-            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'background-color 0.3s ease',
             margin: '0 4px',
           }}
         />
@@ -632,10 +714,11 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -653,11 +736,12 @@ const TuiEditor = () => {
           sx={{
             minWidth: 'auto',
             padding: '4px 12px',
-            backgroundColor: editor.isActive('link') && isDarkMode ? '#1e2128' : undefined,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            backgroundColor: editor.isActive('link') && shouldUseDarkMode ? '#1e2128' : undefined,
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0',
+            transition: 'color 0.3s ease, border-color 0.3s ease',
             '&:hover': {
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
+              borderColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#bdbdbd',
             },
           }}
         >
@@ -672,13 +756,15 @@ const TuiEditor = () => {
           margin: '0 40px',
           padding: '16px',
           minHeight: '640px',
-          backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
-          border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0'}`,
+          backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
+          border: `1px solid ${shouldUseDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#e0e0e0'}`,
           borderRadius: '0 0 8px 8px',
+          transition: 'background-color 0.3s ease, border-color 0.3s ease',
           '& .tiptap-editor': {
             minHeight: '600px',
             outline: 'none',
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            transition: 'color 0.3s ease',
             '& p': {
               margin: '8px 0',
               lineHeight: '1.6',
@@ -698,11 +784,13 @@ const TuiEditor = () => {
               margin: '16px 0',
             },
             '& a': {
-              color: isDarkMode ? '#87cdf9' : '#1976d2',
+              color: shouldUseDarkMode ? '#87cdf9' : '#1976d2',
               textDecoration: 'underline',
+              transition: 'color 0.3s ease',
             },
             '& .tiptap-placeholder': {
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : '#9e9e9e',
+              color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.4)' : '#9e9e9e',
+              transition: 'color 0.3s ease',
             },
           },
         }}
@@ -720,14 +808,14 @@ const TuiEditor = () => {
             height: '44px',
             padding: '12px 24px',
             borderRadius: '12px',
-            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-            color: isDarkMode ? '#181a20' : '#ffffff',
+            backgroundColor: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+            color: shouldUseDarkMode ? '#181a20' : '#ffffff',
             fontSize: '14px',
             fontWeight: 600,
             lineHeight: 'normal',
             transition: 'background-color 0.3s ease, color 0.3s ease',
             '&:hover': {
-              backgroundColor: isDarkMode ? '#ffffff' : '#2a2d35',
+              backgroundColor: shouldUseDarkMode ? '#ffffff' : '#2a2d35',
             },
           }}
           onClick={handleRegisterButton}

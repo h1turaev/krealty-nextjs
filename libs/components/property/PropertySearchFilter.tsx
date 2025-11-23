@@ -1,53 +1,10 @@
-import { Box, Button, FormControl, MenuItem, Select, Stack, TextField } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { Direction } from '../../enums/common.enum';
-import { PropertyLocation, PropertyType } from '../../enums/property.enum';
+import { PropertyLocation } from '../../enums/property.enum';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import { PropertiesInquiry } from '../../types/property/property.input';
-
-const darkMenuProps = {
-  PaperProps: {
-    sx: {
-      backgroundColor: '#1e2128',
-      border: '1px solid #2d2d2d',
-      '& .MuiMenuItem-root': {
-        color: 'rgba(255, 255, 255, 0.9)',
-        '&:hover': {
-          backgroundColor: '#black',
-        },
-        '&.Mui-selected': {
-          backgroundColor: 'transparent',
-          '&:hover': {
-            backgroundColor: '#252830',
-          },
-        },
-      },
-    },
-  },
-};
-
-const lightMenuProps = {
-  PaperProps: {
-    sx: {
-      backgroundColor: '#ffffff',
-      border: '1px solid #e0e0e0',
-      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-      '& .MuiMenuItem-root': {
-        color: '#333',
-        '&:hover': {
-          backgroundColor: '#f5f5f5',
-        },
-        '&.Mui-selected': {
-          backgroundColor: 'transparent',
-          color: '#333',
-          '&:hover': {
-            backgroundColor: '#f5f5f5',
-          },
-        },
-      },
-    },
-  },
-};
 
 interface PropertySearchFilterProps {
   searchFilter: PropertiesInquiry;
@@ -62,346 +19,240 @@ const PropertySearchFilter: React.FC<PropertySearchFilterProps> = ({
 }) => {
   const { isDarkMode } = useDarkMode();
   const [isMounted, setIsMounted] = React.useState(false);
-
-  // Initialize states with empty values - will be synced via useEffect
-  const [minPrice, setMinPrice] = useState<string>('');
-  const [maxPrice, setMaxPrice] = useState<string>('');
-  const [city, setCity] = useState<string>('');
-  const [type, setType] = useState<string>('');
-  const [room, setRoom] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [shouldUseDarkMode, setShouldUseDarkMode] = React.useState(false);
 
   // Ensure component is mounted before applying dark mode styles
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Sync filter inputs with searchFilter prop changes
+  // Sync search term from searchFilter
   React.useEffect(() => {
-    // Check if searchFilter has custom filters or is default
-    const hasLocation =
-      searchFilter?.search?.locationList && searchFilter.search.locationList.length > 0;
-    const hasType = searchFilter?.search?.typeList && searchFilter.search.typeList.length > 0;
-    const hasRoom = searchFilter?.search?.roomsList && searchFilter.search.roomsList.length > 0;
-    const hasCustomPrice =
-      (searchFilter?.search?.pricesRange?.start && searchFilter.search.pricesRange.start > 0) ||
-      (searchFilter?.search?.pricesRange?.end && searchFilter.search.pricesRange.end < 2000000);
-
-    // Update city input from searchFilter - always reset if no location
-    setCity(
-      hasLocation && searchFilter.search.locationList ? searchFilter.search.locationList[0] : '',
-    );
-
-    // Update type input from searchFilter - always reset if no type
-    setType(hasType && searchFilter.search.typeList ? searchFilter.search.typeList[0] : '');
-
-    // Update room input from searchFilter - always reset if no room
-    setRoom(
-      hasRoom && searchFilter.search.roomsList ? String(searchFilter.search.roomsList[0]) : '',
-    );
-
-    // Update price inputs from searchFilter
-    setMinPrice(
-      searchFilter?.search?.pricesRange?.start && searchFilter.search.pricesRange.start > 0
-        ? String(searchFilter.search.pricesRange.start)
-        : '',
-    );
-
-    setMaxPrice(
-      searchFilter?.search?.pricesRange?.end && searchFilter.search.pricesRange.end < 2000000
-        ? String(searchFilter.search.pricesRange.end)
-        : '',
-    );
+    if (searchFilter?.search?.text) {
+      setSearchTerm(searchFilter.search.text);
+    } else {
+      setSearchTerm('');
+    }
   }, [searchFilter]);
 
+  // Real-time dark mode tracking
+  React.useEffect(() => {
+    if (!isMounted) return;
+
+    const checkDarkMode = () => {
+      // Always check DOM first, as it's the source of truth
+      const hasDarkClass =
+        document.documentElement.classList.contains('dark-mode') ||
+        document.body.classList.contains('dark-mode');
+      setShouldUseDarkMode(hasDarkClass);
+    };
+
+    // Check immediately
+    checkDarkMode();
+
+    // Watch for dark mode class changes on document (real-time)
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    // Also listen to isDarkMode changes from hook
+    const timeoutId = setTimeout(checkDarkMode, 0);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, [isDarkMode, isMounted]);
+
   const handleSearch = () => {
+    const trimmedSearchTerm = searchTerm?.trim();
+
+    // Build search object
+    const searchObject: any = {
+      squaresRange: searchFilter.search?.squaresRange || {
+        start: 0,
+        end: 500,
+      },
+      pricesRange: searchFilter.search?.pricesRange || {
+        start: 0,
+        end: 2000000,
+      },
+    };
+
+    // Check if search term matches a city name from PropertyLocation enum
+    if (trimmedSearchTerm && trimmedSearchTerm.length > 0) {
+      const normalizedSearch = trimmedSearchTerm.toUpperCase();
+
+      // Try to find matching location
+      const locationMatch = Object.values(PropertyLocation).find(
+        (location) => location.toUpperCase() === normalizedSearch,
+      );
+
+      if (locationMatch) {
+        // If it's a city name, add to locationList
+        searchObject.locationList = [locationMatch];
+      } else {
+        // Try partial match for city names
+        const partialLocationMatch = Object.values(PropertyLocation).find(
+          (location) =>
+            location.toUpperCase().includes(normalizedSearch) ||
+            normalizedSearch.includes(location.toUpperCase()),
+        );
+
+        if (partialLocationMatch) {
+          searchObject.locationList = [partialLocationMatch];
+        } else {
+          // If not a city, use text search for property title/name
+          searchObject.text = trimmedSearchTerm;
+        }
+      }
+    }
+
+    // Preserve other search filters if they exist
+    if (searchFilter.search?.typeList && searchFilter.search.typeList.length > 0) {
+      searchObject.typeList = searchFilter.search.typeList;
+    }
+    if (searchFilter.search?.roomsList && searchFilter.search.roomsList.length > 0) {
+      searchObject.roomsList = searchFilter.search.roomsList;
+    }
+    if (searchFilter.search?.bedsList && searchFilter.search.bedsList.length > 0) {
+      searchObject.bedsList = searchFilter.search.bedsList;
+    }
+
     const newFilter: PropertiesInquiry = {
       ...searchFilter,
       page: 1,
       limit: searchFilter.limit || 12,
       sort: searchFilter.sort || 'createdAt',
       direction: searchFilter.direction || Direction.DESC,
-      search: {
-        squaresRange: searchFilter.search?.squaresRange || {
-          start: 0,
-          end: 500,
-        },
-        pricesRange: {
-          start: minPrice && minPrice.trim() ? Number(minPrice) : 0,
-          end: maxPrice && maxPrice.trim() ? Number(maxPrice) : 2000000,
-        },
-      },
+      search: searchObject,
     };
-
-    // Add filters only if they have values
-    if (city && city.trim()) {
-      // Normalize city input (case-insensitive matching)
-      const normalizedCity = city.trim().toUpperCase();
-      // Find matching PropertyLocation enum value
-      const locationMatch = Object.values(PropertyLocation).find(
-        (location) => location.toUpperCase() === normalizedCity,
-      );
-
-      if (locationMatch) {
-        newFilter.search.locationList = [locationMatch];
-      } else {
-        // If no exact match, try partial match
-        const partialMatch = Object.values(PropertyLocation).find(
-          (location) =>
-            location.toUpperCase().includes(normalizedCity) ||
-            normalizedCity.includes(location.toUpperCase()),
-        );
-
-        if (partialMatch) {
-          newFilter.search.locationList = [partialMatch];
-        } else {
-          // If still no match, use the normalized input as-is (might work with backend)
-          newFilter.search.locationList = [normalizedCity as PropertyLocation];
-        }
-      }
-    }
-
-    if (type && type.trim()) {
-      newFilter.search.typeList = [type.trim() as PropertyType];
-    }
-
-    if (room && room.trim() !== '') {
-      newFilter.search.roomsList = [Number(room)];
-    }
 
     setSearchFilter(newFilter);
     onSearch(newFilter);
   };
 
-  // Memoize styles to ensure they update when isDarkMode changes
-  // Always use isDarkMode value, but check isMounted to prevent hydration issues
-  const commonTextFieldStyles = React.useMemo(() => {
-    // During SSR or before mount, use light mode styles
-    const shouldUseDarkMode = isMounted && isDarkMode;
+  const searchBarStyles = React.useMemo(() => {
+    return {
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 0,
+      backgroundColor: shouldUseDarkMode ? '#2a2d35' : '#f5f5f5',
+      borderRadius: '12px',
+      padding: '4px',
+      border: shouldUseDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
+      transition: 'background-color 0.3s ease, border-color 0.3s ease',
+      overflow: 'hidden',
+    };
+  }, [shouldUseDarkMode, isDarkMode]);
 
+  const inputStyles = React.useMemo(() => {
     return {
       flex: 1,
-      minWidth: 120,
       '& .MuiOutlinedInput-root': {
-        borderRadius: '8px',
-        backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
-        height: '48px',
-        border: shouldUseDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
-        transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease',
-        color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#ffffff',
+        backgroundColor: 'transparent',
+        border: 'none',
+        borderRadius: '12px',
+        height: '40px',
+        paddingRight: '8px',
         '& fieldset': {
           border: 'none',
         },
-        '&:hover': {
-          backgroundColor: shouldUseDarkMode ? '#252830' : '#ffffff',
-          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #d0d0d0',
+        '&:hover fieldset': {
+          border: 'none',
         },
-        '&.Mui-focused': {
-          backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
-          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #e0e0e0',
+        '&.Mui-focused fieldset': {
+          border: 'none',
         },
         '& .MuiInputBase-input': {
-          color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9) !important' : '#181a20 !important',
-          fontSize: '14px',
+          color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+          fontSize: '16px',
+          padding: '0 15px',
+          lineHeight: '1.5',
           transition: 'color 0.3s ease',
           '&::placeholder': {
-            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.5) !important' : '#666 !important',
+            color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#999',
             opacity: 1,
+            fontSize: '16px',
+            transition: 'color 0.3s ease',
           },
         },
       },
     };
-  }, [isDarkMode, isMounted]);
+  }, [shouldUseDarkMode, isDarkMode]);
 
-  const commonFormControlStyles = React.useMemo(() => {
-    // During SSR or before mount, use light mode styles
-    const shouldUseDarkMode = isMounted && isDarkMode;
-
+  const iconButtonStyles = React.useMemo(() => {
     return {
-      flex: 1,
-      minWidth: 120,
-      '& .MuiOutlinedInput-root': {
-        borderRadius: '8px',
-        backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
-        height: '48px',
-        border: shouldUseDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
-        transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease',
-        color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#ffffff',
-        '& fieldset': {
-          border: 'none',
-        },
-        '&:hover': {
-          backgroundColor: shouldUseDarkMode ? '#252830' : '#ffffff',
-          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #d0d0d0',
-        },
-        '&.Mui-focused': {
-          backgroundColor: shouldUseDarkMode ? '#1e2128' : '#ffffff',
-          border: shouldUseDarkMode ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #e0e0e0',
-        },
-        '& .MuiSelect-select': {
-          color: shouldUseDarkMode ? 'rgba(255, 255, 255, 0.9) !important' : '#181a20 !important',
-        },
+      width: '45px',
+      height: '45px',
+      borderRadius: '50%',
+      backgroundColor: '#000000',
+      color: '#ffffff',
+      padding: 0,
+      margin: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      transition: 'background-color 0.3s ease',
+      outline: 'none',
+      border: 'none',
+      '&:hover': {
+        backgroundColor: '#1a1a1a',
+      },
+      '&:focus': {
+        outline: 'none',
+        border: 'none',
+        boxShadow: 'none',
+      },
+      '&:focus-visible': {
+        outline: 'none',
+        border: 'none',
+        boxShadow: 'none',
+      },
+      '& .MuiSvgIcon-root': {
+        width: '24px',
+        height: '24px',
+        fontSize: '24px',
+        transition: 'transform 0.2s ease',
+      },
+      '&:hover .MuiSvgIcon-root': {
+        transform: 'translateX(2px)',
       },
     };
-  }, [isDarkMode, isMounted]);
+  }, []);
 
   return (
     <Box className="property-search-filter">
-      <Stack
-        className="filter-top-section"
-        direction="row"
-        spacing={1.5}
-        alignItems="center"
-        sx={{ width: '100%', flexWrap: 'nowrap' }}
-      >
+      <Stack className="search-bar-container" sx={searchBarStyles}>
         <TextField
-          placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          placeholder="Search by City, Zip Code, or Address"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleSearch();
             }
           }}
-          sx={commonTextFieldStyles}
-        />
-        <FormControl sx={commonFormControlStyles}>
-          <Select
-            value={type}
-            displayEmpty
-            onChange={(e) => setType(e.target.value)}
-            sx={{
-              color: isMounted && isDarkMode ? '#fff' : '#181a20',
-              fontSize: '14px',
-              transition: 'color 0.3s ease',
-              '& .MuiSelect-icon': {
-                color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666',
-                transition: 'color 0.3s ease',
-              },
-            }}
-            renderValue={(selected) => {
-              if (!selected) {
-                return (
-                  <span
-                    style={{ color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#666' }}
-                  >
-                    Type
-                  </span>
-                );
-              }
-              const capitalizeFirst = (str: string) =>
-                str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-              return (
-                <span
-                  style={{
-                    color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
-                  }}
-                >
-                  {capitalizeFirst(selected)}
-                </span>
-              );
-            }}
-            MenuProps={isMounted && isDarkMode ? darkMenuProps : lightMenuProps}
-          >
-            <MenuItem value="">
-              <span
-                style={{ color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666' }}
-              >
-                Any
-              </span>
-            </MenuItem>
-            {Object.values(PropertyType).map((propertyType) => {
-              const capitalizeFirst = (str: string) =>
-                str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-              return (
-                <MenuItem key={propertyType} value={propertyType}>
-                  <span
-                    style={{ color: isMounted && isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666' }}
-                  >
-                    {capitalizeFirst(propertyType)}
-                  </span>
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-        <TextField
-          placeholder="Min Price"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSearch();
-            }
-          }}
-          type="number"
-          sx={{
-            ...commonTextFieldStyles,
-            '& input[type=number]': {
-              MozAppearance: 'textfield',
-              '&::-webkit-outer-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-              },
-              '&::-webkit-inner-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-              },
-            },
+          sx={inputStyles}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleSearch} sx={iconButtonStyles} edge="end">
+                  <ArrowForwardIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
         />
-        <TextField
-          placeholder="Max Price"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSearch();
-            }
-          }}
-          type="number"
-          sx={{
-            ...commonTextFieldStyles,
-            '& input[type=number]': {
-              MozAppearance: 'textfield',
-              '&::-webkit-outer-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-              },
-              '&::-webkit-inner-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-              },
-            },
-          }}
-        />
-        <TextField
-          placeholder="Room"
-          value={room}
-          onChange={(e) => setRoom(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSearch();
-            }
-          }}
-          type="number"
-          sx={{
-            ...commonTextFieldStyles,
-            '& input[type=number]': {
-              MozAppearance: 'textfield',
-              '&::-webkit-outer-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-              },
-              '&::-webkit-inner-spin-button': {
-                WebkitAppearance: 'none',
-                margin: 0,
-              },
-            },
-          }}
-        />
-        <Button className="search-button" variant="text" onClick={handleSearch}>
-          Search
-        </Button>
       </Stack>
     </Box>
   );

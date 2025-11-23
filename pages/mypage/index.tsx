@@ -18,11 +18,7 @@ import WriteArticle from '../../libs/components/mypage/WriteArticle';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import {
-  showConfirm,
-  showError,
-  showSuccessTopRight,
-} from '../../libs/toast';
+import { showConfirm, showError, showSuccessTopRight } from '../../libs/toast';
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {

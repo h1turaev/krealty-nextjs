@@ -22,10 +22,7 @@ import { REACT_APP_API_URL } from '../../libs/config';
 import { CommentGroup } from '../../libs/enums/comment.enum';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
-import {
-  showError,
-  showSuccessTopRight,
-} from '../../libs/toast';
+import { showError, showSuccessTopRight } from '../../libs/toast';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { T } from '../../libs/types/common';
@@ -216,7 +213,7 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
       setInsertCommentData({ ...insertCommentData, commentContent: '' });
       await getCommentsRefetch({ input: commentInquiry });
     } catch (err: any) {
-      await showError((err as any)?.message || "An error occurred");
+      await showError((err as any)?.message || 'An error occurred');
     }
   };
 
@@ -413,24 +410,6 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
                   </Stack>
                 </Stack>
                 <Box component={'div'} className={'divider'}></Box>
-                <Stack className={'address-config'}>
-                  <Stack className={'section-header'}>
-                    <Typography className={'section-label'}>[ADDRESS]</Typography>
-                    <Typography className={'title'}>Address</Typography>
-                  </Stack>
-                  <Stack className={'map-box'}>
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25867.098915951767!2d128.68632810247993!3d35.86402299180927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35660bba427bf179%3A0x1fc02da732b9072f!2sGeumhogangbyeon-ro%2C%20Dong-gu%2C%20Daegu!5e0!3m2!1suz!2skr!4v1695537640704!5m2!1suz!2skr"
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen={true}
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                  </Stack>
-                </Stack>
-                <Box component={'div'} className={'divider'}></Box>
                 {commentTotal !== 0 && (
                   <Stack className={'reviews-config'}>
                     <Stack className={'filter-box'}>
@@ -503,29 +482,6 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
                       </Link>
                     </Stack>
                   </Stack>
-                </Stack>
-                <Stack className={'info-box'}>
-                  <Typography className={'sub-title'}>Name</Typography>
-                  <input type={'text'} placeholder={'Enter your name'} />
-                </Stack>
-                <Stack className={'info-box'}>
-                  <Typography className={'sub-title'}>Phone</Typography>
-                  <input type={'text'} placeholder={'Enter your phone'} />
-                </Stack>
-                <Stack className={'info-box'}>
-                  <Typography className={'sub-title'}>Email</Typography>
-                  <input type={'text'} placeholder={'creativelayers088'} />
-                </Stack>
-                <Stack className={'info-box'}>
-                  <Typography className={'sub-title'}>Message</Typography>
-                  <textarea
-                    placeholder={'Hello, I am interested in \n' + '[Renovated property at  floor]'}
-                  ></textarea>
-                </Stack>
-                <Stack className={'info-box'}>
-                  <Button className={'send-message'}>
-                    <Typography className={'title'}>Send Message</Typography>
-                  </Button>
                 </Stack>
               </Stack>
             </Stack>

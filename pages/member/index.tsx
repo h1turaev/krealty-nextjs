@@ -179,7 +179,12 @@ const MemberPage: NextPage = () => {
                   </Stack>
                 </Stack>
                 {member && member?._id !== user?._id && (
-                  <Stack className={'follow-button-wrapper'}>
+                  <Stack
+                    className={'follow-button-wrapper'}
+                    direction="row"
+                    spacing={2}
+                    alignItems="center"
+                  >
                     {member?.meFollowed && member?.meFollowed[0]?.myFollowing ? (
                       <Button
                         className="follow-button"

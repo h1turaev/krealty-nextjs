@@ -5,6 +5,7 @@ export enum NotificationType {
 	LIKE = 'LIKE',
 	COMMENT = 'COMMENT',
 	PROPERTY = 'PROPERTY',
+	INQUIRY = 'INQUIRY',
 }
 
 export enum NotificationStatus {

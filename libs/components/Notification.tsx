@@ -132,6 +132,7 @@ const NotificationComponent = () => {
         refetchUnreadCount();
       }
 
+
       // Navigate to property if applicable
       if (notification.propertyId) {
         router.push({

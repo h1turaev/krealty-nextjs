@@ -8,6 +8,7 @@ import { LIKE_TARGET_PROPERTY } from '../../apollo/user/mutation';
 import { GET_PROPERTIES } from '../../apollo/user/query';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import PropertyCard from '../../libs/components/property/PropertyCard';
+import PropertyFilterPanel from '../../libs/components/property/PropertyFilterPanel';
 import PropertySearchFilter from '../../libs/components/property/PropertySearchFilter';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -217,6 +218,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
       <div id="property-list-page" style={{ position: 'relative' }}>
         <div className="container">
           <Stack className={'property-page'}>
+            {/* Search Bar - Top */}
             <Stack className={'filter-config'} mb={3}>
               <PropertySearchFilter
                 searchFilter={searchFilter}
@@ -224,43 +226,57 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
                 onSearch={handleSearch}
               />
             </Stack>
-            <Stack className="main-config" mb={'76px'}>
-              <Stack className={'list-config'}>
-                {properties?.length === 0 ? (
-                  <div className={'no-data'}>
-                    <img src="/img/icons/icoAlert.svg" alt="" />
-                    <p>No Properties found!</p>
-                  </div>
-                ) : (
-                  properties.map((property: Property) => {
-                    return (
-                      <PropertyCard
-                        property={property}
-                        likePropertyHandler={likePropertyHandler}
-                        key={property?._id}
+
+            {/* Main Content - Filter Panel (Left) + Property Listings (Right) */}
+            <Stack className="main-config" direction="row" spacing={3} mb={'76px'}>
+              {/* Filter Panel - Left Side */}
+              <Stack className="filter-panel-wrapper" sx={{ minWidth: '280px', maxWidth: '280px' }}>
+                <PropertyFilterPanel
+                  searchFilter={searchFilter}
+                  setSearchFilter={setSearchFilter}
+                  onSearch={handleSearch}
+                />
+              </Stack>
+
+              {/* Property Listings - Right Side */}
+              <Stack className="listings-wrapper" sx={{ flex: 1 }}>
+                <Stack className={'list-config'}>
+                  {properties?.length === 0 ? (
+                    <div className={'no-data'}>
+                      <img src="/img/icons/icoAlert.svg" alt="" />
+                      <p>No Properties found!</p>
+                    </div>
+                  ) : (
+                    properties.map((property: Property) => {
+                      return (
+                        <PropertyCard
+                          property={property}
+                          likePropertyHandler={likePropertyHandler}
+                          key={property?._id}
+                        />
+                      );
+                    })
+                  )}
+                </Stack>
+                {properties.length !== 0 && (
+                  <Stack className="pagination-config">
+                    <Stack className="pagination-box">
+                      <Pagination
+                        page={currentPage}
+                        count={Math.ceil(total / searchFilter.limit)}
+                        onChange={handlePaginationChange}
+                        shape="circular"
+                        color="primary"
                       />
-                    );
-                  })
+                    </Stack>
+                    <Stack className="total-result">
+                      <Typography>
+                        [ Total propert{total > 1 ? 'ies' : 'y'}: {total} ]
+                      </Typography>
+                    </Stack>
+                  </Stack>
                 )}
               </Stack>
-              {properties.length !== 0 && (
-                <Stack className="pagination-config">
-                  <Stack className="pagination-box">
-                    <Pagination
-                      page={currentPage}
-                      count={Math.ceil(total / searchFilter.limit)}
-                      onChange={handlePaginationChange}
-                      shape="circular"
-                      color="primary"
-                    />
-                  </Stack>
-                  <Stack className="total-result">
-                    <Typography>
-                      [ Total propert{total > 1 ? 'ies' : 'y'}: {total} ]
-                    </Typography>
-                  </Stack>
-                </Stack>
-              )}
             </Stack>
           </Stack>
         </div>
