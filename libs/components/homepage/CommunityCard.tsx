@@ -60,7 +60,49 @@ const CommunityCard = (props: CommunityCardProps) => {
       : plainTextContent;
 
   if (device === 'mobile') {
-    return <div>COMMUNITY CARD (MOBILE)</div>;
+    return (
+      <Link
+        href={`/community/detail?articleCategory=${article?.articleCategory}&id=${article?._id}`}
+      >
+        <Box component={'div'} className={'blog-card'}>
+          {article?.articleImage && (
+            <Box className="article-image-container visible">
+              <img src={articleImage} alt={article?.articleTitle} className="article-image" />
+            </Box>
+          )}
+          <Box className="article-content-container visible">
+            <Box className={'article-header'}>
+              <Typography className={'article-category'}>
+                {getCategoryLabel(article?.articleCategory)}
+              </Typography>
+              <Typography className={'article-date'}>
+                <Moment format="MMMM DD, YYYY">{article?.createdAt}</Moment>
+              </Typography>
+            </Box>
+            <Typography className={'article-title'}>{article?.articleTitle}</Typography>
+            <Typography className={'article-description'}>{truncatedText}</Typography>
+            <Box className={'read-more'}>
+              <span>Read More</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 12L10 8L6 4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Box>
+          </Box>
+        </Box>
+      </Link>
+    );
   } else {
     return (
       <Link

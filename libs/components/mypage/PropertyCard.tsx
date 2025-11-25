@@ -1,14 +1,15 @@
-import { Menu, MenuItem, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import IconButton from '@mui/material/IconButton';
-import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ModeIcon from '@mui/icons-material/Mode';
+import { Menu, MenuItem, Stack, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import Moment from 'react-moment';
+import { PropertyStatus } from '../../enums/property.enum';
+import { useDarkMode } from '../../hooks/useDarkMode';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
 import { formatterStr } from '../../utils';
-import Moment from 'react-moment';
-import { useRouter } from 'next/router';
-import { PropertyStatus } from '../../enums/property.enum';
 
 interface PropertyCardProps {
   property: Property;
@@ -21,6 +22,7 @@ export const PropertyCard = (props: PropertyCardProps) => {
   const { property, deletePropertyHandler, memberPage, updatePropertyHandler } = props;
   const device = useDeviceDetect();
   const router = useRouter();
+  const { isDarkMode } = useDarkMode();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -51,7 +53,123 @@ export const PropertyCard = (props: PropertyCardProps) => {
   };
 
   if (device === 'mobile') {
-    return <div>MOBILE PROPERTY CARD</div>;
+    return (
+      <Stack className="property-card-box">
+        <Stack className="image-box" onClick={() => pushPropertyDetail(property?._id)}>
+          <img src={`${process.env.REACT_APP_API_URL}/${property.propertyImages[0]}`} alt="" />
+        </Stack>
+        <Stack className="information-box" onClick={() => pushPropertyDetail(property?._id)}>
+          <Typography className="name">{property.propertyTitle}</Typography>
+          <Typography className="address">{property.propertyAddress}</Typography>
+          <Typography className="price">
+            <strong>₩{formatterStr(property?.propertyPrice)}</strong>
+          </Typography>
+        </Stack>
+        <Stack className="date-box">
+          <Typography className="date">
+            <Moment format="MMM DD, YYYY">{property.createdAt}</Moment>
+          </Typography>
+        </Stack>
+        <Stack className="status-box">
+          <Stack
+            className="coloured-box"
+            sx={
+              property.propertyStatus === 'ACTIVE'
+                ? {
+                    background: '#000000',
+                    cursor: updatePropertyHandler ? 'pointer' : 'default',
+                    color: '#ffffff',
+                  }
+                : memberPage
+                ? {
+                    background: isDarkMode ? '#0071e3' : '#0071e3',
+                    cursor: updatePropertyHandler ? 'pointer' : 'default',
+                  }
+                : {
+                    background: isDarkMode ? '#1e2128' : '#E5F0FD',
+                    cursor: 'pointer',
+                  }
+            }
+            onClick={
+              updatePropertyHandler && property.propertyStatus !== 'SOLD' ? handleClick : undefined
+            }
+          >
+            <Typography
+              className="status"
+              sx={
+                property.propertyStatus === 'ACTIVE'
+                  ? { color: '#ffffff' }
+                  : memberPage
+                  ? { color: '#ffffff' }
+                  : { color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#3554d1' }
+              }
+            >
+              {property.propertyStatus}
+            </Typography>
+          </Stack>
+        </Stack>
+        {updatePropertyHandler && property.propertyStatus !== 'SOLD' && (
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                width: '70px',
+                mt: 1,
+                ml: '10px',
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
+                color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+              },
+              style: {
+                padding: 0,
+                display: 'flex',
+                justifyContent: 'center',
+              },
+            }}
+          >
+            {property.propertyStatus === 'ACTIVE' && (
+              <>
+                <MenuItem
+                  disableRipple
+                  onClick={() => {
+                    handleClose();
+                    updatePropertyHandler(PropertyStatus.SOLD, property?._id);
+                  }}
+                  sx={{
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                    '&:hover': {
+                      backgroundColor: isDarkMode
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : 'rgba(0, 0, 0, 0.05)',
+                    },
+                  }}
+                >
+                  Sold
+                </MenuItem>
+              </>
+            )}
+          </Menu>
+        )}
+
+        <Stack className="views-box">
+          <Typography className="views">{property.propertyViews.toLocaleString()} views</Typography>
+        </Stack>
+        {!memberPage && property.propertyStatus === PropertyStatus.ACTIVE && (
+          <Stack className="action-box">
+            <IconButton className="icon-button" onClick={() => pushEditProperty(property._id)}>
+              <ModeIcon className="buttons" />
+            </IconButton>
+            <IconButton className="icon-button" onClick={() => deletePropertyHandler(property._id)}>
+              <DeleteIcon className="buttons" />
+            </IconButton>
+          </Stack>
+        )}
+      </Stack>
+    );
   } else
     return (
       <Stack className="property-card-box">
@@ -73,16 +191,37 @@ export const PropertyCard = (props: PropertyCardProps) => {
         <Stack className="status-box">
           <Stack
             className="coloured-box"
-            sx={memberPage ? {
-              background: '#0071e3',
-              cursor: updatePropertyHandler ? 'pointer' : 'default'
-            } : {
-              background: '#E5F0FD',
-              cursor: 'pointer'
-            }}
-            onClick={updatePropertyHandler && property.propertyStatus !== 'SOLD' ? handleClick : undefined}
+            sx={
+              property.propertyStatus === 'ACTIVE'
+                ? {
+                    background: '#000000',
+                    cursor: updatePropertyHandler ? 'pointer' : 'default',
+                    color: '#ffffff',
+                  }
+                : memberPage
+                ? {
+                    background: isDarkMode ? '#0071e3' : '#0071e3',
+                    cursor: updatePropertyHandler ? 'pointer' : 'default',
+                  }
+                : {
+                    background: isDarkMode ? '#1e2128' : '#E5F0FD',
+                    cursor: 'pointer',
+                  }
+            }
+            onClick={
+              updatePropertyHandler && property.propertyStatus !== 'SOLD' ? handleClick : undefined
+            }
           >
-            <Typography className="status" sx={memberPage ? { color: '#ffffff' } : { color: '#3554d1' }}>
+            <Typography
+              className="status"
+              sx={
+                property.propertyStatus === 'ACTIVE'
+                  ? { color: '#ffffff' }
+                  : memberPage
+                  ? { color: '#ffffff' }
+                  : { color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#3554d1' }
+              }
+            >
               {property.propertyStatus}
             </Typography>
           </Stack>
@@ -100,6 +239,8 @@ export const PropertyCard = (props: PropertyCardProps) => {
                 ml: '10px',
                 overflow: 'visible',
                 filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                backgroundColor: isDarkMode ? '#1e2128' : '#ffffff',
+                color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
               },
               style: {
                 padding: 0,
@@ -116,6 +257,14 @@ export const PropertyCard = (props: PropertyCardProps) => {
                     handleClose();
                     updatePropertyHandler(PropertyStatus.SOLD, property?._id);
                   }}
+                  sx={{
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : '#181a20',
+                    '&:hover': {
+                      backgroundColor: isDarkMode
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : 'rgba(0, 0, 0, 0.05)',
+                    },
+                  }}
                 >
                   Sold
                 </MenuItem>
@@ -125,9 +274,7 @@ export const PropertyCard = (props: PropertyCardProps) => {
         )}
 
         <Stack className="views-box">
-          <Typography className="views">
-            {property.propertyViews.toLocaleString()} views
-          </Typography>
+          <Typography className="views">{property.propertyViews.toLocaleString()} views</Typography>
         </Stack>
         {!memberPage && property.propertyStatus === PropertyStatus.ACTIVE && (
           <Stack className="action-box">

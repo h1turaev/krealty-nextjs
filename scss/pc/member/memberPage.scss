@@ -177,11 +177,11 @@
                 }
               }
               &.active {
-                background: #181a20;
+                background: #000000;
                 color: #ffffff;
                 .dark-mode & {
-                  background: #ffffff;
-                  color: #0f1114;
+                  background: #000000;
+                  color: #ffffff;
                 }
               }
             }

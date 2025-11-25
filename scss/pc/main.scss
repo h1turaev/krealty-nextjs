@@ -2629,7 +2629,23 @@ body::-webkit-scrollbar {
       background: #1e2128 !important;
       color: rgba(255, 255, 255, 0.9) !important;
 
-      p, h1, h2, h3, h4, h5, h6, li, td, th, span, div, strong, em, code, pre, blockquote {
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      li,
+      td,
+      th,
+      span,
+      div,
+      strong,
+      em,
+      code,
+      pre,
+      blockquote {
         color: rgba(255, 255, 255, 0.9) !important;
       }
 
@@ -2678,7 +2694,8 @@ body::-webkit-scrollbar {
       border-color: rgba(255, 255, 255, 0.1) !important;
       color: rgba(255, 255, 255, 0.9) !important;
 
-      input, textarea {
+      input,
+      textarea {
         background: #252830 !important;
         border-color: rgba(255, 255, 255, 0.1) !important;
         color: rgba(255, 255, 255, 0.9) !important;
@@ -2719,6 +2736,35 @@ body::-webkit-scrollbar {
       :global(.ProseMirror) {
         p.is-editor-empty:first-child::before {
           color: rgba(255, 255, 255, 0.4);
+        }
+      }
+    }
+  }
+}
+
+// Global Menu Items Styling
+.sections {
+  .section {
+    .sub-section {
+      .MuiListItem-root {
+        &.focus {
+          background: #000000;
+          border-radius: 8px;
+          .sub-title {
+            color: #ffffff;
+          }
+          .com-icon {
+            filter: brightness(0) invert(1);
+          }
+          .dark-mode & {
+            background: #000000;
+            .sub-title {
+              color: #ffffff;
+            }
+            .com-icon {
+              filter: brightness(0) invert(1);
+            }
+          }
         }
       }
     }

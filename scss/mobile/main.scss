@@ -1,4 +1,6 @@
 @import '/scss/variables.scss';
+@import '/scss/mobile/mypage.scss';
+@import '/scss/mobile/homepage.scss';
 
 #mobile-wrap {
   background: #ffffff;
@@ -35,9 +37,9 @@
   }
 
   .trend-properties {
-    padding: 0px 10px;
+    padding: 40px 16px;
     width: 100%;
-    height: auto;
+    min-height: auto;
     background: #ffffff;
     transition: background-color 0.3s ease;
     display: flex;
@@ -48,13 +50,84 @@
     .container {
       width: 100%;
       flex-direction: column;
+      .info-box {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+        .left {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          .label {
+            color: #181a20;
+            font-family: $font;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
+          }
+          .title {
+            color: #181a20;
+            font-family: $font;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 150%;
+            letter-spacing: -0.646px;
+            text-transform: capitalize;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
+          }
+        }
+        .right {
+          display: flex;
+          align-items: center;
+          .all-properties-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: #f5f5f5;
+            border: none;
+            color: #181a20;
+            font-family: $font;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: normal;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: auto;
+            height: auto;
+            width: auto;
+            .dark-mode & {
+              background: #1e2128;
+              color: rgba(255, 255, 255, 0.9);
+            }
+            &:active {
+              background: #e8e8e8;
+              .dark-mode & {
+                background: #252830;
+              }
+            }
+          }
+        }
+      }
       .filter-tabs-container {
         display: flex;
         flex-direction: row;
         gap: 8px;
         flex-wrap: wrap;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin-top: 0;
+        margin-bottom: 24px;
         .filter-tab {
           padding: 8px 16px;
           border-radius: 18px;
@@ -71,7 +144,7 @@
             background: #1e2128;
             color: rgba(255, 255, 255, 0.9);
           }
-          &:hover {
+          &:active {
             background: #e8e8e8;
             .dark-mode & {
               background: #252830;
@@ -91,7 +164,8 @@
         position: relative;
         margin-top: 0;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        gap: 16px;
         .empty-list {
           width: 100%;
           height: 280px;
@@ -99,281 +173,136 @@
           justify-content: center;
           align-items: center;
         }
-        .trend-property-swiper {
-          width: 100%;
-          height: 400px;
-          display: flex;
-          flex-direction: row;
-          .trend-property-slide {
-            width: 98%;
-            height: auto;
-            display: flex;
-            .trend-card-box {
-              position: relative;
-              width: 100%;
-              height: 375px;
-              display: flex;
-              flex-direction: column;
-              .card-img {
-                position: relative;
-                width: 100%;
-                height: 203px;
-                background-size: cover;
-                border-radius: 12px 12px 0px 0px;
-                cursor: pointer;
-                div {
-                  position: absolute;
-                  padding: 8px 12px;
-                  left: 12px;
-                  bottom: 12px;
-                  border-radius: 6px;
-                  background: #fff;
-                  color: #181a20;
-                  font-family: $font;
-                  font-size: 15px;
-                  font-style: normal;
-                  font-weight: 600;
-                  line-height: normal;
-                  transition: background-color 0.3s ease, color 0.3s ease;
-                  .dark-mode & {
-                    background: #1e2128;
-                    color: rgba(255, 255, 255, 0.9);
-                  }
-                }
-              }
-              .info {
-                padding: 20px 22px 17px;
-                display: flex;
-                flex-direction: column;
-                box-sizing: border-box;
-                border-radius: 0px 0px 12px 12px;
-                border: 1px solid rgba(196, 196, 196, 0.71);
-                border-top: none;
-                background: #fff;
-                box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-                .title {
-                  overflow: hidden;
-                  color: #181a20;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                  font-family: $font;
-                  font-size: 15px;
-                  font-style: normal;
-                  font-weight: 600;
-                  line-height: normal;
-                  text-transform: capitalize;
-                  cursor: pointer;
-                }
-                .desc {
-                  margin-top: 5px;
-                  overflow: hidden;
-                  color: #717171;
-                  font-family: $font;
-                  font-size: 13px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                  transition: color 0.3s ease;
-                  .dark-mode & {
-                    color: rgba(255, 255, 255, 0.7);
-                  }
-                }
-                .options {
-                  margin-top: 15px;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: space-between;
-                  div {
-                    display: flex;
-                    flex-direction: row;
-                    img {
-                      margin-right: 5px;
-                      width: 17px;
-                      height: 17px;
-                    }
-                    span {
-                      color: #181a20;
-                      font-family: $font;
-                      font-size: 13px;
-                      font-style: normal;
-                      font-weight: 400;
-                      line-height: normal;
-                      transition: color 0.3s ease;
-                      .dark-mode & {
-                        color: rgba(255, 255, 255, 0.7);
-                      }
-                    }
-                  }
-                }
-                .bott {
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: space-between;
-                  align-items: center;
-                  p {
-                    color: #181a20;
-                    font-family: $font;
-                    font-size: 13px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                    text-transform: capitalize;
-                    transition: color 0.3s ease;
-                    .dark-mode & {
-                      color: rgba(255, 255, 255, 0.7);
-                    }
-                  }
-                  button {
-                    margin-left: 7px;
-                    width: 16px;
-                    height: 16px;
-                    box-sizing: border-box;
-                  }
-                  .view-like-box {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 7px;
-                    align-items: center;
-                    .view-cnt {
-                      color: #717171;
-                      font-family: $font;
-                      font-size: 13px;
-                      font-style: normal;
-                      font-weight: 400;
-                      line-height: normal;
-                      text-overflow: ellipsis;
-                      transition: color 0.3s ease;
-                      .dark-mode & {
-                        color: rgba(255, 255, 255, 0.7);
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        .trend-card-box {
-          position: relative;
-          width: 300px;
-          height: 375px;
+        .small-cards-wrapper {
           display: flex;
           flex-direction: column;
-          .card-img {
-            position: relative;
+          gap: 16px;
+          width: 100%;
+          .trend-card-box {
             width: 100%;
-            height: 203px;
-            background-size: cover;
-            border-radius: 12px 12px 0px 0px;
+            height: 280px;
             cursor: pointer;
-            div {
-              position: absolute;
-              padding: 8px 12px;
-              left: 12px;
-              bottom: 12px;
-              border-radius: 6px;
-              background: #fff;
-              color: #181a20;
-              font-family: $font;
-              font-size: 15px;
-              font-style: normal;
-              font-weight: 600;
-              line-height: normal;
-            }
-          }
-          .info {
-            padding: 20px 22px 17px;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            border-radius: 0px 0px 12px 12px;
-            border: 1px solid rgba(196, 196, 196, 0.71);
-            border-top: none;
-            background: #fff;
-            box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-            .title {
+            .card-img {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              background-size: cover;
+              background-position: center;
+              border-radius: 16px;
               overflow: hidden;
-              color: #181a20;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              font-family: $font;
-              font-size: 15px;
-              font-style: normal;
-              font-weight: 600;
-              line-height: normal;
-              text-transform: capitalize;
-              cursor: pointer;
-            }
-            .desc {
-              margin-top: 5px;
-              overflow: hidden;
-              color: #717171;
-              font-family: $font;
-              font-size: 13px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: normal;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-            .options {
-              margin-top: 15px;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              div {
+              .hover-icons {
+                position: absolute;
+                top: 12px;
+                right: 12px;
                 display: flex;
-                flex-direction: row;
-                img {
-                  margin-right: 5px;
-                  width: 17px;
-                  height: 17px;
-                }
-                span {
-                  color: #181a20;
-                  font-family: $font;
-                  font-size: 13px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
-                }
-              }
-            }
-            .bott {
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: center;
-              p {
-                color: #181a20;
-                font-family: $font;
-                font-size: 13px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-                text-transform: capitalize;
-              }
-              button {
-                margin-left: 7px;
-                width: 16px;
-                height: 16px;
-                box-sizing: border-box;
-              }
-              .view-like-box {
-                display: flex;
-                flex-direction: row;
-                gap: 7px;
                 align-items: center;
-                .view-cnt {
-                  color: #717171;
-                  font-family: $font;
-                  font-size: 13px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
-                  text-overflow: ellipsis;
+                gap: 8px;
+                opacity: 1;
+                visibility: visible;
+                z-index: 10;
+                .hover-icon-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  background: rgba(0, 0, 0, 0.4);
+                  backdrop-filter: blur(4px);
+                  padding: 4px 10px;
+                  border-radius: 12px;
+                  .hover-icon-text {
+                    color: #ffffff;
+                    font-family: $font;
+                    font-size: 10px;
+                    font-weight: 500;
+                    text-transform: lowercase;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                  }
+                  .hover-icon-count {
+                    color: #ffffff;
+                    font-family: $font;
+                    font-size: 10px;
+                    font-weight: 600;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                  }
+                }
+                .hover-icon-button {
+                  padding: 0;
+                  min-width: auto;
+                  width: auto;
+                  height: auto;
+                  background: transparent;
+                  box-shadow: none;
+                  transition: none;
+                  svg {
+                    width: 14px;
+                    height: 14px;
+                  }
+                }
+              }
+              .glass-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 100px;
+                background: linear-gradient(
+                  to top,
+                  rgba(24, 26, 32, 0.85) 0%,
+                  rgba(24, 26, 32, 0.6) 50%,
+                  transparent 100%
+                );
+                backdrop-filter: blur(10px);
+                display: flex;
+                align-items: flex-end;
+                padding: 16px;
+                .overlay-content {
+                  width: 100%;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  align-items: flex-end;
+                  .property-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                    flex: 1;
+                    .property-name {
+                      color: #ffffff;
+                      font-family: $font;
+                      font-size: 16px;
+                      font-weight: 600;
+                      line-height: 1.2;
+                      text-transform: capitalize;
+                    }
+                    .property-location {
+                      color: rgba(255, 255, 255, 0.9);
+                      font-family: $font;
+                      font-size: 11px;
+                      font-weight: 400;
+                      text-transform: uppercase;
+                      letter-spacing: 0.5px;
+                    }
+                  }
+                  .price-info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    gap: 4px;
+                    .price-label {
+                      color: rgba(255, 255, 255, 0.8);
+                      font-family: $font;
+                      font-size: 9px;
+                      font-weight: 400;
+                      text-transform: uppercase;
+                      letter-spacing: 0.5px;
+                    }
+                    .price-value {
+                      color: #ffffff;
+                      font-family: $font;
+                      font-size: 16px;
+                      font-weight: 700;
+                      line-height: 1.2;
+                    }
+                  }
                 }
               }
             }
@@ -848,65 +777,204 @@
 
   .top-agents {
     position: relative;
-    padding: 20px 10px;
+    padding: 40px 16px;
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: row;
     background: $bg-light;
+    transition: background-color 0.3s ease;
+    .dark-mode & {
+      background: $bg-dark;
+    }
     .container {
       position: relative;
       width: 100%;
       flex-direction: column;
       align-items: center;
+      .info-box {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 24px;
+        .left {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          .label {
+            color: #181a20;
+            font-family: $font;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.7);
+            }
+          }
+          .title {
+            color: #181a20;
+            font-family: $font;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 150%;
+            letter-spacing: -0.646px;
+            text-transform: capitalize;
+            transition: color 0.3s ease;
+            .dark-mode & {
+              color: rgba(255, 255, 255, 0.9);
+            }
+          }
+        }
+      }
       .wrapper {
         width: 100%;
-        margin-top: 25px;
+        margin-top: 0;
         display: flex;
         flex-direction: row;
         align-items: center;
-        .top-agents-swiper {
+        .card-wrapper {
           width: 100%;
-          height: 280px;
-          display: flex;
-          flex-direction: row;
-          .top-agents-slide {
-            width: 98%;
+          .top-agents-swiper {
+            width: 100%;
             height: auto;
             display: flex;
-            .top-agent-card {
+            flex-direction: row;
+            .top-agents-slide {
               width: 100%;
-              height: 280px;
+              height: auto;
               display: flex;
-              flex-direction: column;
-              align-items: center;
-              img {
-                width: 209px;
-                height: 209px;
-                border-radius: 50%;
-                cursor: pointer;
-                object-fit: cover;
-              }
-              strong {
-                margin-top: 10px;
-                color: #181a20;
-                text-align: center;
-                font-family: $font;
-                font-size: 24px;
-                font-style: normal;
-                font-weight: 600;
-                line-height: normal;
-                text-transform: capitalize;
-                cursor: pointer;
-              }
-              span {
-                color: #181a20;
-                text-align: center;
-                font-family: $font;
-                font-size: 15px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 28px;
+              .top-agent-card {
+                width: 100%;
+                min-height: 400px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                .agent-image-container {
+                  width: 100%;
+                  height: 200px;
+                  position: relative;
+                  border-radius: 12px;
+                  overflow: hidden;
+                  .agent-image {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                  }
+                  .agent-overlay {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    padding: 16px;
+                    background: linear-gradient(
+                      to top,
+                      rgba(0, 0, 0, 0.8) 0%,
+                      transparent 100%
+                    );
+                    .agent-name {
+                      color: #ffffff;
+                      font-family: $font;
+                      font-size: 20px;
+                      font-weight: 600;
+                      margin-bottom: 4px;
+                    }
+                    .agent-type {
+                      color: rgba(255, 255, 255, 0.9);
+                      font-family: $font;
+                      font-size: 12px;
+                      font-weight: 400;
+                    }
+                  }
+                }
+                .property-card {
+                  width: 100%;
+                  min-height: 200px;
+                  border-radius: 12px;
+                  overflow: hidden;
+                  position: relative;
+                  background: #f5f5f5;
+                  transition: background-color 0.3s ease;
+                  .dark-mode & {
+                    background: rgba(255, 255, 255, 0.05);
+                  }
+                  .property-image-container {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    &.visible {
+                      display: block;
+                    }
+                    &.hidden {
+                      display: none;
+                    }
+                    .property-image {
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                    }
+                    .property-logo {
+                      position: absolute;
+                      bottom: 16px;
+                      left: 16px;
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                      gap: 4px;
+                      span {
+                        color: #ffffff;
+                        font-family: $font;
+                        font-size: 12px;
+                        font-weight: 600;
+                      }
+                    }
+                  }
+                  .comments-container {
+                    padding: 20px;
+                    &.visible {
+                      display: flex;
+                      flex-direction: column;
+                      gap: 12px;
+                    }
+                    &.hidden {
+                      display: none;
+                    }
+                    .property-quote {
+                      color: #181a20;
+                      font-family: $font;
+                      font-size: 14px;
+                      font-weight: 400;
+                      line-height: 1.6;
+                      transition: color 0.3s ease;
+                      .dark-mode & {
+                        color: rgba(255, 255, 255, 0.9);
+                      }
+                    }
+                    .property-logo {
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                      gap: 4px;
+                      span {
+                        color: #717171;
+                        font-family: $font;
+                        font-size: 12px;
+                        font-weight: 600;
+                        transition: color 0.3s ease;
+                        .dark-mode & {
+                          color: rgba(255, 255, 255, 0.7);
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }

@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { PropertyLocation } from '../../enums/property.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 const HomeHero = () => {
+  const device = useDeviceDetect();
   const router = useRouter();
   const { t } = useTranslation('common');
   const [searchValue, setSearchValue] = useState('');

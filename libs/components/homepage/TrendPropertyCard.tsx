@@ -47,53 +47,124 @@ const TrendPropertyCard = (props: TrendPropertyCardProps) => {
   };
 
   if (device === 'mobile') {
-    return (
-      <Stack className="trend-card-box" key={property._id}>
-        <Box
-          component={'div'}
-          className={'card-img'}
-          style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
-          onClick={() => {
-            pushDetailHandler(property._id);
-          }}
-        >
-          <div>${property.propertyPrice}</div>
-        </Box>
-        <Box component={'div'} className={'info'}>
-          <strong
-            className={'title'}
-            onClick={() => {
-              pushDetailHandler(property._id);
-            }}
+    // Mobile version uses same desktop style
+    if (isHero) {
+      return (
+        <Box className="trend-card-box hero-card" onClick={() => pushDetailHandler(property._id)}>
+          <Box
+            component={'div'}
+            className={'card-img'}
+            style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
           >
-            {property.propertyTitle}
-          </strong>
-          <p className={'desc'}>{property.propertyDesc ?? 'no description'}</p>
-          <div className={'options'}>
-            <div>
-              <img src="/img/icons/bed.svg" alt="" />
-              <span>{property.propertyBeds} bed</span>
-            </div>
-            <div>
-              <img src="/img/icons/room.svg" alt="" />
-              <span>{property.propertyRooms} rooms</span>
-            </div>
-            <div>
-              <img src="/img/icons/expand.svg" alt="" />
-              <span>{property.propertySquare} m2</span>
-            </div>
-          </div>
-          <Divider sx={{ mt: '15px', mb: '17px' }} />
-          <div className={'bott'}>
-            <p>
-              {property.propertyRent ? 'Rent' : ''}{' '}
-              {property.propertyRent && property.propertyBarter && '/'}{' '}
-              {property.propertyBarter ? 'Barter' : ''}
-            </p>
-          </div>
+            {/* Hover view and like icons */}
+            <Box className={'hover-icons'}>
+              <Box className={'hover-icon-item'}>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyViews || 0}
+                </Typography>
+                <Typography className={'hover-icon-text'}>VIEWS</Typography>
+              </Box>
+              <Box className={'hover-icon-item'}>
+                <IconButton
+                  className={'hover-icon-button'}
+                  onClick={handleLikeClick}
+                  sx={{
+                    color:
+                      property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                    padding: 0,
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                >
+                  {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+                    <FavoriteIcon sx={{ fontSize: 16 }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ fontSize: 16 }} />
+                  )}
+                </IconButton>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyLikes || 0}
+                </Typography>
+              </Box>
+            </Box>
+            <Box className={'glass-overlay'}>
+              <Box className={'overlay-content'}>
+                <Box className={'property-info'}>
+                  <Typography className={'property-name'}>{property.propertyTitle}</Typography>
+                  <Typography className={'property-location'}>{getLocation()}</Typography>
+                </Box>
+                <Box className={'price-info'}>
+                  <Typography className={'price-label'}>Starting Price</Typography>
+                  <Typography className={'price-value'}>
+                    ${formatPrice(property.propertyPrice)}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
-      </Stack>
-    );
+      );
+    } else {
+      return (
+        <Box className="trend-card-box small-card" onClick={() => pushDetailHandler(property._id)}>
+          <Box
+            component={'div'}
+            className={'card-img'}
+            style={{ backgroundImage: `url(${REACT_APP_API_URL}/${property?.propertyImages[0]})` }}
+          >
+            {/* Hover view and like icons */}
+            <Box className={'hover-icons'}>
+              <Box className={'hover-icon-item'}>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyViews || 0}
+                </Typography>
+                <Typography className={'hover-icon-text'}>VIEWS</Typography>
+              </Box>
+              <Box className={'hover-icon-item'}>
+                <IconButton
+                  className={'hover-icon-button'}
+                  onClick={handleLikeClick}
+                  sx={{
+                    color:
+                      property?.meLiked && property?.meLiked[0]?.myFavorite ? '#ff0000' : '#ffffff',
+                    padding: 0,
+                    minWidth: 'auto',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                >
+                  {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+                    <FavoriteIcon sx={{ fontSize: 16 }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ fontSize: 16 }} />
+                  )}
+                </IconButton>
+                <Typography className={'hover-icon-count'}>
+                  {property?.propertyLikes || 0}
+                </Typography>
+              </Box>
+            </Box>
+            <Box className={'glass-overlay'}>
+              <Box className={'overlay-content'}>
+                <Box className={'property-info'}>
+                  <Typography className={'property-name'}>{property.propertyTitle}</Typography>
+                  <Typography className={'property-location'}>{getLocation()}</Typography>
+                </Box>
+                <Box className={'price-info'}>
+                  <Typography className={'price-label'}>Starting Price</Typography>
+                  <Typography className={'price-value'}>
+                    ${formatPrice(property.propertyPrice)}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      );
+    }
   } else {
     if (isHero) {
       return (

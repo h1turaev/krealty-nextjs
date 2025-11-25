@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
@@ -482,6 +483,40 @@ const PropertyDetail: NextPage = ({ initialComment, ...props }: any) => {
                       </Link>
                     </Stack>
                   </Stack>
+                  <Box sx={{ marginTop: '24px', width: '100%' }}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<ChatIcon />}
+                      onClick={() => {
+                        if (property?.memberData?._id) {
+                          // TODO: Implement chat functionality
+                          // For now, just show a message or navigate to member page
+                          window.location.href = `/member?memberId=${property.memberData._id}`;
+                        }
+                      }}
+                      sx={{
+                        backgroundColor: '#000000',
+                        color: '#ffffff',
+                        textTransform: 'none',
+                        padding: '12px 24px',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        borderRadius: '8px',
+                        transition: 'background-color 0.3s ease',
+                        '&:hover': {
+                          backgroundColor: '#333333',
+                        },
+                        '&:disabled': {
+                          backgroundColor: '#e0e0e0',
+                          color: 'rgba(0, 0, 0, 0.5)',
+                        },
+                      }}
+                      disabled={!property?.memberData?._id}
+                    >
+                      Chat with Agent
+                    </Button>
+                  </Box>
                 </Stack>
               </Stack>
             </Stack>

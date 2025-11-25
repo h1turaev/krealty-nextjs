@@ -103,7 +103,15 @@ const TrendProperties = (props: TrendPropertiesProps) => {
       <Stack className={'trend-properties'}>
         <Stack className={'container'}>
           <Stack className={'info-box'}>
-            <span>Trend Properties</span>
+            <Box component={'div'} className={'left'}>
+              <span className={'label'}>[FEATURED PROPERTIES]</span>
+              <span className={'title'}>Discover Our Featured Properties</span>
+            </Box>
+            <Box component={'div'} className={'right'}>
+              <Link href={'/property'}>
+                <button className={'all-properties-btn'}>All Properties</button>
+              </Link>
+            </Box>
           </Stack>
           <Stack className={'filter-tabs-container'}>
             {propertyTypeFilters.map((filter) => (
@@ -122,28 +130,18 @@ const TrendProperties = (props: TrendPropertiesProps) => {
                 Trends Empty
               </Box>
             ) : (
-              <Swiper
-                className={'trend-property-swiper'}
-                slidesPerView={'auto'}
-                centeredSlides={true}
-                spaceBetween={15}
-                modules={[Autoplay]}
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }}
-              >
+              <Stack className={'small-cards-wrapper'}>
                 {trendProperties.map((property: Property) => {
                   return (
-                    <SwiperSlide key={property._id} className={'trend-property-slide'}>
-                      <TrendPropertyCard
-                        property={property}
-                        likePropertyHandler={likePropertyHandler}
-                      />
-                    </SwiperSlide>
+                    <TrendPropertyCard
+                      key={property._id}
+                      property={property}
+                      likePropertyHandler={likePropertyHandler}
+                      isHero={false}
+                    />
                   );
                 })}
-              </Swiper>
+              </Stack>
             )}
           </Stack>
         </Stack>

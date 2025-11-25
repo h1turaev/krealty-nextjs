@@ -31,7 +31,30 @@ const CommunityBoards = () => {
   });
 
   if (device === 'mobile') {
-    return <div>COMMUNITY BOARDS (MOBILE)</div>;
+    return (
+      <Stack className={'community-board'}>
+        <Stack className={'container'}>
+          <Stack className={'info-box'}>
+            <Box component={'div'} className={'left'}>
+              <span className={'label'}>[BLOG]</span>
+              <span className={'title'}>Updates, Tips & Living Well</span>
+            </Box>
+            <Box component={'div'} className={'right'}>
+              <Link href={'/community'}>
+                <Box component={'div'} className={'view-blog-btn'}>
+                  <span>View Blog</span>
+                </Box>
+              </Link>
+            </Box>
+          </Stack>
+          <Stack className={'card-wrapper'}>
+            {blogArticles.map((article: BoardArticle) => {
+              return <CommunityCard key={article?._id} article={article} />;
+            })}
+          </Stack>
+        </Stack>
+      </Stack>
+    );
   } else {
     return (
       <Stack className={'community-board'}>

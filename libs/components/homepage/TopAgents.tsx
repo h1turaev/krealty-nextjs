@@ -35,30 +35,35 @@ const TopAgents = (props: TopAgentsProps) => {
       <Stack className={'top-agents'}>
         <Stack className={'container'}>
           <Stack className={'info-box'}>
-            <span>[Testimonials]</span>
+            <Box component={'div'} className={'left'}>
+              <span className={'label'}>[Testimonials]</span>
+              <span className={'title'}>Trusted by Our Community</span>
+            </Box>
           </Stack>
           <Stack className={'wrapper'}>
-            <Swiper
-              className={'top-agents-swiper'}
-              slidesPerView={'auto'}
-              centeredSlides={true}
-              spaceBetween={29}
-              modules={topAgents.length > 1 ? [Autoplay] : []}
-              {...(topAgents.length > 1 && {
-                autoplay: {
-                  delay: 3000,
-                  disableOnInteraction: false,
-                },
-              })}
-            >
-              {topAgents.map((agent: Member) => {
-                return (
-                  <SwiperSlide className={'top-agents-slide'} key={agent?._id}>
-                    <TopAgentCard agent={agent} />
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+            <Box component={'div'} className={'card-wrapper'}>
+              <Swiper
+                className={'top-agents-swiper'}
+                slidesPerView={1}
+                spaceBetween={0}
+                loop={topAgents.length > 1}
+                modules={topAgents.length > 1 ? [Autoplay] : []}
+                {...(topAgents.length > 1 && {
+                  autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  },
+                })}
+              >
+                {topAgents.map((agent: Member) => {
+                  return (
+                    <SwiperSlide className={'top-agents-slide'} key={agent?._id}>
+                      <TopAgentCard agent={agent} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </Box>
           </Stack>
         </Stack>
       </Stack>

@@ -82,19 +82,72 @@ const TopAgentCard = (props: TopAgentProps) => {
 
   if (device === 'mobile') {
     return (
-      <Link
-        href={{
-          pathname: '/agent/detail',
-          query: { agentId: agent?._id },
-        }}
-        style={{ textDecoration: 'none', color: 'inherit', display: 'contents' }}
-      >
-        <Stack className="top-agent-card">
-          <img src={agentImage} alt="" />
-          <strong>{agent?.memberNick}</strong>
-          <span>{agent?.memberType}</span>
-        </Stack>
-      </Link>
+      <Stack className="top-agent-card">
+        {/* Left side - Agent Image with Overlay */}
+        <Link
+          href={{
+            pathname: '/agent/detail',
+            query: { agentId: agent?._id },
+          }}
+          style={{ textDecoration: 'none', color: 'inherit', display: 'contents' }}
+        >
+          <Box className="agent-image-container">
+            <img src={agentImage} alt={agent?.memberNick} className="agent-image" />
+            <Box className="agent-overlay">
+              <Typography className="agent-name">{agent?.memberNick}</Typography>
+              <Typography className="agent-type">
+                Real Estate {agent?.memberType?.toUpperCase()}, HIGHLAND
+              </Typography>
+            </Box>
+          </Box>
+        </Link>
+
+        {/* Right side - Property/Comments Card */}
+        <Box
+          className="property-card"
+          onTouchStart={() => setIsHovering(true)}
+          onTouchEnd={() => setIsHovering(false)}
+        >
+          {mostLikedProperty && (
+            <Box className={`property-image-container ${isHovering ? 'visible' : 'hidden'}`}>
+              <img
+                src={propertyImage}
+                alt={mostLikedProperty?.propertyTitle}
+                className="property-image"
+              />
+              <Box className="property-logo">
+                <span>@</span>
+                <span>COMMUNITY</span>
+              </Box>
+            </Box>
+          )}
+          <Box className={`comments-container ${isHovering ? 'hidden' : 'visible'}`}>
+            {propertyComments.length > 0 ? (
+              <>
+                <Typography className="property-quote">
+                  "{propertyComments[0]?.commentContent}"
+                </Typography>
+                <Box className="property-logo">
+                  <span>@</span>
+                  <span>COMMUNITY</span>
+                </Box>
+              </>
+            ) : mostLikedProperty ? (
+              <>
+                <Typography className="property-quote">
+                  "{mostLikedProperty?.propertyTitle}"
+                </Typography>
+                <Box className="property-logo">
+                  <span>@</span>
+                  <span>Logoipsum</span>
+                </Box>
+              </>
+            ) : (
+              <Typography className="property-quote">No properties available</Typography>
+            )}
+          </Box>
+        </Box>
+      </Stack>
     );
   } else {
     return (

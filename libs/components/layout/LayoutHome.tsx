@@ -56,6 +56,42 @@ const withLayoutMain = (Component: any) => {
               <Top />
             </Stack>
 
+            <Stack className={'header-main'}>
+              <div className="video-container">
+                <video
+                  className={`header-video video-1 ${currentVideo === 0 ? 'active' : ''}`}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                >
+                  <source src={videos[0]} type="video/mp4" />
+                </video>
+                <video
+                  className={`header-video video-2 ${currentVideo === 1 ? 'active' : ''}`}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                >
+                  <source src={videos[1]} type="video/mp4" />
+                </video>
+                <video
+                  className={`header-video video-3 ${currentVideo === 2 ? 'active' : ''}`}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                >
+                  <source src={videos[2]} type="video/mp4" />
+                </video>
+              </div>
+              <HomeHero />
+            </Stack>
+
             <Stack id={'main'}>
               <Component {...props} />
             </Stack>
