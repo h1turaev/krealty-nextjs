@@ -95,15 +95,107 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
   useEffect(() => {
     if (searchFilter?.search?.typeList) {
       setSelectedPropertyTypes(searchFilter.search.typeList);
+    } else {
+      setSelectedPropertyTypes([]);
     }
     if (searchFilter?.search?.locationList) {
       setSelectedLocations(searchFilter.search.locationList);
+    } else {
+      setSelectedLocations([]);
     }
     if (searchFilter?.search?.roomsList) {
       setSelectedRooms(searchFilter.search.roomsList.map((r) => Number(r)));
+    } else {
+      setSelectedRooms([]);
     }
-    // Note: pricesRange and squaresRange are single objects, not arrays
-    // We'll handle them differently
+
+    // Sync price ranges from searchFilter
+    // We need to find which checkbox ranges, when combined, match the searchFilter range
+    if (searchFilter?.search?.pricesRange) {
+      const priceRange = searchFilter.search.pricesRange;
+      // Check if range is not default (0 to 2000000)
+      const isDefaultRange = priceRange.start === 0 && priceRange.end === 2000000;
+      if (!isDefaultRange) {
+        // Find all checkbox ranges that overlap with or are within the searchFilter range
+        const matchingRanges = priceRangeOptions.filter((option) => {
+          // Check if the checkbox range overlaps with the searchFilter range
+          return (
+            (option.value.start >= priceRange.start && option.value.start <= priceRange.end) ||
+            (option.value.end >= priceRange.start && option.value.end <= priceRange.end) ||
+            (option.value.start <= priceRange.start && option.value.end >= priceRange.end)
+          );
+        });
+
+        // If we found matching ranges, try to find a combination that matches exactly
+        if (matchingRanges.length > 0) {
+          // Try to find ranges that when combined match the searchFilter range
+          const combinedStart = Math.min(...matchingRanges.map((opt) => opt.value.start));
+          const combinedEnd = Math.max(...matchingRanges.map((opt) => opt.value.end));
+
+          // If the combined range matches the searchFilter range, use all matching ranges
+          if (combinedStart === priceRange.start && combinedEnd === priceRange.end) {
+            setSelectedPriceRanges(matchingRanges.map((opt) => opt.value));
+          } else {
+            // Otherwise, find ranges that are fully within the searchFilter range
+            const withinRanges = priceRangeOptions.filter(
+              (option) =>
+                option.value.start >= priceRange.start && option.value.end <= priceRange.end,
+            );
+            setSelectedPriceRanges(withinRanges.map((opt) => opt.value));
+          }
+        } else {
+          setSelectedPriceRanges([]);
+        }
+      } else {
+        setSelectedPriceRanges([]);
+      }
+    } else {
+      setSelectedPriceRanges([]);
+    }
+
+    // Sync square ranges from searchFilter
+    // We need to find which checkbox ranges, when combined, match the searchFilter range
+    if (searchFilter?.search?.squaresRange) {
+      const squareRange = searchFilter.search.squaresRange;
+      // Check if range is not default (0 to 500)
+      const isDefaultRange = squareRange.start === 0 && squareRange.end === 500;
+      if (!isDefaultRange) {
+        // Find all checkbox ranges that overlap with or are within the searchFilter range
+        const matchingRanges = squareRangeOptions.filter((option) => {
+          // Check if the checkbox range overlaps with the searchFilter range
+          return (
+            (option.value.start >= squareRange.start && option.value.start <= squareRange.end) ||
+            (option.value.end >= squareRange.start && option.value.end <= squareRange.end) ||
+            (option.value.start <= squareRange.start && option.value.end >= squareRange.end)
+          );
+        });
+
+        // If we found matching ranges, try to find a combination that matches exactly
+        if (matchingRanges.length > 0) {
+          // Try to find ranges that when combined match the searchFilter range
+          const combinedStart = Math.min(...matchingRanges.map((opt) => opt.value.start));
+          const combinedEnd = Math.max(...matchingRanges.map((opt) => opt.value.end));
+
+          // If the combined range matches the searchFilter range, use all matching ranges
+          if (combinedStart === squareRange.start && combinedEnd === squareRange.end) {
+            setSelectedSquareRanges(matchingRanges.map((opt) => opt.value));
+          } else {
+            // Otherwise, find ranges that are fully within the searchFilter range
+            const withinRanges = squareRangeOptions.filter(
+              (option) =>
+                option.value.start >= squareRange.start && option.value.end <= squareRange.end,
+            );
+            setSelectedSquareRanges(withinRanges.map((opt) => opt.value));
+          }
+        } else {
+          setSelectedSquareRanges([]);
+        }
+      } else {
+        setSelectedSquareRanges([]);
+      }
+    } else {
+      setSelectedSquareRanges([]);
+    }
   }, [searchFilter]);
 
   // Real-time dark mode tracking
@@ -147,15 +239,25 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
     pricesRange: searchFilter.search?.pricesRange || { start: 0, end: 2000000 },
   });
 
-  // Helper: Preserve all other filters
-  const preserveFilters = (searchObject: any) => {
+  // Helper: Preserve other filters that are not being changed
+  const preserveFilters = (searchObject: any, excludeKeys: string[] = []) => {
     const { search } = searchFilter;
-    if (search?.typeList?.length) searchObject.typeList = search.typeList;
-    if (search?.locationList?.length) searchObject.locationList = search.locationList;
-    if (search?.roomsList?.length) searchObject.roomsList = search.roomsList;
+    if (!excludeKeys.includes('typeList') && search?.typeList?.length) {
+      searchObject.typeList = search.typeList;
+    }
+    if (!excludeKeys.includes('locationList') && search?.locationList?.length) {
+      searchObject.locationList = search.locationList;
+    }
+    if (!excludeKeys.includes('roomsList') && search?.roomsList?.length) {
+      searchObject.roomsList = search.roomsList;
+    }
     if (search?.bedsList?.length) searchObject.bedsList = search.bedsList;
-    if (search?.pricesRange) searchObject.pricesRange = search.pricesRange;
-    if (search?.squaresRange) searchObject.squaresRange = search.squaresRange;
+    if (!excludeKeys.includes('pricesRange') && search?.pricesRange) {
+      searchObject.pricesRange = search.pricesRange;
+    }
+    if (!excludeKeys.includes('squaresRange') && search?.squaresRange) {
+      searchObject.squaresRange = search.squaresRange;
+    }
     if (search?.text) searchObject.text = search.text;
   };
 
@@ -177,8 +279,13 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
     setSelectedPropertyTypes(newTypes);
 
     const searchObject: any = buildBaseSearchObject();
-    if (newTypes.length > 0) searchObject.typeList = newTypes as PropertyType[];
-    preserveFilters(searchObject);
+    if (newTypes.length > 0) {
+      searchObject.typeList = newTypes as PropertyType[];
+    } else {
+      // Remove typeList if empty
+      delete searchObject.typeList;
+    }
+    preserveFilters(searchObject, ['typeList']);
     updateAndSearch(searchObject);
   };
 
@@ -223,8 +330,13 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
     setSelectedLocations(newLocations);
 
     const searchObject: any = buildBaseSearchObject();
-    if (newLocations.length > 0) searchObject.locationList = newLocations as PropertyLocation[];
-    preserveFilters(searchObject);
+    if (newLocations.length > 0) {
+      searchObject.locationList = newLocations as PropertyLocation[];
+    } else {
+      // Remove locationList if empty
+      delete searchObject.locationList;
+    }
+    preserveFilters(searchObject, ['locationList']);
     updateAndSearch(searchObject);
   };
 
@@ -242,9 +354,10 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
         end: Math.max(...newRanges.map((r) => r.end)),
       };
     } else {
+      // Reset to default range if no ranges selected
       searchObject.pricesRange = { start: 0, end: 2000000 };
     }
-    preserveFilters(searchObject);
+    preserveFilters(searchObject, ['pricesRange']);
     updateAndSearch(searchObject);
   };
 
@@ -262,9 +375,10 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
         end: Math.max(...newRanges.map((r) => r.end)),
       };
     } else {
+      // Reset to default range if no ranges selected
       searchObject.squaresRange = { start: 0, end: 500 };
     }
-    preserveFilters(searchObject);
+    preserveFilters(searchObject, ['squaresRange']);
     updateAndSearch(searchObject);
   };
 
@@ -275,8 +389,13 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
     setSelectedRooms(newRooms);
 
     const searchObject: any = buildBaseSearchObject();
-    if (newRooms.length > 0) searchObject.roomsList = newRooms;
-    preserveFilters(searchObject);
+    if (newRooms.length > 0) {
+      searchObject.roomsList = newRooms;
+    } else {
+      // Remove roomsList if empty
+      delete searchObject.roomsList;
+    }
+    preserveFilters(searchObject, ['roomsList']);
     updateAndSearch(searchObject);
   };
 
@@ -313,6 +432,10 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
       padding: '24px',
       border: shouldUseDarkMode ? '1px solid #2d2d2d' : '1px solid #e0e0e0',
       transition: 'background-color 0.3s ease, border-color 0.3s ease',
+      textAlign: 'left' as const,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
     };
   }, [shouldUseDarkMode, isDarkMode]);
 
@@ -322,6 +445,7 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
       justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: '24px',
+      width: '100%',
     };
   }, []);
 
@@ -408,9 +532,23 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
 
   return (
     <Box className="property-filter-panel" sx={containerStyles}>
-      <Stack className="filter-header" sx={headerStyles}>
+      <Stack
+        className="filter-header"
+        sx={{
+          ...headerStyles,
+          display: 'flex !important',
+          justifyContent: 'space-between !important',
+          width: '100%',
+        }}
+      >
         <Typography sx={titleStyles}>Filter</Typography>
-        <Link onClick={handleReset} sx={resetLinkStyles}>
+        <Link
+          onClick={handleReset}
+          sx={{
+            ...resetLinkStyles,
+            marginLeft: 'auto',
+          }}
+        >
           Reset
         </Link>
       </Stack>
@@ -529,26 +667,6 @@ const PropertyFilterPanel: React.FC<PropertyFilterPanelProps> = ({
         </Box>
 
         <Box sx={dividerStyles} />
-
-        {/* Transaction Type/Price Section */}
-        <Box>
-          <Typography sx={sectionTitleStyles}>Transaction Type/Price</Typography>
-          <Stack spacing={1}>
-            {transactionTypeOptions.map((option) => (
-              <FormControlLabel
-                key={option.label}
-                control={
-                  <Checkbox
-                    checked={selectedTransactionTypes.includes(option.value)}
-                    onChange={(e) => handleTransactionTypeChange(option.value, e.target.checked)}
-                  />
-                }
-                label={option.label}
-                sx={checkboxStyles}
-              />
-            ))}
-          </Stack>
-        </Box>
       </Stack>
     </Box>
   );

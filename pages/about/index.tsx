@@ -1,5 +1,6 @@
 import { Box, Stack } from '@mui/material';
 import { NextPage } from 'next';
+import CTASection from '../../libs/components/homepage/CTASection';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 
@@ -95,7 +96,7 @@ const About: NextPage = () => {
               <div className={'icon-box'}>
                 <img src="/img/icons/keywording.svg" alt="" />
               </div>
-              <div className={'text_-box'}>
+              <div className={'text-box'}>
                 <span>Property Management</span>
                 <p>Nullam sollicitudin blandit eros eu pretium. Nullam maximus ultricies auctor.</p>
               </div>
@@ -109,15 +110,12 @@ const About: NextPage = () => {
                 <p>Nullam sollicitudin blandit eros eu pretium. Nullam maximus ultricies auctor.</p>
               </div>
             </Stack>
-            <Stack className={'btn'}>
-              Learn More
-              <img src="/img/icons/rightup.svg" alt="" />
-            </Stack>
+            <Stack className={'btn'}>Learn More</Stack>
           </Stack>
         </Stack>
         <Stack className={'partners'}>
           <Stack className={'container'}>
-            <span>Trusted bu the world's best</span>
+            <span>Trusted by the world's best</span>
             <Stack className={'wrap'}>
               {/* Brand icons removed - files don't exist */}
               {/* <img src="/img/icons/brands/amazon.svg" alt="" />
@@ -128,24 +126,7 @@ const About: NextPage = () => {
             </Stack>
           </Stack>
         </Stack>
-        <Stack className={'help'}>
-          <Stack className={'container'}>
-            <Box component={'div'} className={'left'}>
-              <strong>Need help? Talk to our expert.</strong>
-              <p>Talk to our experts or Browse through more properties.</p>
-            </Box>
-            <Box component={'div'} className={'right'}>
-              <div className={'white'}>
-                Contact Us
-                <img src="/img/icons/rightup.svg" alt="" />
-              </div>
-              <div className={'black'}>
-                <img src="/img/icons/call.svg" alt="" />
-                920 851 9087
-              </div>
-            </Box>
-          </Stack>
-        </Stack>
+        <CTASection />
       </Stack>
     );
   }

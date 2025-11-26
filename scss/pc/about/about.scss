@@ -4,7 +4,7 @@
     padding: 120px 0px 60px;
     width: 100%;
     height: auto;
-    background: $bg-light;
+    background: #ffffff;
     transition: background-color 0.3s ease;
     .dark-mode & {
       background: $bg-dark;
@@ -258,7 +258,8 @@
               background: rgba(255, 255, 255, 0.1);
             }
           }
-          .text-box {
+          .text-box,
+          .text_-box {
             margin-left: 24px;
             display: flex;
             flex-direction: column;
@@ -309,11 +310,26 @@
           font-weight: 600;
           line-height: normal;
           cursor: pointer;
+          transition: background-color 0.3s ease, color 0.3s ease;
+          .dark-mode & {
+            background: rgba(255, 255, 255, 0.9);
+            color: #181a20;
+            &:hover {
+              background: rgba(255, 255, 255, 1);
+            }
+          }
+          &:hover {
+            background: #000000;
+          }
           img {
             margin-left: 10px;
             width: 16px;
             height: 16px;
             filter: brightness(0) invert(1);
+            transition: filter 0.3s ease;
+            .dark-mode & {
+              filter: none;
+            }
           }
         }
       }
@@ -416,13 +432,23 @@
             &.white {
               color: #181a20;
               border: 1px solid #181a20;
-              transition: color 0.3s ease, border-color 0.3s ease;
+              transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
               .dark-mode & {
                 color: rgba(255, 255, 255, 0.9);
                 border-color: rgba(255, 255, 255, 0.3);
+                &:hover {
+                  background: rgba(255, 255, 255, 0.1);
+                }
+              }
+              &:hover {
+                background: rgba(0, 0, 0, 0.05);
               }
               img {
                 margin-left: 10px;
+                transition: filter 0.3s ease;
+                .dark-mode & {
+                  filter: brightness(0) invert(1);
+                }
               }
             }
             &.black {

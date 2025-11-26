@@ -204,12 +204,17 @@ const Top = () => {
               <Link href={'/community'}>
                 <div> {t('Community')} </div>
               </Link>
-              <Link href={'/cs'}>
-                <div> {t('CS')} </div>
-              </Link>
+
               <Link href={'/about'}>
                 <div>{t('About')}</div>
               </Link>
+
+              <Link href={'/cs'}>
+                <div> {t('Support')} </div>
+              </Link>
+
+
+
             </Box>
             <Box component={'div'} className={'user-box'}>
               {user?._id ? (

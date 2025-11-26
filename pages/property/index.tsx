@@ -230,7 +230,17 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
             {/* Main Content - Filter Panel (Left) + Property Listings (Right) */}
             <Stack className="main-config" direction="row" spacing={3} mb={'76px'}>
               {/* Filter Panel - Left Side */}
-              <Stack className="filter-panel-wrapper" sx={{ minWidth: '280px', maxWidth: '280px' }}>
+              <Stack
+                className="filter-panel-wrapper"
+                sx={{
+                  minWidth: '280px',
+                  maxWidth: '280px',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  textAlign: 'left',
+                }}
+              >
                 <PropertyFilterPanel
                   searchFilter={searchFilter}
                   setSearchFilter={setSearchFilter}

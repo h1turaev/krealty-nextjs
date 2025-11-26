@@ -26,9 +26,23 @@
 .property-filter-panel {
   width: 100%;
   transition: all 0.3s ease;
+  text-align: left !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  justify-content: flex-start;
 
   .filter-header {
     margin-bottom: 24px;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center;
+    width: 100%;
+    flex-direction: row !important;
+
+    a {
+      margin-left: auto !important;
+    }
   }
 
   .filter-content {
