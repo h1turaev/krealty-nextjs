@@ -6,17 +6,25 @@ services:
     restart: always
     image: node:18.20.8
     ports:
-      - 3001:3000
+      - 3001:3001
     volumes:
       - ./:/usr/src/krealty-client
     working_dir: /usr/src/krealty-client
     environment:
-      - PORT=3000
+      - PORT=3001
+      # Server-side (SSR) uchun - container nomi orqali
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://krealty-api:3000}
+      - REACT_APP_API_GRAPHQL_URL=${REACT_APP_API_GRAPHQL_URL:-http://krealty-api:3000/graphql}
+      - REACT_APP_API_WS=${REACT_APP_API_WS:-ws://krealty-api:3000}
+      # Client-side (browser) uchun - localhost orqali
+      - NEXT_PUBLIC_REACT_APP_API_URL=${NEXT_PUBLIC_REACT_APP_API_URL:-http://localhost:3000}
+      - NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL=${NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL:-http://localhost:3000/graphql}
+      - NEXT_PUBLIC_REACT_APP_API_WS=${NEXT_PUBLIC_REACT_APP_API_WS:-ws://localhost:3000}
     networks:
-      - client-network
+      - monorepo-network
     #PRODUCTION
-    command: bash -c "yarn install && yarn run build && NODE_ENV=production yarn start"
+    command: bash -c "yarn install && yarn run build && NODE_ENV=production yarn start -p 3001"
 
 networks:
-  client-network:
+  monorepo-network:
     driver: bridge

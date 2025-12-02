@@ -94,7 +94,10 @@ class LoggingWebSocket {
 
 // Initialize WebSocket connection
 if (typeof window !== 'undefined') {
-  const wsUrl = process.env.REACT_APP_API_WS ?? 'ws://127.0.0.1:3001';
+  const wsUrl =
+    process.env.NEXT_PUBLIC_REACT_APP_API_WS ||
+    process.env.REACT_APP_API_WS ||
+    'ws://localhost:3000';
   new LoggingWebSocket(wsUrl);
 }
 
@@ -114,7 +117,12 @@ function createIsomorphicLink() {
 
   // @ts-ignore
   const link = new createUploadLink({
-    uri: process.env.REACT_APP_API_GRAPHQL_URL || 'http://localhost:3001/graphql',
+    uri:
+      typeof window !== 'undefined'
+        ? process.env.NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL ||
+          process.env.REACT_APP_API_GRAPHQL_URL ||
+          'http://localhost:3000/graphql'
+        : process.env.REACT_APP_API_GRAPHQL_URL || 'http://krealty-api:3000/graphql',
   });
 
   const errorLink = onError(({ graphQLErrors, networkError, response }) => {

@@ -1,4 +1,10 @@
-export const REACT_APP_API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+// Client-side (browser) uchun NEXT_PUBLIC_ prefiksli, server-side uchun oddiy
+export const REACT_APP_API_URL =
+  typeof window !== 'undefined'
+    ? process.env.NEXT_PUBLIC_REACT_APP_API_URL ||
+      process.env.REACT_APP_API_URL ||
+      'http://localhost:3000'
+    : process.env.REACT_APP_API_URL || 'http://krealty-api:3000';
 
 export const availableOptions = ['propertyBarter', 'propertyRent'];
 
