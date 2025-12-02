@@ -130,7 +130,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
                     <p>Followings</p>
                     <span>({follower?.followingData?.memberFollowings})</span>
                   </Box>
-                  <Box className={'info-box'} component={'div'}>
+                  {/* <Box className={'info-box'} component={'div'}>
                     {follower?.meLiked && follower?.meLiked[0]?.myFavorite ? (
                       <FavoriteIcon
                         sx={{
@@ -162,7 +162,7 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
                       />
                     )}
                     <span>({follower?.followingData?.memberLikes})</span>
-                  </Box>
+                  </Box> */}
                 </Stack>
                 {user?._id !== follower?.followingId && (
                   <Stack className="action-box">

@@ -1,23 +1,25 @@
-import type { ComponentType } from 'react';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import MenuList from '../admin/AdminMenuList';
-import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { useReactiveVar } from '@apollo/client';
 import { Menu, MenuItem } from '@mui/material';
-import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import { getJwtToken, logOut, updateUserInfo } from '../../auth';
-import { useReactiveVar } from '@apollo/client';
+import Typography from '@mui/material/Typography';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import type { ComponentType } from 'react';
+import React, { useEffect, useState } from 'react';
 import { userVar } from '../../../apollo/store';
+import { getJwtToken, logOut, updateUserInfo } from '../../auth';
 import { REACT_APP_API_URL } from '../../config';
 import { MemberType } from '../../enums/member.enum';
+import MenuList from '../admin/AdminMenuList';
+import HighlandLogo from '../common/HighlandLogo';
 const drawerWidth = 280;
 
 const withAdminLayout = (Component: ComponentType) => {
@@ -144,7 +146,9 @@ const withAdminLayout = (Component: ComponentType) => {
           >
             <Toolbar sx={{ flexDirection: 'column', alignItems: 'flexStart' }}>
               <Stack className={'logo-box'}>
-                <img src={'/img/logo/logoText.svg'} alt={'logo'} />
+                <Link href={'/'} style={{ textDecoration: 'none' }}>
+                  <HighlandLogo />
+                </Link>
               </Stack>
 
               <Stack

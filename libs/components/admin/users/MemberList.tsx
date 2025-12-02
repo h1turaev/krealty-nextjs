@@ -1,23 +1,23 @@
-import React from 'react';
-import Link from 'next/link';
 import {
-  TableCell,
-  TableHead,
-  TableBody,
-  TableRow,
-  Table,
-  TableContainer,
   Button,
-  Menu,
   Fade,
+  Menu,
   MenuItem,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { Stack } from '@mui/material';
-import { Member } from '../../../types/member/member';
+import Link from 'next/link';
+import React from 'react';
 import { REACT_APP_API_URL } from '../../../config';
 import { MemberStatus, MemberType } from '../../../enums/member.enum';
+import { Member } from '../../../types/member/member';
 
 interface Data {
   id: string;

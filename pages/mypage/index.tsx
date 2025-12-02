@@ -2,6 +2,7 @@ import { useMutation, useReactiveVar } from '@apollo/client';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { userVar } from '../../apollo/store';
@@ -188,13 +189,41 @@ const MyPage: NextPage = () => {
                     <Typography className={'profile-phone'}>
                       {user?.memberPhone
                         ? user.memberPhone.length >= 10
-                          ? `(${user.memberPhone.slice(0, 3)}) ${user.memberPhone.slice(
+                          ? `${user.memberPhone.slice(0, 3)}-${user.memberPhone.slice(
                               3,
-                              6,
-                            )}-${user.memberPhone.slice(6)}`
+                              7,
+                            )}-${user.memberPhone.slice(7, 11)}`
                           : user.memberPhone
                         : 'No phone'}
                     </Typography>
+                    {user?.memberType ? (
+                      user?.memberType === 'ADMIN' ? (
+                        <Link
+                          href="/_admin/users"
+                          style={{
+                            textDecoration: 'none',
+                            display: 'block',
+                          }}
+                        >
+                          <Typography
+                            className={'profile-type'}
+                            sx={{
+                              cursor: 'pointer',
+                              color: 'rgba(255, 255, 255, 0.8)',
+                              transition: 'color 0.3s ease',
+                              '&:hover': {
+                                textDecoration: 'underline',
+                                color: 'rgba(255, 255, 255, 0.95)',
+                              },
+                            }}
+                          >
+                            {user?.memberType}
+                          </Typography>
+                        </Link>
+                      ) : (
+                        <Typography className={'profile-type'}>{user?.memberType}</Typography>
+                      )
+                    ) : null}
                   </Stack>
                 </Stack>
                 <Stack className={'logout-button-wrapper'}>

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  krealty-client:
+    container_name: krealty-client
+    restart: always
+    image: node:18.20.8
+    ports:
+      - 3001:3000
+    volumes:
+      - ./:/usr/src/krealty-client
+    working_dir: /usr/src/krealty-client
+    environment:
+      - PORT=3000
+    networks:
+      - client-network
+    #PRODUCTION
+    command: bash -c "yarn install && yarn run build && NODE_ENV=production yarn start"
+
+networks:
+  client-network:
+    driver: bridge
