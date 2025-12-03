@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Moment from 'react-moment';
 import { PropertyStatus } from '../../enums/property.enum';
+import { REACT_APP_API_URL } from '../../config';
 import { useDarkMode } from '../../hooks/useDarkMode';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Property } from '../../types/property/property';
@@ -53,10 +54,16 @@ export const PropertyCard = (props: PropertyCardProps) => {
   };
 
   if (device === 'mobile') {
+    const imagePath = property?.propertyImages?.[0]
+      ? `${REACT_APP_API_URL}/${property.propertyImages[0]}`
+      : '/img/banner/basiclaybanner.jpg';
+
     return (
       <Stack className="property-card-box">
         <Stack className="image-box" onClick={() => pushPropertyDetail(property?._id)}>
-          <img src={`${process.env.REACT_APP_API_URL}/${property.propertyImages[0]}`} alt="" />
+          <img src={imagePath} alt="" onError={(e: any) => {
+            e.target.src = '/img/banner/basiclaybanner.jpg';
+          }} />
         </Stack>
         <Stack className="information-box" onClick={() => pushPropertyDetail(property?._id)}>
           <Typography className="name">{property.propertyTitle}</Typography>
@@ -170,11 +177,17 @@ export const PropertyCard = (props: PropertyCardProps) => {
         )}
       </Stack>
     );
-  } else
+  } else {
+    const imagePath = property?.propertyImages?.[0]
+      ? `${REACT_APP_API_URL}/${property.propertyImages[0]}`
+      : '/img/banner/basiclaybanner.jpg';
+
     return (
       <Stack className="property-card-box">
         <Stack className="image-box" onClick={() => pushPropertyDetail(property?._id)}>
-          <img src={`${process.env.REACT_APP_API_URL}/${property.propertyImages[0]}`} alt="" />
+          <img src={imagePath} alt="" onError={(e: any) => {
+            e.target.src = '/img/banner/basiclaybanner.jpg';
+          }} />
         </Stack>
         <Stack className="information-box" onClick={() => pushPropertyDetail(property?._id)}>
           <Typography className="name">{property.propertyTitle}</Typography>
@@ -288,4 +301,5 @@ export const PropertyCard = (props: PropertyCardProps) => {
         )}
       </Stack>
     );
+  }
 };

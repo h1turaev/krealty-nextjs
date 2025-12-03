@@ -70,13 +70,27 @@ const TuiEditor = () => {
       );
       formData.append('0', image);
 
-      const response = await axios.post(`${process.env.REACT_APP_API_GRAPHQL_URL}`, formData, {
+      const graphqlUrl =
+        process.env.NEXT_PUBLIC_REACT_APP_API_GRAPHQL_URL ||
+        process.env.REACT_APP_API_GRAPHQL_URL ||
+        'http://localhost:3000/graphql';
+
+      const response = await axios.post(graphqlUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'apollo-require-preflight': true,
           Authorization: `Bearer ${token}`,
         },
       });
+
+      // Check for GraphQL errors
+      if (response.data.errors) {
+        throw new Error(response.data.errors[0]?.message || 'Image upload failed');
+      }
+
+      if (!response.data.data?.imageUploader) {
+        throw new Error('Invalid response from server');
+      }
 
       const responseImage = response.data.data.imageUploader;
       console.log('=responseImage: ', responseImage);
