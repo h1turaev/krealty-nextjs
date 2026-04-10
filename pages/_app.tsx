@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useApollo } from '../apollo/client';
-import CustomCursor from '../libs/components/common/CustomCursor';
+import ClickSpark from '../libs/components/common/ClickSpark';
 import { useDarkMode } from '../libs/hooks/useDarkMode';
 import '../scss/app.scss';
 import { dark, light } from '../scss/MaterialTheme';
@@ -37,7 +37,13 @@ const App = ({ Component, pageProps }: AppProps) => {
           <title>HIGHLAND</title>
         </Head>
         <CssBaseline />
-        <CustomCursor />
+        <ClickSpark
+          sparkColor="#fff"
+          sparkSize={10}
+          sparkRadius={15}
+          sparkCount={8}
+          duration={400}
+        >
         {mounted && (
           <Toaster
             position="top-center"
@@ -68,6 +74,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           />
         )}
         <Component {...pageProps} />
+        </ClickSpark>
       </ThemeProvider>
     </ApolloProvider>
   );

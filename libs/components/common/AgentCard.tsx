@@ -51,12 +51,13 @@ const AgentCard = (props: AgentCardProps) => {
                 {agent?.memberFullName ?? agent?.memberNick}
               </Typography>
             </Link>
-            <Typography className={'agent-title'}>
-              Real Estate Agent
-            </Typography>
+            <Typography className={'agent-title'}>Real Estate Agent</Typography>
           </Box>
           <Typography className={'agent-quote'}>
-            {agent?.memberDesc || `With ${agent?.memberProperties || 0} properties and years of experience, I help clients find their perfect home.`}
+            {agent?.memberDesc ||
+              `With ${
+                agent?.memberProperties || 0
+              } properties and years of experience, I help clients find their perfect home.`}
           </Typography>
         </Stack>
       </Stack>

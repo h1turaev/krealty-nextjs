@@ -1,0 +1,41 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+.burst {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.rayWrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+
+.ray {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  border-radius: 2px;
+  animation-name: sparkRay;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes sparkRay {
+  from {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-50%) translateX(var(--spark-radius, 15px));
+  }
+}
